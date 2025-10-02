@@ -1,22 +1,21 @@
 import { Facebook, Twitter, Instagram, Youtube, Mail } from "lucide-react";
+import logoFull from "@/assets/logo-full.png";
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-b from-background to-muted/30 border-t border-border py-12">
+    <footer className="bg-gradient-to-b from-background to-muted/20 border-t border-border py-16">
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-4 gap-8 mb-8">
+        <div className="grid md:grid-cols-4 gap-12 mb-12">
           <div className="space-y-4">
-            <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              BoostWhats
-            </span>
-            <p className="text-sm text-muted-foreground">
+            <img src={logoFull} alt="BoostWhats" className="h-10 w-auto" />
+            <p className="text-sm text-muted-foreground leading-relaxed">
               Build, save, and manage your WhatsApp contacts easily. Amplify your reach and grow your audience today.
             </p>
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2 text-sm">
+            <h3 className="font-bold text-lg mb-4">Quick Links</h3>
+            <ul className="space-y-3 text-sm">
               <li>
                 <a href="#home" className="text-muted-foreground hover:text-primary transition-colors">
                   Home
@@ -41,8 +40,8 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4">Support</h3>
-            <ul className="space-y-2 text-sm">
+            <h3 className="font-bold text-lg mb-4">Support</h3>
+            <ul className="space-y-3 text-sm">
               <li>
                 <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
                   Help Center
@@ -67,29 +66,29 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4">Connect With Us</h3>
-            <div className="flex space-x-3 mb-4">
+            <h3 className="font-bold text-lg mb-4">Connect With Us</h3>
+            <div className="flex space-x-3 mb-6">
               <a
                 href="#"
-                className="w-10 h-10 bg-primary/10 hover:bg-primary hover:text-primary-foreground rounded-full flex items-center justify-center transition-colors"
+                className="w-11 h-11 bg-primary/10 hover:bg-primary hover:text-primary-foreground rounded-xl flex items-center justify-center transition-all hover:scale-110"
               >
                 <Facebook className="w-5 h-5" />
               </a>
               <a
                 href="#"
-                className="w-10 h-10 bg-primary/10 hover:bg-primary hover:text-primary-foreground rounded-full flex items-center justify-center transition-colors"
+                className="w-11 h-11 bg-primary/10 hover:bg-primary hover:text-primary-foreground rounded-xl flex items-center justify-center transition-all hover:scale-110"
               >
                 <Twitter className="w-5 h-5" />
               </a>
               <a
                 href="#"
-                className="w-10 h-10 bg-primary/10 hover:bg-primary hover:text-primary-foreground rounded-full flex items-center justify-center transition-colors"
+                className="w-11 h-11 bg-primary/10 hover:bg-primary hover:text-primary-foreground rounded-xl flex items-center justify-center transition-all hover:scale-110"
               >
                 <Instagram className="w-5 h-5" />
               </a>
               <a
                 href="#"
-                className="w-10 h-10 bg-primary/10 hover:bg-primary hover:text-primary-foreground rounded-full flex items-center justify-center transition-colors"
+                className="w-11 h-11 bg-primary/10 hover:bg-primary hover:text-primary-foreground rounded-xl flex items-center justify-center transition-all hover:scale-110"
               >
                 <Youtube className="w-5 h-5" />
               </a>
@@ -103,9 +102,9 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-border pt-8 text-center text-sm text-muted-foreground">
+        <div className="border-t border-border pt-8 text-center text-sm text-muted-foreground space-y-2">
           <p>&copy; {new Date().getFullYear()} BoostWhats. All rights reserved.</p>
-          <p className="mt-2">
+          <p>
             Disclaimer: All transactions involving any BoostWhats contact are at your discretion. Be wise!
           </p>
         </div>

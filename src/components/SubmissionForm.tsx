@@ -23,12 +23,12 @@ const SubmissionForm = () => {
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold mb-2">
               Submit Your{" "}
-              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              <span className="text-primary">
                 Entry
               </span>
             </h2>
             <p className="text-muted-foreground">
-              Join the hive and start growing your WhatsApp audience today
+              Start growing your WhatsApp audience today
             </p>
           </div>
 
@@ -90,7 +90,7 @@ const SubmissionForm = () => {
               </p>
             </div>
 
-            <Button type="submit" variant="hero" size="lg" className="w-full text-base">
+            <Button type="submit" size="lg" className="w-full text-base bg-primary hover:bg-primary/90 text-primary-foreground font-semibold">
               Submit Entry
             </Button>
 

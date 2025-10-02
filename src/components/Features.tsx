@@ -1,125 +1,88 @@
-import opportunitiesImg from "@/assets/opportunities.png";
-import popularityImg from "@/assets/popularity.png";
-import contentImg from "@/assets/content.png";
-import salesImg from "@/assets/sales.png";
-import networkPeople from "@/assets/network-people.png";
-import growthChart from "@/assets/growth-chart.png";
-import beeCommunity from "@/assets/bee-community.png";
-
-const features = [
-  {
-    title: "Better Opportunities",
-    description: "Discover new sources of income and expand your business network through genuine connections",
-    image: opportunitiesImg,
-    gradient: "from-amber-400 to-orange-500",
-  },
-  {
-    title: "More Popularity",
-    description: "Increase your reach as more people discover you and what you do",
-    image: popularityImg,
-    gradient: "from-yellow-400 to-amber-500",
-  },
-  {
-    title: "Engaging Content",
-    description: "View interesting status updates from diverse people in your expanded network",
-    image: contentImg,
-    gradient: "from-orange-400 to-red-500",
-  },
-  {
-    title: "More Sales",
-    description: "Connect with potential clients who are genuinely interested in your products",
-    image: salesImg,
-    gradient: "from-amber-500 to-yellow-600",
-  },
-];
+import { Rocket, Users, TrendingUp, Shield, Zap, Heart } from "lucide-react";
 
 const Features = () => {
+  const features = [
+    {
+      icon: Rocket,
+      title: "Instant Growth",
+      description: "Watch your WhatsApp status views multiply as participants save your contact automatically.",
+      gradient: "from-primary/20 to-primary/5"
+    },
+    {
+      icon: Users,
+      title: "Community Power",
+      description: "Join thousands of users helping each other grow their audience organically.",
+      gradient: "from-secondary/20 to-secondary/5"
+    },
+    {
+      icon: TrendingUp,
+      title: "Track Progress",
+      description: "Monitor your growth with real-time analytics and see your reach expand daily.",
+      gradient: "from-primary/20 to-primary/5"
+    },
+    {
+      icon: Shield,
+      title: "Safe & Secure",
+      description: "Your data is protected with enterprise-grade security. We never share your information.",
+      gradient: "from-secondary/20 to-secondary/5"
+    },
+    {
+      icon: Zap,
+      title: "Lightning Fast",
+      description: "Get results in minutes, not months. Our automated system works 24/7 for you.",
+      gradient: "from-primary/20 to-primary/5"
+    },
+    {
+      icon: Heart,
+      title: "Easy to Use",
+      description: "Simple interface, powerful results. No technical knowledge required to get started.",
+      gradient: "from-secondary/20 to-secondary/5"
+    },
+  ];
+
   return (
-    <section id="features" className="py-24 md:py-32 relative overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-honey-light/5 to-background" />
-      <img 
-        src={networkPeople} 
-        alt="" 
-        className="absolute top-20 right-0 w-72 opacity-10 pointer-events-none"
-      />
-      <img 
-        src={beeCommunity} 
-        alt="" 
-        className="absolute bottom-20 left-0 w-80 opacity-10 pointer-events-none"
-      />
+    <section id="features" className="py-24 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-muted/30 to-background" />
       
-      <div className="container mx-auto px-4 relative">
-        <div className="text-center mb-20 space-y-6 animate-fade-in">
-          <div className="inline-block">
-            <span className="text-sm font-bold uppercase tracking-wider text-primary mb-2 block">
-              ✨ Benefits
-            </span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
-              Why Join the{" "}
-              <span className="relative inline-block">
-                <span className="bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
-                  ContactBee Hive?
-                </span>
-                <div className="absolute -bottom-2 left-0 right-0 h-3 bg-primary/20 -rotate-1 -z-10" />
-              </span>
-            </h2>
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center mb-16 space-y-4 animate-fade-in">
+          <div className="inline-flex items-center space-x-2 bg-primary/10 text-primary px-4 py-2 rounded-full font-medium text-sm border border-primary/20">
+            <Zap className="w-4 h-4" />
+            <span>Why Choose BoostWhats</span>
           </div>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Unlock amazing benefits when you join our thriving community of entrepreneurs, creators, and professionals
+          <h2 className="text-4xl lg:text-5xl font-bold">
+            Powerful Features for
+            <span className="block text-primary mt-2">Maximum Growth</span>
+          </h2>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Everything you need to boost your WhatsApp presence and reach thousands of viewers
           </p>
         </div>
 
-        {/* Feature grid with creative layout */}
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-12 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
             <div
               key={index}
-              className="group relative animate-fade-in"
+              className="group relative bg-card border border-border rounded-2xl p-8 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:-translate-y-2 animate-scale-in"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              {/* Feature card */}
-              <div className="relative p-8 md:p-10 bg-card/50 backdrop-blur-sm rounded-3xl border-2 border-border/50 hover:border-primary/50 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2">
-                {/* Gradient background on hover */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-5 rounded-3xl transition-opacity duration-500`} />
-                
-                {/* Floating image - no container */}
-                <div className="relative mb-6 flex justify-center">
-                  <img
-                    src={feature.image}
-                    alt={feature.title}
-                    className="w-28 h-28 object-contain drop-shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500"
-                  />
-                  {/* Glow effect */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-20 blur-3xl group-hover:opacity-40 transition-opacity duration-500`} />
+              <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+              
+              <div className="relative z-10 space-y-4">
+                <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
+                  <feature.icon className="w-7 h-7 text-primary group-hover:text-primary-foreground transition-colors" />
                 </div>
                 
-                {/* Content */}
-                <div className="relative text-center space-y-3">
-                  <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
-                    {feature.title}
-                  </h3>
-                  <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
-                    {feature.description}
-                  </p>
-                </div>
-
-                {/* Number badge */}
-                <div className="absolute -top-4 -right-4 w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center font-bold text-lg shadow-lg">
-                  {index + 1}
-                </div>
+                <h3 className="text-2xl font-bold group-hover:text-primary transition-colors">
+                  {feature.title}
+                </h3>
+                
+                <p className="text-muted-foreground leading-relaxed">
+                  {feature.description}
+                </p>
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Additional floating illustration */}
-        <div className="mt-20 flex justify-center">
-          <img 
-            src={growthChart} 
-            alt="" 
-            className="w-64 md:w-80 drop-shadow-2xl opacity-80 hover:scale-105 transition-transform duration-500"
-          />
         </div>
       </div>
     </section>
