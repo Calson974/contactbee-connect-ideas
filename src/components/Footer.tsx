@@ -6,16 +6,11 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center">
-                <span className="text-2xl">🐝</span>
-              </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                ContactBee
-              </span>
-            </div>
+            <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              BoostWhats
+            </span>
             <p className="text-sm text-muted-foreground">
-              Build, save, and manage your WhatsApp contacts easily. Join the hive and grow your audience today.
+              Build, save, and manage your WhatsApp contacts easily. Amplify your reach and grow your audience today.
             </p>
           </div>
 
@@ -101,17 +96,17 @@ const Footer = () => {
             </div>
             <div className="flex items-center space-x-2 text-sm text-muted-foreground">
               <Mail className="w-4 h-4" />
-              <a href="mailto:contact@contactbee.com" className="hover:text-primary transition-colors">
-                contact@contactbee.com
+              <a href="mailto:contact@boostwhats.com" className="hover:text-primary transition-colors">
+                contact@boostwhats.com
               </a>
             </div>
           </div>
         </div>
 
         <div className="border-t border-border pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} ContactBee. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} BoostWhats. All rights reserved.</p>
           <p className="mt-2">
-            Disclaimer: All transactions involving any ContactBee contact are at your discretion. Be wise!
+            Disclaimer: All transactions involving any BoostWhats contact are at your discretion. Be wise!
           </p>
         </div>
       </div>
