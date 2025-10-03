@@ -16,7 +16,7 @@ const Pricing = () => {
             💰 Pricing Plans
           </span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
-            Choose Your{" "}
+            Choose Your{" "} /;;
             <span className="relative">
               <span className="bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
                 Perfect Plan
