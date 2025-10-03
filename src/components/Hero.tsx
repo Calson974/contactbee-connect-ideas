@@ -1,111 +1,106 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, TrendingUp, Users, Zap } from "lucide-react";
+import { ArrowRight, Play } from "lucide-react";
 import heroWoman from "@/assets/hero-woman-phone.png";
 
 const Hero = () => {
   return (
-    <section id="home" className="relative min-h-screen flex items-center overflow-hidden pt-20">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-primary/5 to-background" />
+    <section id="home" className="relative min-h-screen flex items-center overflow-hidden">
+      {/* Diagonal split background */}
+      <div className="absolute inset-0 bg-background" />
+      <div 
+        className="absolute inset-0 bg-primary/5" 
+        style={{ clipPath: 'polygon(0 0, 100% 0, 100% 70%, 0 100%)' }}
+      />
       
-      {/* Animated circles */}
-      <div className="absolute top-20 right-20 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-20 left-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+      {/* Floating geometric shapes */}
+      <div className="absolute top-20 right-10 w-32 h-32 border-4 border-primary/20 rotate-12 animate-pulse" />
+      <div className="absolute bottom-40 left-10 w-24 h-24 bg-primary/10 rounded-full animate-float" />
+      <div className="absolute top-1/2 right-1/3 w-16 h-16 border-4 border-primary/30 rounded-full" style={{ animationDelay: '0.5s' }} />
       
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8 animate-fade-in">
-            <div className="inline-flex items-center space-x-2 bg-primary/10 text-primary px-4 py-2 rounded-full font-medium text-sm border border-primary/20">
-              <Zap className="w-4 h-4" />
-              <span>Boost Your WhatsApp Reach</span>
-            </div>
-            
-            <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
-              Amplify Your
-              <span className="block text-primary mt-2">WhatsApp Status</span>
-              <span className="block mt-2">Audience</span>
-            </h1>
-            
-            <p className="text-xl text-muted-foreground leading-relaxed max-w-xl">
-              Join a community where everyone saves each other's contacts. Watch your WhatsApp status views skyrocket as you expand your reach effortlessly.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button 
-                size="lg" 
-                className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-lg px-8 py-6 shadow-lg hover:shadow-xl transition-all hover:scale-105 group"
-              >
-                Start Growing Now
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button 
-                size="lg" 
-                variant="outline"
-                className="font-semibold text-lg px-8 py-6 border-2 hover:border-primary hover:text-primary transition-all"
-              >
-                Learn More
-              </Button>
-            </div>
-            
-            <div className="flex flex-wrap gap-8 pt-8">
-              <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                  <Users className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <div className="text-2xl font-bold">10K+</div>
-                  <div className="text-sm text-muted-foreground">Active Users</div>
+      <div className="container mx-auto px-4 py-20 relative z-10">
+        <div className="max-w-7xl mx-auto">
+          {/* Unconventional layout - overlapping elements */}
+          <div className="relative">
+            {/* Main content - offset positioning */}
+            <div className="max-w-3xl space-y-6 animate-fade-in">
+              <div className="inline-block">
+                <div className="bg-primary text-primary-foreground px-6 py-3 rounded-full font-bold text-sm tracking-wider uppercase transform -rotate-2 shadow-lg">
+                  🚀 Viral Growth Engine
                 </div>
               </div>
               
-              <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                  <TrendingUp className="w-6 h-6 text-primary" />
+              <h1 className="text-7xl lg:text-8xl font-black leading-none tracking-tight">
+                <span className="inline-block transform -rotate-1">Explode</span>
+                <br />
+                <span className="inline-block text-primary transform rotate-1">Your</span>
+                <br />
+                <span className="inline-block bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent transform -rotate-1">
+                  Status Views
+                </span>
+              </h1>
+              
+              <p className="text-2xl text-muted-foreground max-w-xl leading-relaxed pl-4 border-l-4 border-primary">
+                The community-powered platform where contacts multiply and status views go exponential.
+              </p>
+            </div>
+
+            {/* Image positioned absolutely - overlapping */}
+            <div className="absolute -right-20 top-0 w-[600px] h-[600px] hidden lg:block animate-scale-in">
+              <div className="relative w-full h-full">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-3xl" />
+                <img 
+                  src={heroWoman} 
+                  alt="User success"
+                  className="relative z-10 w-full h-full object-contain drop-shadow-2xl"
+                  style={{ transform: 'rotate(-5deg)' }}
+                />
+                {/* Decorative elements around image */}
+                <div className="absolute -top-10 -left-10 bg-primary text-primary-foreground px-6 py-3 rounded-2xl font-bold shadow-xl transform rotate-12 animate-float">
+                  +500% Views
                 </div>
-                <div>
-                  <div className="text-2xl font-bold">500%</div>
-                  <div className="text-sm text-muted-foreground">Avg. View Increase</div>
+                <div className="absolute -bottom-10 left-20 bg-card border-2 border-primary px-6 py-3 rounded-2xl font-bold shadow-xl transform -rotate-6 animate-float" style={{ animationDelay: '0.5s' }}>
+                  10K+ Users
                 </div>
               </div>
             </div>
-          </div>
-          
-          <div className="relative animate-scale-in">
-            <div className="relative z-10">
-              <img 
-                src={heroWoman} 
-                alt="Excited woman using WhatsApp" 
-                className="w-full h-auto drop-shadow-2xl"
-              />
-            </div>
-            
-            {/* Floating cards */}
-            <div className="absolute top-10 -left-10 bg-card border border-border rounded-2xl p-4 shadow-lg animate-float">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center">
-                  <TrendingUp className="w-5 h-5 text-primary" />
+
+            {/* CTAs - creative positioning */}
+            <div className="flex flex-wrap gap-6 mt-12 items-center">
+              <Button 
+                size="lg"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xl px-12 py-8 rounded-full shadow-2xl hover:shadow-primary/50 hover:scale-110 transition-all group"
+              >
+                Get Started Free
+                <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-2 transition-transform" />
+              </Button>
+              
+              <Button 
+                size="lg"
+                variant="outline"
+                className="font-bold text-lg px-10 py-8 rounded-full border-2 hover:bg-primary/5 group"
+              >
+                <Play className="mr-2 w-5 h-5 group-hover:scale-125 transition-transform" />
+                Watch Demo
+              </Button>
+
+              {/* Stats - horizontal inline */}
+              <div className="flex gap-8 ml-8 border-l-2 border-border pl-8">
+                <div>
+                  <div className="text-3xl font-black text-primary">847K</div>
+                  <div className="text-sm text-muted-foreground font-medium">Status Views</div>
                 </div>
                 <div>
-                  <div className="text-sm font-semibold">+2,453</div>
-                  <div className="text-xs text-muted-foreground">New Views</div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="absolute bottom-20 -right-10 bg-card border border-border rounded-2xl p-4 shadow-lg animate-float" style={{ animationDelay: '0.5s' }}>
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center">
-                  <Users className="w-5 h-5 text-primary" />
-                </div>
-                <div>
-                  <div className="text-sm font-semibold">+847</div>
-                  <div className="text-xs text-muted-foreground">Contacts Added</div>
+                  <div className="text-3xl font-black text-primary">12K+</div>
+                  <div className="text-sm text-muted-foreground font-medium">Active Users</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Bottom decorative wave */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" />
     </section>
   );
 };

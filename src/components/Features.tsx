@@ -6,78 +6,90 @@ const Features = () => {
       icon: Rocket,
       title: "Instant Growth",
       description: "Watch your WhatsApp status views multiply as participants save your contact automatically.",
-      gradient: "from-primary/20 to-primary/5"
+      position: "top-left"
     },
     {
       icon: Users,
       title: "Community Power",
       description: "Join thousands of users helping each other grow their audience organically.",
-      gradient: "from-secondary/20 to-secondary/5"
+      position: "top-right"
     },
     {
       icon: TrendingUp,
       title: "Track Progress",
       description: "Monitor your growth with real-time analytics and see your reach expand daily.",
-      gradient: "from-primary/20 to-primary/5"
+      position: "middle-left"
     },
     {
       icon: Shield,
       title: "Safe & Secure",
       description: "Your data is protected with enterprise-grade security. We never share your information.",
-      gradient: "from-secondary/20 to-secondary/5"
+      position: "middle-right"
     },
     {
       icon: Zap,
       title: "Lightning Fast",
       description: "Get results in minutes, not months. Our automated system works 24/7 for you.",
-      gradient: "from-primary/20 to-primary/5"
+      position: "bottom-left"
     },
     {
       icon: Heart,
       title: "Easy to Use",
       description: "Simple interface, powerful results. No technical knowledge required to get started.",
-      gradient: "from-secondary/20 to-secondary/5"
+      position: "bottom-right"
     },
   ];
 
   return (
-    <section id="features" className="py-24 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-muted/30 to-background" />
+    <section id="features" className="py-32 relative overflow-hidden bg-muted/30">
+      {/* Diagonal decorative elements */}
+      <div className="absolute top-0 right-0 w-1/3 h-full bg-primary/5 transform skew-x-12" />
+      <div className="absolute bottom-0 left-0 w-1/4 h-2/3 bg-secondary/5 transform -skew-x-12" />
       
       <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-16 space-y-4 animate-fade-in">
-          <div className="inline-flex items-center space-x-2 bg-primary/10 text-primary px-4 py-2 rounded-full font-medium text-sm border border-primary/20">
-            <Zap className="w-4 h-4" />
-            <span>Why Choose BoostWhats</span>
-          </div>
-          <h2 className="text-4xl lg:text-5xl font-bold">
-            Powerful Features for
-            <span className="block text-primary mt-2">Maximum Growth</span>
+        {/* Centered title with unique styling */}
+        <div className="text-center mb-20 space-y-6 animate-fade-in">
+          <h2 className="text-6xl lg:text-7xl font-black">
+            <span className="inline-block transform -rotate-2">Why</span>{" "}
+            <span className="inline-block text-primary transform rotate-2">BoostWhats</span>
+            <br />
+            <span className="inline-block bg-gradient-to-r from-secondary via-primary to-secondary bg-clip-text text-transparent">
+              Wins Every Time
+            </span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Everything you need to boost your WhatsApp presence and reach thousands of viewers
-          </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Zigzag/Alternating layout */}
+        <div className="space-y-32 max-w-6xl mx-auto">
           {features.map((feature, index) => (
             <div
               key={index}
-              className="group relative bg-card border border-border rounded-2xl p-8 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:-translate-y-2 animate-scale-in"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className={`flex flex-col lg:flex-row gap-12 items-center animate-fade-in ${
+                index % 2 === 1 ? 'lg:flex-row-reverse' : ''
+              }`}
+              style={{ animationDelay: `${index * 0.15}s` }}
             >
-              <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-              
-              <div className="relative z-10 space-y-4">
-                <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
-                  <feature.icon className="w-7 h-7 text-primary group-hover:text-primary-foreground transition-colors" />
+              {/* Icon side */}
+              <div className="flex-1 flex justify-center">
+                <div className="relative group">
+                  <div className="absolute inset-0 bg-primary/20 rounded-3xl blur-2xl group-hover:blur-3xl transition-all" />
+                  <div className="relative w-48 h-48 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-3xl flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 border-4 border-background shadow-2xl">
+                    <feature.icon className="w-24 h-24 text-primary" strokeWidth={1.5} />
+                  </div>
+                  {/* Decorative number */}
+                  <div className="absolute -top-6 -right-6 w-16 h-16 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-black text-2xl shadow-xl">
+                    {index + 1}
+                  </div>
                 </div>
-                
-                <h3 className="text-2xl font-bold group-hover:text-primary transition-colors">
+              </div>
+
+              {/* Content side */}
+              <div className="flex-1 space-y-4">
+                <h3 className="text-4xl lg:text-5xl font-black leading-tight">
                   {feature.title}
                 </h3>
-                
-                <p className="text-muted-foreground leading-relaxed">
+                <div className="w-20 h-1 bg-primary rounded-full" />
+                <p className="text-xl text-muted-foreground leading-relaxed">
                   {feature.description}
                 </p>
               </div>
