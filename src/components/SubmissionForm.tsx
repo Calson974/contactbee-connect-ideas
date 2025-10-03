@@ -3,17 +3,72 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useState } from "react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { ChevronDown } from "lucide-react";
 
 const SubmissionForm = () => {
   const [planType, setPlanType] = useState("free");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [country, setCountry] = useState("");
+  const [showOptional, setShowOptional] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Optional fields
+  const [company, setCompany] = useState("");
+  const [email, setEmail] = useState("");
+  const [jobTitle, setJobTitle] = useState("");
+  const [website, setWebsite] = useState("");
+  const [customField, setCustomField] = useState("");
+  const [address, setAddress] = useState("");
+  const [notes, setNotes] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Entry submitted successfully! Check your email for your password.");
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase.from("submissions").insert({
+        plan_type: planType,
+        name: planType === "free" ? name.slice(0, 8) : name,
+        phone,
+        country,
+        company: company || null,
+        email: email || null,
+        job_title: jobTitle || null,
+        website: website || null,
+        custom_field: customField || null,
+        address: address || null,
+        notes: notes || null,
+      });
+
+      if (error) throw error;
+
+      toast.success("Entry submitted successfully! Your contact will be included in today's vCard file.");
+      
+      // Reset form
+      setName("");
+      setPhone("");
+      setCountry("");
+      setCompany("");
+      setEmail("");
+      setJobTitle("");
+      setWebsite("");
+      setCustomField("");
+      setAddress("");
+      setNotes("");
+      setShowOptional(false);
+    } catch (error) {
+      console.error("Error submitting entry:", error);
+      toast.error("Failed to submit entry. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -90,8 +145,154 @@ const SubmissionForm = () => {
               </p>
             </div>
 
-            <Button type="submit" size="lg" className="w-full text-base bg-primary hover:bg-primary/90 text-primary-foreground font-semibold">
-              Submit Entry
+            <div className="space-y-2">
+              <Label htmlFor="country" className="text-base font-semibold">
+                Country
+              </Label>
+              <Select value={country} onValueChange={setCountry} required>
+                <SelectTrigger className="text-base">
+                  <SelectValue placeholder="Select your country" />
+                </SelectTrigger>
+                <SelectContent className="max-h-[200px]">
+                  <SelectItem value="US">United States</SelectItem>
+                  <SelectItem value="GB">United Kingdom</SelectItem>
+                  <SelectItem value="CA">Canada</SelectItem>
+                  <SelectItem value="AU">Australia</SelectItem>
+                  <SelectItem value="NG">Nigeria</SelectItem>
+                  <SelectItem value="GH">Ghana</SelectItem>
+                  <SelectItem value="KE">Kenya</SelectItem>
+                  <SelectItem value="ZA">South Africa</SelectItem>
+                  <SelectItem value="IN">India</SelectItem>
+                  <SelectItem value="PK">Pakistan</SelectItem>
+                  <SelectItem value="BD">Bangladesh</SelectItem>
+                  <SelectItem value="DE">Germany</SelectItem>
+                  <SelectItem value="FR">France</SelectItem>
+                  <SelectItem value="ES">Spain</SelectItem>
+                  <SelectItem value="IT">Italy</SelectItem>
+                  <SelectItem value="BR">Brazil</SelectItem>
+                  <SelectItem value="MX">Mexico</SelectItem>
+                  <SelectItem value="AR">Argentina</SelectItem>
+                  <SelectItem value="OTHER">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <Collapsible open={showOptional} onOpenChange={setShowOptional}>
+              <CollapsibleTrigger asChild>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full flex items-center justify-between"
+                >
+                  <span>Add Optional Information</span>
+                  <ChevronDown className={`h-4 w-4 transition-transform ${showOptional ? "rotate-180" : ""}`} />
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="space-y-4 mt-4">
+                <div className="space-y-2">
+                  <Label htmlFor="company" className="text-base">
+                    Company
+                  </Label>
+                  <Input
+                    id="company"
+                    placeholder="Your company name"
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                    className="text-base"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-base">
+                    Email
+                  </Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="your.email@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="text-base"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="jobTitle" className="text-base">
+                    Job Title
+                  </Label>
+                  <Input
+                    id="jobTitle"
+                    placeholder="Your job title"
+                    value={jobTitle}
+                    onChange={(e) => setJobTitle(e.target.value)}
+                    className="text-base"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="website" className="text-base">
+                    Website
+                  </Label>
+                  <Input
+                    id="website"
+                    type="url"
+                    placeholder="https://yourwebsite.com"
+                    value={website}
+                    onChange={(e) => setWebsite(e.target.value)}
+                    className="text-base"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="customField" className="text-base">
+                    Custom Field
+                  </Label>
+                  <Input
+                    id="customField"
+                    placeholder="Any custom information"
+                    value={customField}
+                    onChange={(e) => setCustomField(e.target.value)}
+                    className="text-base"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="address" className="text-base">
+                    Address
+                  </Label>
+                  <Textarea
+                    id="address"
+                    placeholder="Your full address"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    className="text-base"
+                    rows={3}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="notes" className="text-base">
+                    Notes
+                  </Label>
+                  <Textarea
+                    id="notes"
+                    placeholder="Additional notes"
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                    className="text-base"
+                    rows={3}
+                  />
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
+
+            <Button 
+              type="submit" 
+              size="lg" 
+              className="w-full text-base bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Submitting..." : "Submit Entry"}
             </Button>
 
             <p className="text-sm text-center text-muted-foreground">
