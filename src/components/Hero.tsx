@@ -1,95 +1,106 @@
 import { Button } from "@/components/ui/button";
-import heroWomanPhone from "@/assets/hero-woman-phone.png";
-import beeMascot from "@/assets/bee-mascot.png";
-import beeThumbsUp from "@/assets/bee-thumbs-up.png";
-import statusViews from "@/assets/status-views.png";
+import { ArrowRight, Play } from "lucide-react";
+import heroWoman from "@/assets/hero-woman-phone.png";
 
 const Hero = () => {
   return (
-    <section id="home" className="pt-24 pb-16 md:pt-32 md:pb-32 relative overflow-hidden min-h-[90vh] flex items-center">
-      {/* Animated background gradients */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,hsl(45_93%_88%),transparent_40%)] opacity-40 animate-pulse" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,hsl(38_92%_85%),transparent_40%)] opacity-40 animate-pulse" style={{ animationDelay: '1s' }} />
-      
-      {/* Floating bee illustration */}
-      <img 
-        src={beeThumbsUp} 
-        alt="" 
-        className="absolute top-32 right-[15%] w-16 md:w-24 opacity-20 animate-bounce"
-        style={{ animationDuration: '3s' }}
+    <section id="home" className="relative min-h-screen flex items-center overflow-hidden">
+      {/* Diagonal split background */}
+      <div className="absolute inset-0 bg-background" />
+      <div 
+        className="absolute inset-0 bg-primary/5" 
+        style={{ clipPath: 'polygon(0 0, 100% 0, 100% 70%, 0 100%)' }}
       />
       
-      <div className="container mx-auto px-4 relative">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
-          <div className="space-y-8 animate-fade-in z-10">
-            <div className="inline-flex items-center space-x-3 bg-gradient-to-r from-primary/20 to-accent/20 px-5 py-3 rounded-full border-2 border-primary/30 backdrop-blur-sm">
-              <img src={beeMascot} alt="Bee mascot" className="w-10 h-10 animate-bounce" style={{ animationDuration: '2s' }} />
-              <span className="text-sm font-semibold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                🚀 Grow Your WhatsApp Presence
-              </span>
-            </div>
-            
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.1] tracking-tight">
-              Need More Viewers For Your{" "}
-              <span className="relative inline-block">
-                <span className="bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
-                  WhatsApp Status?
+      {/* Floating geometric shapes */}
+      <div className="absolute top-20 right-10 w-32 h-32 border-4 border-primary/20 rotate-12 animate-pulse" />
+      <div className="absolute bottom-40 left-10 w-24 h-24 bg-primary/10 rounded-full animate-float" />
+      <div className="absolute top-1/2 right-1/3 w-16 h-16 border-4 border-primary/30 rounded-full" style={{ animationDelay: '0.5s' }} />
+      
+      <div className="container mx-auto px-4 py-20 relative z-10">
+        <div className="max-w-7xl mx-auto">
+          {/* Unconventional layout - overlapping elements */}
+          <div className="relative">
+            {/* Main content - offset positioning */}
+            <div className="max-w-3xl space-y-6 animate-fade-in">
+              <div className="inline-block">
+                <div className="bg-primary text-primary-foreground px-6 py-3 rounded-full font-bold text-sm tracking-wider uppercase transform -rotate-2 shadow-lg">
+                  🚀 Viral Growth Engine
+                </div>
+              </div>
+              
+              <h1 className="text-7xl lg:text-8xl font-black leading-none tracking-tight">
+                <span className="inline-block transform -rotate-1">Explode</span>
+                <br />
+                <span className="inline-block text-primary transform rotate-1">Your</span>
+                <br />
+                <span className="inline-block bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent transform -rotate-1">
+                  Status Views
                 </span>
-                <svg className="absolute -bottom-2 left-0 w-full" height="12" viewBox="0 0 300 12" fill="none">
-                  <path d="M2 10C100 2 200 2 298 10" stroke="hsl(45 93% 58%)" strokeWidth="3" strokeLinecap="round"/>
-                </svg>
-              </span>
-            </h1>
-            
-            <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed font-light">
-              Grow your WhatsApp audience and views as you and other participants save each other's contacts in just one click. Join the hive today!
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-5 pt-6">
-              <Button variant="hero" size="lg" className="text-lg py-6 px-10 rounded-xl shadow-lg hover:scale-105 transition-transform">
-                🐝 Submit Entry
+              </h1>
+              
+              <p className="text-2xl text-muted-foreground max-w-xl leading-relaxed pl-4 border-l-4 border-primary">
+                The community-powered platform where contacts multiply and status views go exponential.
+              </p>
+            </div>
+
+            {/* Image positioned absolutely - overlapping */}
+            <div className="absolute -right-20 top-0 w-[600px] h-[600px] hidden lg:block animate-scale-in">
+              <div className="relative w-full h-full">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-3xl" />
+                <img 
+                  src={heroWoman} 
+                  alt="User success"
+                  className="relative z-10 w-full h-full object-contain drop-shadow-2xl"
+                  style={{ transform: 'rotate(-5deg)' }}
+                />
+                {/* Decorative elements around image */}
+                <div className="absolute -top-10 -left-10 bg-primary text-primary-foreground px-6 py-3 rounded-2xl font-bold shadow-xl transform rotate-12 animate-float">
+                  +500% Views
+                </div>
+                <div className="absolute -bottom-10 left-20 bg-card border-2 border-primary px-6 py-3 rounded-2xl font-bold shadow-xl transform -rotate-6 animate-float" style={{ animationDelay: '0.5s' }}>
+                  10K+ Users
+                </div>
+              </div>
+            </div>
+
+            {/* CTAs - creative positioning */}
+            <div className="flex flex-wrap gap-6 mt-12 items-center">
+              <Button 
+                size="lg"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xl px-12 py-8 rounded-full shadow-2xl hover:shadow-primary/50 hover:scale-110 transition-all group"
+              >
+                Get Started Free
+                <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-2 transition-transform" />
               </Button>
-              <Button variant="outline" size="lg" className="text-lg py-6 px-10 rounded-xl hover:scale-105 transition-transform">
-                📥 Download Contacts
+              
+              <Button 
+                size="lg"
+                variant="outline"
+                className="font-bold text-lg px-10 py-8 rounded-full border-2 hover:bg-primary/5 group"
+              >
+                <Play className="mr-2 w-5 h-5 group-hover:scale-125 transition-transform" />
+                Watch Demo
               </Button>
-            </div>
-            
-            <div className="flex flex-wrap items-center gap-8 pt-6">
-              <div className="flex items-center space-x-3 bg-card/50 backdrop-blur-sm px-4 py-2 rounded-full border border-border">
-                <div className="w-3 h-3 bg-primary rounded-full animate-pulse" />
-                <span className="font-medium">100% Free to Start</span>
-              </div>
-              <div className="flex items-center space-x-3 bg-card/50 backdrop-blur-sm px-4 py-2 rounded-full border border-border">
-                <div className="w-3 h-3 bg-accent rounded-full animate-pulse" />
-                <span className="font-medium">Daily Updates</span>
-              </div>
-              <div className="flex items-center space-x-3 bg-card/50 backdrop-blur-sm px-4 py-2 rounded-full border border-border">
-                <div className="w-3 h-3 bg-secondary rounded-full animate-pulse" />
-                <span className="font-medium">10K+ Users</span>
+
+              {/* Stats - horizontal inline */}
+              <div className="flex gap-8 ml-8 border-l-2 border-border pl-8">
+                <div>
+                  <div className="text-3xl font-black text-primary">847K</div>
+                  <div className="text-sm text-muted-foreground font-medium">Status Views</div>
+                </div>
+                <div>
+                  <div className="text-3xl font-black text-primary">12K+</div>
+                  <div className="text-sm text-muted-foreground font-medium">Active Users</div>
+                </div>
               </div>
             </div>
-          </div>
-          
-          <div className="relative animate-scale-in">
-            {/* Main hero image - woman with phone */}
-            <div className="relative z-10">
-              <div className="absolute -inset-6 bg-gradient-to-r from-primary via-accent to-secondary opacity-30 blur-3xl animate-pulse" />
-              <img
-                src={heroWomanPhone}
-                alt="Excited woman viewing WhatsApp status"
-                className="relative rounded-[3rem] shadow-2xl w-full transform hover:scale-105 transition-transform duration-500"
-              />
-            </div>
-            
-            {/* Floating status views illustration */}
-            <img 
-              src={statusViews} 
-              alt="" 
-              className="absolute -bottom-12 -left-12 w-48 md:w-64 drop-shadow-2xl animate-float z-20"
-            />
           </div>
         </div>
       </div>
+
+      {/* Bottom decorative wave */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" />
     </section>
   );
 };
