@@ -1,100 +1,167 @@
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { Menu, X, ChevronDown, Moon, Sun } from "lucide-react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import logoFull from "@/assets/logo-full.png";
+import { cn } from "@/lib/utils";
+import { useTheme } from "next-themes";
+import { ThemeToggle } from "./ThemeToggle";
+
+const navItems = [
+  { name: 'Home', href: '#home' },
+  { name: 'Features', href: '#features' },
+  { name: 'Pricing', href: '#pricing' },
+  { name: 'How It Works', href: '#how-it-works' },
+];
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [activeItem, setActiveItem] = useState('');
+  const { theme } = useTheme();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-b border-border shadow-sm">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
-          <div className="flex items-center">
-            <img src={logoFull} alt="BoostWhats" className="h-10 w-auto" />
-          </div>
-
-          <div className="hidden md:flex items-center space-x-8">
-            <a 
-              href="#home" 
-              className="text-foreground hover:text-primary font-medium transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full"
-            >
-              Home
-            </a>
-            <a 
-              href="#features" 
-              className="text-foreground hover:text-primary font-medium transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full"
-            >
-              Features
-            </a>
-            <a 
-              href="#pricing" 
-              className="text-foreground hover:text-primary font-medium transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full"
-            >
-              Pricing
-            </a>
-            <a 
-              href="#how-it-works" 
-              className="text-foreground hover:text-primary font-medium transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full"
-            >
-              How It Works
-            </a>
-            <Button 
-              className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-105"
-              size="lg"
-            >
-              Get Started
-            </Button>
-          </div>
-
-          <button
-            className="md:hidden text-foreground"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
+    <motion.nav 
+      className={cn(
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        scrolled 
+          ? "bg-background/80 backdrop-blur-md shadow-lg border-b border-border/20" 
+          : "bg-background/50 backdrop-blur-sm"
+      )}
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+    >
+      <div className="container mx-auto px-4 lg:px-6">
+        <div className="flex items-center justify-between h-16 md:h-20">
+          {/* Logo */}
+          <motion.div 
+            className="flex items-center"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+            <a href="#home" className="flex items-center">
+              <img src={logoFull} alt="BoostWhats" className="h-9 md:h-10 w-auto" />
+              <span className="ml-2 text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                BoostWhats
+              </span>
+            </a>
+          </motion.div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-1">
+            {navItems.map((item) => (
+              <motion.div 
+                key={item.name}
+                className="relative"
+                onHoverStart={() => setActiveItem(item.name)}
+                onHoverEnd={() => setActiveItem('')}
+              >
+                <a 
+                  href={item.href}
+                  className={cn(
+                    "px-4 py-2 text-sm font-medium transition-colors relative group",
+                    activeItem === item.name ? "text-primary" : "text-foreground/80 hover:text-foreground"
+                  )}
+                >
+                  {item.name}
+                  <motion.span 
+                    className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-accent"
+                    initial={{ scaleX: 0, opacity: 0 }}
+                    animate={{ 
+                      scaleX: activeItem === item.name ? 1 : 0, 
+                      opacity: activeItem === item.name ? 1 : 0.7 
+                    }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                  />
+                </a>
+              </motion.div>
+            ))}
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <div className="flex items-center space-x-2">
+                <ThemeToggle />
+                <Button 
+                  className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all"
+                  size="sm"
+                >
+                  Get Started
+                </Button>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Mobile menu button */}
+          <motion.button
+            className="md:hidden p-2 rounded-lg hover:bg-accent/10 transition-colors"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            whileTap={{ scale: 0.95 }}
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? (
+              <X className="w-6 h-6 text-foreground" />
+            ) : (
+              <Menu className="w-6 h-6 text-foreground" />
+            )}
+          </motion.button>
         </div>
 
-        {isMenuOpen && (
-          <div className="md:hidden py-6 space-y-4 border-t border-border">
-            <a 
-              href="#home" 
-              className="block text-foreground hover:text-primary font-medium transition-colors py-2"
-              onClick={() => setIsMenuOpen(false)}
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div 
+              className="md:hidden overflow-hidden"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
             >
-              Home
-            </a>
-            <a 
-              href="#features" 
-              className="block text-foreground hover:text-primary font-medium transition-colors py-2"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Features
-            </a>
-            <a 
-              href="#pricing" 
-              className="block text-foreground hover:text-primary font-medium transition-colors py-2"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Pricing
-            </a>
-            <a 
-              href="#how-it-works" 
-              className="block text-foreground hover:text-primary font-medium transition-colors py-2"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              How It Works
-            </a>
-            <Button 
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
-              size="lg"
-            >
-              Get Started
-            </Button>
-          </div>
-        )}
+              <div className="pt-4 pb-6 space-y-2">
+                {navItems.map((item) => (
+                  <motion.a
+                    key={item.name}
+                    href={item.href}
+                    className="block px-4 py-3 rounded-lg hover:bg-accent/10 transition-colors font-medium"
+                    onClick={() => setIsMenuOpen(false)}
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {item.name}
+                  </motion.a>
+                ))}
+                <motion.div 
+                  className="pt-2"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1, duration: 0.3 }}
+                >
+                  <div className="flex items-center justify-between pt-2">
+                    <ThemeToggle />
+                    <Button 
+                      className={cn(
+                        "flex-1 ml-2 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold",
+                        theme === 'dark' ? "bg-accent/50 hover:bg-accent/40" : "bg-accent/20 hover:bg-accent/10"
+                      )}
+                      size="lg"
+                    >
+                      Get Started
+                    </Button>
+                  </div>
+                </motion.div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </nav>
+    </motion.nav>
   );
 };
 

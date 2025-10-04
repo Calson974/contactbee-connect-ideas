@@ -1,17 +1,17 @@
 import { Button } from "@/components/ui/button";
-import { Check, Zap, Crown, Star } from "lucide-react";
+import { Check, Sparkles, Zap } from "lucide-react";
 import beeMascot from "@/assets/bee-mascot.png";
 
 const Pricing = () => {
   return (
-    <section id="pricing" className="py-24 md:py-32 relative overflow-hidden">
+    <section id="pricing" className="min-h-screen flex items-center justify-center py-16 relative overflow-hidden">
       {/* Background decorations */}
       <div className="absolute inset-0 bg-gradient-to-b from-honey-light/10 via-background to-background" />
       <div className="absolute top-20 left-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
       <div className="absolute bottom-20 right-10 w-40 h-40 bg-accent/10 rounded-full blur-3xl" />
       
-      <div className="container mx-auto px-4 relative">
-        <div className="text-center mb-20 space-y-6 animate-fade-in">
+      <div className="container mx-auto px-4 w-full">
+        <div className="text-center space-y-6 animate-fade-in max-w-4xl mx-auto w-full">
           <span className="inline-block text-sm font-bold uppercase tracking-wider text-primary mb-2">
             💰 Pricing Plans
           </span>
@@ -21,6 +21,7 @@ const Pricing = () => {
               <span className="bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
                 Perfect Plan
               </span>
+              <Sparkles className="absolute -top-6 -right-8 w-6 h-6 text-primary animate-pulse" />
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
@@ -94,13 +95,6 @@ const Pricing = () => {
                 <span>MOST POPULAR</span>
               </div>
 
-              {/* Floating bee mascot */}
-              <img 
-                src={beeMascot} 
-                alt="" 
-                className="absolute -right-4 -top-4 w-20 h-20 animate-float opacity-80"
-              />
-              
               <div className="space-y-8">
                 <div className="space-y-3">
                   <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-primary/20 to-accent/20 px-4 py-2 rounded-full border border-primary/30">
