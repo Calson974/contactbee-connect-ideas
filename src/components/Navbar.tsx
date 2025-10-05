@@ -17,47 +17,55 @@ const navItems = [
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [compact, setCompact] = useState(false);
   const [activeItem, setActiveItem] = useState('');
   const { theme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
+      // Check if scrolled past 100vh (viewport height)
+      const isScrolled = window.scrollY > window.innerHeight;
       setScrolled(window.scrollY > 10);
+      setCompact(isScrolled);
     };
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <motion.nav 
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        scrolled 
-          ? "bg-background/80 backdrop-blur-md shadow-lg border-b border-border/20" 
-          : "bg-background/50 backdrop-blur-sm"
-      )}
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-    >
+    <nav className={cn(
+      "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+      scrolled ? "bg-background/90 backdrop-blur-md border-b border-border/50 shadow-sm" : "bg-transparent",
+      compact ? 'py-2' : 'py-4',
+    )}>
       <div className="container mx-auto px-4 lg:px-6">
-        <div className="flex items-center justify-between h-16 md:h-20">
+        <div className={cn("flex items-center justify-between px-4 sm:px-6 lg:px-8 transition-all duration-300", 
+          compact ? 'h-12' : 'h-16'
+        )}>
           {/* Logo */}
           <motion.div 
-            className="flex items-center"
+            className="flex items-center -ml-10 md:ml-0"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             <a href="#home" className="flex items-center">
-              <img src={logoFull} alt="BoostWhats" className="h-9 md:h-10 w-auto" />
-              <span className="ml-2 text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                BoostWhats
-              </span>
+              <img 
+                src={logoFull} 
+                alt="ContactBee" 
+                className={cn(
+                  "transition-all duration-300",
+                  scrolled ? "opacity-100" : "opacity-90",
+                  compact ? 'h-6' : 'h-8'
+                )} 
+              />
             </a>
           </motion.div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div className={cn("hidden md:flex items-center transition-all duration-300", 
+            compact ? 'space-x-3' : 'space-x-4'
+          )}>
             {navItems.map((item) => (
               <motion.div 
                 key={item.name}
@@ -68,18 +76,18 @@ const Navbar = () => {
                 <a 
                   href={item.href}
                   className={cn(
-                    "px-4 py-2 text-sm font-medium transition-colors relative group",
-                    activeItem === item.name ? "text-primary" : "text-foreground/80 hover:text-foreground"
-                  )}
+                  "px-3 py-2 text-sm rounded-md transition-all duration-200",
+                  activeItem === item.name 
+                    ? "text-primary font-semibold" 
+                    : "text-foreground/70 hover:text-foreground font-medium",
+                  compact ? 'text-sm py-1.5' : 'text-base py-2'
+                )}
                 >
                   {item.name}
                   <motion.span 
                     className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-accent"
                     initial={{ scaleX: 0, opacity: 0 }}
-                    animate={{ 
-                      scaleX: activeItem === item.name ? 1 : 0, 
-                      opacity: activeItem === item.name ? 1 : 0.7 
-                    }}
+                    animate={{ scaleX: activeItem === item.name ? 1 : 0, opacity: activeItem === item.name ? 1 : 0.7 }}
                     transition={{ type: 'spring', stiffness: 300, damping: 25 }}
                   />
                 </a>
@@ -89,8 +97,11 @@ const Navbar = () => {
               <div className="flex items-center space-x-2">
                 <ThemeToggle />
                 <Button 
-                  className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all"
-                  size="sm"
+                  className={cn(
+                    "flex-1 ml-2 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold",
+                    theme === 'dark' ? "bg-accent/50 hover:bg-accent/40" : "bg-accent/20 hover:bg-accent/10"
+                  )}
+                  size="lg"
                 >
                   Get Started
                 </Button>
@@ -161,7 +172,7 @@ const Navbar = () => {
           )}
         </AnimatePresence>
       </div>
-    </motion.nav>
+    </nav>
   );
 };
 

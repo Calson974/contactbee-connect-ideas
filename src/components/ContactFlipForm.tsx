@@ -3,6 +3,7 @@ import { X, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { CountrySelect } from '@/components/ui/country-select';
 
 interface ContactFlipFormProps {
   onClose: () => void;
@@ -13,8 +14,10 @@ export function ContactFlipForm({ onClose }: ContactFlipFormProps) {
     name: '',
     email: '',
     phone: '',
+    country: '',
     message: 'I\'d like to boost my contacts!'
   });
+  
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -92,6 +95,18 @@ export function ContactFlipForm({ onClose }: ContactFlipFormProps) {
                 onChange={handleChange}
                 placeholder="+1 (555) 123-4567"
                 className="w-full"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <label htmlFor="country" className="text-sm font-medium leading-none">
+                Country <span className="text-destructive">*</span>
+              </label>
+              <CountrySelect
+                value={formData.country}
+                onChange={(value) => setFormData(prev => ({ ...prev, country: value }))}
+                className="w-full"
+                required
               />
             </div>
             
