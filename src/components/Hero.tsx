@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Play, Zap, Check, Rocket, ArrowLeft, ChevronDown } from "lucide-react";
+import { AnimateOnScroll } from "@/components/ui/AnimateOnScroll";
+import styles from './Hero.module.css';
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -10,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { CountrySelect } from "@/components/ui/country-select";
 
 // Form component for the flip side
 const ContactForm = ({ onBack }: { onBack: () => void }) => {
@@ -151,38 +154,17 @@ const ContactForm = ({ onBack }: { onBack: () => void }) => {
           <p className="text-sm text-muted-foreground">
             Include country code (e.g., +1 for USA)
           </p>
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="country" className="text-base font-semibold">
-            Country
-          </Label>
-          <Select value={country} onValueChange={setCountry} required>
-            <SelectTrigger className="text-base">
-              <SelectValue placeholder="Select your country" />
-            </SelectTrigger>
-            <SelectContent className="max-h-[200px]">
-              <SelectItem value="US">United States</SelectItem>
-              <SelectItem value="GB">United Kingdom</SelectItem>
-              <SelectItem value="CA">Canada</SelectItem>
-              <SelectItem value="AU">Australia</SelectItem>
-              <SelectItem value="NG">Nigeria</SelectItem>
-              <SelectItem value="GH">Ghana</SelectItem>
-              <SelectItem value="KE">Kenya</SelectItem>
-              <SelectItem value="ZA">South Africa</SelectItem>
-              <SelectItem value="IN">India</SelectItem>
-              <SelectItem value="PK">Pakistan</SelectItem>
-              <SelectItem value="BD">Bangladesh</SelectItem>
-              <SelectItem value="DE">Germany</SelectItem>
-              <SelectItem value="FR">France</SelectItem>
-              <SelectItem value="ES">Spain</SelectItem>
-              <SelectItem value="IT">Italy</SelectItem>
-              <SelectItem value="BR">Brazil</SelectItem>
-              <SelectItem value="MX">Mexico</SelectItem>
-              <SelectItem value="AR">Argentina</SelectItem>
-              <SelectItem value="OTHER">Other</SelectItem>
-            </SelectContent>
-          </Select>
+          
+          <div className="space-y-2">
+            <Label htmlFor="country" className="text-base font-semibold">
+              Country
+            </Label>
+            <CountrySelect
+              value={country}
+              onChange={setCountry}
+              required
+            />
+          </div>
         </div>
 
         <Collapsible open={showOptional} onOpenChange={setShowOptional}>
@@ -294,19 +276,18 @@ const ContactForm = ({ onBack }: { onBack: () => void }) => {
         </Collapsible>
         
         {/* Submit button moved to bottom of form container */}
-        </form>
-      </div>
-      
-      <div className="p-4 border-t border-border/50 bg-card/80 backdrop-blur-sm">
-        <Button 
-          type="submit" 
-          form="contact-form"
-          className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? 'Submitting...' : 'Submit Entry'}
-        </Button>
-      </div>
+        <div className="p-4 border-t border-border/50 bg-card/80 backdrop-blur-sm mt-auto">
+          <Button 
+            type="submit" 
+            form="contact-form"
+            className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Submitting...' : 'Submit Entry'}
+          </Button>
+        </div>
+      </form>
+    </div>
     </div>
   );
 };
@@ -328,115 +309,97 @@ const Hero = () => {
       
       <div className="container mx-auto px-4 py-20 relative z-10">
         <div className="max-w-4xl mx-auto">
-          <div className={`flip-container ${isFlipped ? 'flipped' : ''}`}>
+          <div className={`${styles.flipContainer} ${isFlipped ? styles.flipped : ''}`}>
             {/* Front side - Hero Content */}
-            <div className="flip-front">
+            <div className={styles.flipFront}>
               <div className="text-center">
                 {/* Animated badge */}
-                <div className="inline-flex items-center justify-center space-x-2 bg-primary/10 backdrop-blur-sm border border-primary/20 rounded-full px-6 py-2 mb-8 animate-fade-in">
-                  <Zap className="w-5 h-5 text-primary" />
-                  <span className="text-sm font-medium text-primary">TRENDING NOW</span>
-                </div>
+                <AnimateOnScroll yOffset={20} delay={0.2}>
+                  <div className="inline-flex items-center justify-center space-x-2 bg-primary/10 backdrop-blur-sm border border-primary/20 rounded-full px-6 py-2 mb-8">
+                    <Zap className="w-5 h-5 text-primary" />
+                    <span className="text-sm font-medium text-primary">TRENDING NOW</span>
+                  </div>
+                </AnimateOnScroll>
                 
                 {/* Main heading with gradient text */}
-                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-tight mb-6">
-                  <span className="block bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent">
-                    Explode Your
-                  </span>
-                  <span className="block bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
-                    Status Views
-                  </span>
-                </h1>
+                <AnimateOnScroll yOffset={30} delay={0.3}>
+                  <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-tight mb-6">
+                    <span className="block bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent">
+                      Explode Your
+                    </span>
+                    <span className="relative inline-block group">
+                      <span className="relative z-10 bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
+                        Status Views
+                        <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-gradient-to-r from-primary to-accent transition-all duration-500 group-hover:w-full"></span>
+                      </span>
+                    </span>
+                  </h1>
+                </AnimateOnScroll>
                 
                 {/* Subheading */}
-                <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-12 leading-relaxed">
-                  The community-powered platform where contacts multiply and status views go exponential.
-                  <span className="block text-primary font-medium mt-2">Join thousands of satisfied users today.</span>
-                </p>
+                <AnimateOnScroll yOffset={20} delay={0.4}>
+                  <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-12 leading-relaxed">
+                    The community-powered platform where contacts multiply and status views go exponential.
+                    <span className="block text-primary font-medium mt-2">Join thousands of satisfied users today.</span>
+                  </p>
+                </AnimateOnScroll>
                 
                 {/* CTAs with icons */}
-                <div className="flex flex-col sm:flex-row gap-6 items-center justify-center mt-8">
-                  <Button 
-                    size="lg"
-                    onClick={handleFlip}
-                    className="relative overflow-hidden group bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground font-bold text-lg md:text-xl px-8 py-7 rounded-full shadow-2xl hover:shadow-primary/30 hover:scale-105 transition-all duration-300"
-                  >
-                    <span className="relative z-10 flex items-center">
-                      Boost My Status Now
-                      <Rocket className="ml-3 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    </span>
-                    <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                  </Button>
-                  
-                  <Button 
-                    variant="outline"
-                    size="lg"
-                    className="group font-bold text-lg px-8 py-7 rounded-full border-2 border-primary/20 hover:border-primary/40 hover:bg-primary/5 transition-all duration-300"
-                  >
-                    <Play className="mr-2 w-5 h-5 text-primary group-hover:scale-125 transition-transform" />
-                    Watch Demo
-                  </Button>
-                </div>
+                <AnimateOnScroll yOffset={20} delay={0.5}>
+                  <div className="flex flex-col sm:flex-row gap-6 items-center justify-center mt-8">
+                    <Button 
+                      size="lg"
+                      onClick={handleFlip}
+                      className="relative overflow-hidden group bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground font-bold text-lg md:text-xl px-8 py-7 rounded-full shadow-2xl hover:shadow-primary/30 hover:scale-105 transition-all duration-300"
+                    >
+                      <span className="relative z-10 flex items-center">
+                        Boost My Status Now
+                        <Rocket className="ml-3 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                      </span>
+                      <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                    </Button>
+                    
+                    <Button 
+                      variant="outline"
+                      size="lg"
+                      className="group font-bold text-lg px-8 py-7 rounded-full border-2 border-primary/20 hover:border-primary/40 hover:bg-primary/5 transition-all duration-300"
+                    >
+                      <Play className="mr-2 w-5 h-5 text-primary group-hover:scale-125 transition-transform" />
+                      Watch Demo
+                    </Button>
+                  </div>
+                </AnimateOnScroll>
                 
                 {/* Trust indicators */}
-                <div className="mt-8 text-sm text-muted-foreground flex flex-wrap items-center justify-center gap-4">
-                  <div className="flex items-center">
-                    <Check className="w-4 h-4 text-green-500 mr-2" />
-                    No credit card required
+                <AnimateOnScroll yOffset={20} delay={0.6}>
+                  <div className="mt-8 text-sm text-muted-foreground flex flex-wrap items-center justify-center gap-4">
+                    <div className="flex items-center">
+                      <Check className="w-4 h-4 text-green-500 mr-2" />
+                      No credit card required
+                    </div>
+                    <div className="hidden sm:block w-px h-4 bg-border" />
+                    <div className="flex items-center">
+                      <Check className="w-4 h-4 text-green-500 mr-2" />
+                      7-day free trial
+                    </div>
+                    <div className="hidden sm:block w-px h-4 bg-border" />
+                    <div className="flex items-center">
+                      <Check className="w-4 h-4 text-green-500 mr-2" />
+                      Cancel anytime
+                    </div>
                   </div>
-                  <div className="hidden sm:block w-px h-4 bg-border" />
-                  <div className="flex items-center">
-                    <Check className="w-4 h-4 text-green-500 mr-2" />
-                    7-day free trial
-                  </div>
-                  <div className="hidden sm:block w-px h-4 bg-border" />
-                  <div className="flex items-center">
-                    <Check className="w-4 h-4 text-green-500 mr-2" />
-                    Cancel anytime
-                  </div>
-                </div>
+                </AnimateOnScroll>
               </div>
             </div>
             
             {/* Back side - Contact Form */}
-            <div className="flip-back">
+            <div className={styles.flipBack}>
               <ContactForm onBack={handleFlip} />
             </div>
           </div>
         </div>
       </div>
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" />
-      
-      <style jsx global>{`
-        .flip-container {
-          perspective: 1000px;
-          width: 100%;
-          position: relative;
-          transition: transform 0.6s;
-          transform-style: preserve-3d;
-        }
-        
-        .flip-container.flipped {
-          transform: rotateY(180deg);
-        }
-        
-        .flip-front, .flip-back {
-          backface-visibility: hidden;
-          -webkit-backface-visibility: hidden;
-          width: 100%;
-          position: relative;
-        }
-        
-        .flip-back {
-          position: absolute;
-          top: 0;
-          left: 0;
-          transform: rotateY(180deg);
-          width: 100%;
-          display: flex;
-          justify-content: center;
-        }
-      `}</style>
     </section>
   );
 };

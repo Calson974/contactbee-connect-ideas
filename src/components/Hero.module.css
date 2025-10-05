@@ -1,0 +1,28 @@
+.flipContainer {
+  perspective: 1000px;
+  width: 100%;
+  position: relative;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flipContainer.flipped {
+  transform: rotateY(180deg);
+}
+
+.flipFront,
+.flipBack {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  width: 100%;
+}
+
+.flipBack {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotateY(180deg);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}

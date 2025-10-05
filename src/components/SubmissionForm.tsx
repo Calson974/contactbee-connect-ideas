@@ -1,3 +1,4 @@
+import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -9,7 +10,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { ChevronDown } from "lucide-react";
+import { CountrySelect } from "@/components/ui/country-select";
 
 const SubmissionForm = () => {
   const [planType, setPlanType] = useState("free");
@@ -140,41 +141,17 @@ const SubmissionForm = () => {
                 required
                 className="text-base"
               />
-              <p className="text-sm text-muted-foreground">
-                Include country code (e.g., +1 for USA)
-              </p>
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="country" className="text-base font-semibold">
                 Country
               </Label>
-              <Select value={country} onValueChange={setCountry} required>
-                <SelectTrigger className="text-base">
-                  <SelectValue placeholder="Select your country" />
-                </SelectTrigger>
-                <SelectContent className="max-h-[200px]">
-                  <SelectItem value="US">United States</SelectItem>
-                  <SelectItem value="GB">United Kingdom</SelectItem>
-                  <SelectItem value="CA">Canada</SelectItem>
-                  <SelectItem value="AU">Australia</SelectItem>
-                  <SelectItem value="NG">Nigeria</SelectItem>
-                  <SelectItem value="GH">Ghana</SelectItem>
-                  <SelectItem value="KE">Kenya</SelectItem>
-                  <SelectItem value="ZA">South Africa</SelectItem>
-                  <SelectItem value="IN">India</SelectItem>
-                  <SelectItem value="PK">Pakistan</SelectItem>
-                  <SelectItem value="BD">Bangladesh</SelectItem>
-                  <SelectItem value="DE">Germany</SelectItem>
-                  <SelectItem value="FR">France</SelectItem>
-                  <SelectItem value="ES">Spain</SelectItem>
-                  <SelectItem value="IT">Italy</SelectItem>
-                  <SelectItem value="BR">Brazil</SelectItem>
-                  <SelectItem value="MX">Mexico</SelectItem>
-                  <SelectItem value="AR">Argentina</SelectItem>
-                  <SelectItem value="OTHER">Other</SelectItem>
-                </SelectContent>
-              </Select>
+              <CountrySelect
+                value={country}
+                onChange={setCountry}
+                required
+              />
             </div>
 
             <Collapsible open={showOptional} onOpenChange={setShowOptional}>
