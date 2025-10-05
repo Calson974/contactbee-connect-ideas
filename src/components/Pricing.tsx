@@ -143,8 +143,8 @@ const Pricing = () => {
                   </li>
                 </ul>
 
-                <Button variant="hero" size="lg" className="w-full text-lg py-6 rounded-xl shadow-lg hover:shadow-2xl hover:scale-105 transition-all">
-                  🚀 Upgrade to Premium
+                <Button variant="default" size="lg" className="w-full text-lg py-6 rounded-xl shadow-lg hover:shadow-2xl hover:scale-105 transition-all">
+                🚀 Upgrade to Premium
                 </Button>
               </div>
             </div>
