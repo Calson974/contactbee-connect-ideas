@@ -15,7 +15,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { CountrySelect } from "@/components/ui/country-select";
 
 // Form component for the flip side
-const ContactForm = ({ onBack }: { onBack: () => void }) => {
+interface ContactFormProps {
+  onBack: (e?: React.MouseEvent | React.TouchEvent) => void;
+}
+
+const ContactForm = ({ onBack }: ContactFormProps) => {
   const [planType, setPlanType] = useState("free");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -61,13 +65,12 @@ const ContactForm = ({ onBack }: { onBack: () => void }) => {
       setCountry("");
       setCompany("");
       setEmail("");
-      setJobTitle("");
       setWebsite("");
       setCustomField("");
       setAddress("");
       setNotes("");
       setShowOptional(false);
-      onBack(); // Go back to hero after successful submission
+            onBack(); // Go back to hero after successful submission
     } catch (error) {
       console.error("Error submitting entry:", error);
       toast.error("Failed to submit entry. Please try again.");
@@ -81,7 +84,7 @@ const ContactForm = ({ onBack }: { onBack: () => void }) => {
       <div className="p-6 pb-4 border-b border-border/50">
         <div className="flex items-center mb-2">
           <button 
-            onClick={onBack}
+            onClick={(e) => onBack(e as React.MouseEvent)}
             className="mr-4 p-1 rounded-full hover:bg-accent/50 transition-colors"
             aria-label="Back to hero"
           >
@@ -169,7 +172,7 @@ const ContactForm = ({ onBack }: { onBack: () => void }) => {
 
         <Collapsible open={showOptional} onOpenChange={setShowOptional}>
           <CollapsibleTrigger asChild>
-            <Button
+            <Button 
               type="button"
               variant="outline"
               className="w-full flex items-center justify-between"
@@ -295,7 +298,22 @@ const ContactForm = ({ onBack }: { onBack: () => void }) => {
 const Hero = () => {
   const [isFlipped, setIsFlipped] = useState(false);
   
-  const handleFlip = () => {
+  const handleFlip = (e: React.MouseEvent | React.TouchEvent) => {
+    // Prevent double-tap zoom on mobile
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
+    // Force a reflow to ensure the animation works smoothly
+    const element = document.querySelector(`.${styles.flipContainer}`) as HTMLElement;
+    if (element) {
+      element.style.transition = 'none';
+      // Trigger reflow
+      void element.offsetHeight;
+      element.style.transition = 'transform 0.6s ease-in-out';
+    }
+    
     setIsFlipped(!isFlipped);
   };
   return (
@@ -309,7 +327,13 @@ const Hero = () => {
       
       <div className="container mx-auto px-4 py-20 relative z-10">
         <div className="max-w-4xl mx-auto">
-          <div className={`${styles.flipContainer} ${isFlipped ? styles.flipped : ''}`}>
+          <div 
+            className={`${styles.flipContainer} ${isFlipped ? styles.flipped : ''}`}
+            style={{
+              minHeight: isFlipped ? '80vh' : 'auto',
+              touchAction: 'manipulation',
+            }}
+          >
             {/* Front side - Hero Content */}
             <div className={styles.flipFront}>
               <div className="text-center">
@@ -350,7 +374,18 @@ const Hero = () => {
                     <Button 
                       size="lg"
                       onClick={handleFlip}
-                      className="relative overflow-hidden group bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground font-bold text-lg md:text-xl px-8 py-7 rounded-full shadow-2xl hover:shadow-primary/30 hover:scale-105 transition-all duration-300"
+                      onTouchStart={(e) => e.currentTarget.classList.add('active:scale-95')}
+                      onTouchEnd={(e) => e.currentTarget.classList.remove('active:scale-95')}
+                      className="relative overflow-hidden group bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 active:from-primary/80 active:to-accent/80 text-primary-foreground font-bold text-lg md:text-xl px-8 py-7 rounded-full shadow-2xl hover:shadow-primary/30 hover:scale-105 active:scale-95 transition-all duration-300 touch-manipulation"
+                      style={{
+                        WebkitTapHighlightColor: 'transparent',
+                        WebkitTouchCallout: 'none',
+                        WebkitUserSelect: 'none',
+                        KhtmlUserSelect: 'none',
+                        MozUserSelect: 'none',
+                        msUserSelect: 'none',
+                        userSelect: 'none',
+                      }}
                     >
                       <span className="relative z-10 flex items-center">
                         Boost My Status Now
@@ -394,7 +429,9 @@ const Hero = () => {
             
             {/* Back side - Contact Form */}
             <div className={styles.flipBack}>
-              <ContactForm onBack={handleFlip} />
+              <div className="w-full h-full">
+                <ContactForm onBack={handleFlip} />
+              </div>
             </div>
           </div>
         </div>
