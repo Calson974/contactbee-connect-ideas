@@ -95,12 +95,11 @@ const ContactForm = ({ onBack }: ContactFormProps) => {
         <p className="text-muted-foreground">Start growing your WhatsApp audience today</p>
       </div>
       
-      <div className="flex-1 overflow-hidden flex flex-col">
+      <div className="flex-1 overflow-hidden flex flex-col noScrollbar">
         <form 
           id="contact-form"
           onSubmit={handleSubmit} 
-          className="flex-1 overflow-y-auto px-6 py-4 space-y-4"
-          style={{ scrollbarWidth: 'thin' }}
+          className="flex-1 overflow-y-auto px-6 py-4 space-y-4 noScrollbar"
         >
         <div className="space-y-3">
           <Label className="text-base font-semibold">Package Type</Label>
@@ -341,7 +340,7 @@ const Hero = () => {
                 <AnimateOnScroll yOffset={20} delay={0.2}>
                   <div className="inline-flex items-center justify-center space-x-2 bg-primary/10 backdrop-blur-sm border border-primary/20 rounded-full px-6 py-2 mb-8">
                     <Zap className="w-5 h-5 text-primary" />
-                    <span className="text-sm font-medium text-primary">TRENDING NOW</span>
+                    <span className="text-sm font-medium text-primary">WHATSAPP GROWTH STRATEGY</span>
                   </div>
                 </AnimateOnScroll>
                 
@@ -400,7 +399,7 @@ const Hero = () => {
                       className="group font-bold text-lg px-8 py-7 rounded-full border-2 border-primary/20 hover:border-primary/40 hover:bg-primary/5 transition-all duration-300"
                     >
                       <Play className="mr-2 w-5 h-5 text-primary group-hover:scale-125 transition-transform" />
-                      Watch Demo
+                      How it works
                     </Button>
                   </div>
                 </AnimateOnScroll>
