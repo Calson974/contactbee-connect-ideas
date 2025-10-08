@@ -1,16 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronRight, Zap, Sparkles, ArrowRight, MessageSquare, BarChart2, Users, CreditCard } from "lucide-react";
+import { Menu, X, ChevronRight, Zap, Sparkles, ArrowRight, MessageSquare, BarChart2, Users, CreditCard, Archive, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
 import logoFull from "@/assets/logo-full.png";
+import { Link } from "react-router-dom";
 
 const menuItems = [
-  { name: 'Features', href: '#features', icon: <BarChart2 className="w-4 h-4 mr-2" /> },
-  { name: 'Pricing', href: '#pricing', icon: <CreditCard className="w-4 h-4 mr-2" /> },
-  { name: 'About', href: '#about', icon: <Users className="w-4 h-4 mr-2" /> },
-  { name: 'Contact', href: '#contact', icon: <MessageSquare className="w-4 h-4 mr-2" /> },
+  { name: 'Features', href: '#features', icon: <BarChart2 className="w-4 h-4 mr-2" />, isHash: true },
+  { name: 'Pricing', href: '#pricing', icon: <CreditCard className="w-4 h-4 mr-2" />, isHash: true },
+  { name: 'Archive', href: '/archive', icon: <Archive className="w-4 h-4 mr-2" />, isHash: false },
+  { name: 'Admin', href: '/admin', icon: <Shield className="w-4 h-4 mr-2" />, isHash: false },
 ];
 
 const socialLinks = [
@@ -93,19 +94,29 @@ const NewNavbar = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <a
-                  href={item.href}
-                  onClick={(e) => handleNavClick(e, item.href)}
-                  className={cn(
-                    "relative px-4 py-2 text-sm font-medium flex items-center rounded-full transition-all",
-                    activeItem === item.href 
-                      ? "text-primary bg-primary/5" 
-                      : "text-foreground/80 hover:text-foreground hover:bg-accent/5"
-                  )}
-                >
-                  {item.icon}
-                  {item.name}
-                </a>
+                {item.isHash ? (
+                  <a
+                    href={item.href}
+                    onClick={(e) => handleNavClick(e, item.href)}
+                    className={cn(
+                      "relative px-4 py-2 text-sm font-medium flex items-center rounded-full transition-all",
+                      activeItem === item.href 
+                        ? "text-primary bg-primary/5" 
+                        : "text-foreground/80 hover:text-foreground hover:bg-accent/5"
+                    )}
+                  >
+                    {item.icon}
+                    {item.name}
+                  </a>
+                ) : (
+                  <Link
+                    to={item.href}
+                    className="relative px-4 py-2 text-sm font-medium flex items-center rounded-full transition-all text-foreground/80 hover:text-foreground hover:bg-accent/5"
+                  >
+                    {item.icon}
+                    {item.name}
+                  </Link>
+                )}
               </motion.div>
             ))}
           </div>
@@ -187,33 +198,61 @@ const NewNavbar = () => {
           >
             <div className="px-4 py-3 space-y-2">
               {menuItems.map((item, index) => (
-                <motion.a
-                  key={item.name}
-                  href={item.href}
-                  onClick={(e) => handleNavClick(e, item.href)}
-                  className={cn(
-                    "flex items-center px-4 py-3 rounded-xl transition-colors",
-                    activeItem === item.href
-                      ? "bg-accent/10 text-primary"
-                      : "text-foreground/90 hover:bg-accent/5"
-                  )}
-                  initial={{ x: -20, opacity: 0 }}
-                  animate={{ 
-                    x: 0, 
-                    opacity: 1,
-                    transition: { 
-                      duration: 0.3,
-                      delay: 0.05 * index,
-                      ease: [0.4, 0, 0.2, 1]
-                    }
-                  }}
-                >
-                  <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center mr-3">
-                    {item.icon}
-                  </div>
-                  <span className="font-medium">{item.name}</span>
-                  <ChevronRight className="w-4 h-4 ml-auto text-foreground/40" />
-                </motion.a>
+                item.isHash ? (
+                  <motion.a
+                    key={item.name}
+                    href={item.href}
+                    onClick={(e) => handleNavClick(e, item.href)}
+                    className={cn(
+                      "flex items-center px-4 py-3 rounded-xl transition-colors",
+                      activeItem === item.href
+                        ? "bg-accent/10 text-primary"
+                        : "text-foreground/90 hover:bg-accent/5"
+                    )}
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ 
+                      x: 0, 
+                      opacity: 1,
+                      transition: { 
+                        duration: 0.3,
+                        delay: 0.05 * index,
+                        ease: [0.4, 0, 0.2, 1]
+                      }
+                    }}
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center mr-3">
+                      {item.icon}
+                    </div>
+                    <span className="font-medium">{item.name}</span>
+                    <ChevronRight className="w-4 h-4 ml-auto text-foreground/40" />
+                  </motion.a>
+                ) : (
+                  <motion.div
+                    key={item.name}
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ 
+                      x: 0, 
+                      opacity: 1,
+                      transition: { 
+                        duration: 0.3,
+                        delay: 0.05 * index,
+                        ease: [0.4, 0, 0.2, 1]
+                      }
+                    }}
+                  >
+                    <Link
+                      to={item.href}
+                      className="flex items-center px-4 py-3 rounded-xl transition-colors text-foreground/90 hover:bg-accent/5"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center mr-3">
+                        {item.icon}
+                      </div>
+                      <span className="font-medium">{item.name}</span>
+                      <ChevronRight className="w-4 h-4 ml-auto text-foreground/40" />
+                    </Link>
+                  </motion.div>
+                )
               ))}
               
               <div className="pt-2 px-4">
