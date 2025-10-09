@@ -25,7 +25,8 @@ const SubmissionForm = () => {
   const [email, setEmail] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [website, setWebsite] = useState("");
-  const [customField, setCustomField] = useState("");
+  const [customFieldLabel, setCustomFieldLabel] = useState("");
+  const [customFieldValue, setCustomFieldValue] = useState("");
   const [address, setAddress] = useState("");
   const [notes, setNotes] = useState("");
 
@@ -43,7 +44,8 @@ const SubmissionForm = () => {
         email: email || null,
         job_title: jobTitle || null,
         website: website || null,
-        custom_field: customField || null,
+        custom_field_label: customFieldLabel || null,
+        custom_field: customFieldValue || null,
         address: address || null,
         notes: notes || null,
       });
@@ -60,7 +62,8 @@ const SubmissionForm = () => {
       setEmail("");
       setJobTitle("");
       setWebsite("");
-      setCustomField("");
+      setCustomFieldLabel("");
+      setCustomFieldValue("");
       setAddress("");
       setNotes("");
       setShowOptional(false);
@@ -221,16 +224,23 @@ const SubmissionForm = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="customField" className="text-base">
-                    Custom Field
-                  </Label>
-                  <Input
-                    id="customField"
-                    placeholder="Any custom information"
-                    value={customField}
-                    onChange={(e) => setCustomField(e.target.value)}
-                    className="text-base"
-                  />
+                  <Label className="text-base">Custom Field</Label>
+                  <div className="space-y-2">
+                    <Input
+                      id="customFieldLabel"
+                      placeholder="Field name (e.g., Birthday, Favorite Color)"
+                      value={customFieldLabel}
+                      onChange={(e) => setCustomFieldLabel(e.target.value)}
+                      className="text-base"
+                    />
+                    <Input
+                      id="customFieldValue"
+                      placeholder="Field value"
+                      value={customFieldValue}
+                      onChange={(e) => setCustomFieldValue(e.target.value)}
+                      className="text-base"
+                    />
+                  </div>
                 </div>
 
                 <div className="space-y-2">

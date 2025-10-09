@@ -45,6 +45,7 @@ export type Database = {
           country: string
           created_at: string
           custom_field: string | null
+          custom_field_label: string | null
           email: string | null
           id: string
           job_title: string | null
@@ -61,6 +62,7 @@ export type Database = {
           country: string
           created_at?: string
           custom_field?: string | null
+          custom_field_label?: string | null
           email?: string | null
           id?: string
           job_title?: string | null
@@ -77,6 +79,7 @@ export type Database = {
           country?: string
           created_at?: string
           custom_field?: string | null
+          custom_field_label?: string | null
           email?: string | null
           id?: string
           job_title?: string | null

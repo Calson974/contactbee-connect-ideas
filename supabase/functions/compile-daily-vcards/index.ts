@@ -16,6 +16,7 @@ interface Submission {
   job_title?: string;
   website?: string;
   custom_field?: string;
+  custom_field_label?: string;
   address?: string;
   notes?: string;
   created_at: string;
@@ -38,7 +39,12 @@ function generateVCard(submission: Submission): string {
   if (submission.website) lines.push(`URL:${submission.website}`);
   if (submission.address) lines.push(`ADR:;;${submission.address.replace(/\n/g, ' ')};;;;`);
   if (submission.notes) lines.push(`NOTE:${submission.notes.replace(/\n/g, ' ')}`);
-  if (submission.custom_field) lines.push(`X-CUSTOM:${submission.custom_field}`);
+  
+  // Add custom field with label if both are provided
+  if (submission.custom_field_label && submission.custom_field) {
+    const fieldName = submission.custom_field_label.toUpperCase().replace(/\s+/g, '-');
+    lines.push(`X-${fieldName}:${submission.custom_field}`);
+  }
   
   lines.push('END:VCARD');
   return lines.join('\r\n');
