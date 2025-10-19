@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Play, Zap, Check, Rocket, ArrowLeft, ChevronDown } from "lucide-react";
 import { AnimateOnScroll } from "@/components/ui/AnimateOnScroll";
@@ -80,7 +80,7 @@ const ContactForm = ({ onBack }: ContactFormProps) => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto bg-card rounded-2xl border border-border/50 shadow-xl flex flex-col" style={{ maxHeight: '85vh' }}>
+    <div className="w-full max-w-md mx-auto bg-card rounded-2xl border border-border/50 shadow-xl flex flex-col relative z-30 max-h-[80vh] sm:max-h-[70vh] md:max-h-[65vh]">
       <div className="p-6 pb-4 border-b border-border/50">
         <div className="flex items-center mb-2">
           <button 
@@ -101,7 +101,7 @@ const ContactForm = ({ onBack }: ContactFormProps) => {
           onSubmit={handleSubmit} 
           className="flex-1 overflow-y-auto px-6 py-4 space-y-4 noScrollbar"
         >
-        <div className="space-y-3">
+        <div className="space-y-3"> 
           <Label className="text-base font-semibold">Package Type</Label>
           <RadioGroup value={planType} onValueChange={setPlanType}>
             <div className="flex items-center space-x-3 p-4 border-2 border-border rounded-lg hover:border-primary transition-colors cursor-pointer">
@@ -316,127 +316,169 @@ const Hero = () => {
     setIsFlipped(!isFlipped);
   };
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-background to-primary/5">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-20 -right-20 w-96 h-96 bg-primary/5 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000" />
-        <div className="absolute -bottom-20 left-20 w-96 h-96 bg-secondary/5 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000" />
-        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-accent/5 rounded-full mix-blend-multiply filter blur-3xl animate-blob" />
-      </div>
-      
-      <div className="container mx-auto px-4 py-20 relative z-10">
-        <div className="max-w-4xl mx-auto">
-          <div 
-            className={`${styles.flipContainer} ${isFlipped ? styles.flipped : ''}`}
-            style={{
-              minHeight: isFlipped ? '80vh' : 'auto',
-              touchAction: 'manipulation',
-            }}
-          >
-            {/* Front side - Hero Content */}
-            <div className={styles.flipFront}>
-              <div className="text-center">
-                {/* Animated badge */}
-                <AnimateOnScroll yOffset={20} delay={0.2}>
-                  <div className="inline-flex items-center justify-center space-x-2 bg-primary/10 backdrop-blur-sm border border-primary/20 rounded-full px-6 py-2 mb-8">
-                    <Zap className="w-5 h-5 text-primary" />
-                    <span className="text-sm font-medium text-primary">WHATSAPP GROWTH STRATEGY</span>
+    <React.Fragment>
+      <section id="home" className="relative h-[calc(100vh-120px)] sm:h-[calc(100vh-160px)] lg:h-[calc(100vh-200px)] w-full flex items-center justify-center overflow-hidden bg-[#06e777]">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-20 -right-20 w-96 h-96 bg-white/5 rounded-full mix-blend-overlay filter blur-3xl animate-pulse" />
+          <div className="absolute -bottom-20 left-20 w-96 h-96 bg-white/5 rounded-full mix-blend-overlay filter blur-3xl animate-pulse animation-delay-2000" />
+          <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-white/5 rounded-full mix-blend-overlay filter blur-3xl animate-pulse animation-delay-4000" />
+        </div>
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 lg:pt-24 pb-8 sm:pb-12 lg:pb-16 relative z-10 h-full flex items-center">
+          <div className="max-w-7xl mx-auto w-full">
+            <div
+              className={`${styles.flipContainer} ${isFlipped ? styles.flipped : ''}`}
+              style={{
+                minHeight: isFlipped ? '100vh' : 'auto',
+                touchAction: 'manipulation',
+                position: 'relative',
+                zIndex: isFlipped ? 40 : 'auto',
+              }}
+            >
+              {/* Front side - Hero Content */}
+              <div className={styles.flipFront}>
+                {/* Main content area with sophisticated layout */}
+                <div className="relative">
+                  {/* Background decorative elements */}
+                  <div className="absolute inset-0 -z-10">
+                    <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-white/5 rounded-full mix-blend-overlay filter blur-3xl animate-pulse" />
+                    <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-white/5 rounded-full mix-blend-overlay filter blur-3xl animate-pulse animation-delay-2000" />
                   </div>
-                </AnimateOnScroll>
-                
-                {/* Main heading with gradient text */}
-                <AnimateOnScroll yOffset={30} delay={0.3}>
-                  <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-tight mb-6">
-                    <span className="block bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent">
-                      Explode Your
-                    </span>
-                    <span className="relative inline-block group">
-                      <span className="relative z-10 bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
-                        Status Views
-                        <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-gradient-to-r from-primary to-accent transition-all duration-500 group-hover:w-full"></span>
-                      </span>
-                    </span>
-                  </h1>
-                </AnimateOnScroll>
-                
-                {/* Subheading */}
-                <AnimateOnScroll yOffset={20} delay={0.4}>
-                  <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-12 leading-relaxed">
-                    The community-powered platform where contacts multiply and status views go exponential.
-                    <span className="block text-primary font-medium mt-2">Join thousands of satisfied users today.</span>
-                  </p>
-                </AnimateOnScroll>
-                
-                {/* CTAs with icons */}
-                <AnimateOnScroll yOffset={20} delay={0.5}>
-                  <div className="flex flex-col sm:flex-row gap-6 items-center justify-center mt-8">
-                    <Button 
-                      size="lg"
-                      onClick={handleFlip}
-                      onTouchStart={(e) => e.currentTarget.classList.add('active:scale-95')}
-                      onTouchEnd={(e) => e.currentTarget.classList.remove('active:scale-95')}
-                      className="relative overflow-hidden group bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 active:from-primary/80 active:to-accent/80 text-primary-foreground font-bold text-lg md:text-xl px-8 py-7 rounded-full shadow-2xl hover:shadow-primary/30 hover:scale-105 active:scale-95 transition-all duration-300 touch-manipulation"
-                      style={{
-                        WebkitTapHighlightColor: 'transparent',
-                        WebkitTouchCallout: 'none',
-                        WebkitUserSelect: 'none',
-                        KhtmlUserSelect: 'none',
-                        MozUserSelect: 'none',
-                        msUserSelect: 'none',
-                        userSelect: 'none',
-                      }}
-                    >
-                      <span className="relative z-10 flex items-center">
-                        Boost My Status Now
-                        <Rocket className="ml-3 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                      </span>
-                      <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                    </Button>
-                    
-                    <Button 
-                      variant="outline"
-                      size="lg"
-                      className="group font-bold text-lg px-8 py-7 rounded-full border-2 border-primary/20 hover:border-primary/40 hover:bg-primary/5 transition-all duration-300"
-                    >
-                      <Play className="mr-2 w-5 h-5 text-primary group-hover:scale-125 transition-transform" />
-                      How it works
-                    </Button>
+
+                  {/* Hero Content Grid */}
+                  <div className="grid lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 xl:gap-20 items-center h-full min-h-[60vh]">
+                    {/* Content Section - Left Side */}
+                    <div className="lg:col-span-6 xl:col-span-5 text-center lg:text-left order-1 text-white space-y-6 sm:space-y-8">
+                      {/* Animated badge */}
+                      <AnimateOnScroll yOffset={20} delay={0.1}>
+                        <div className="inline-flex items-center justify-center lg:justify-start space-x-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 sm:px-6 py-2 sm:py-3 mb-6 sm:mb-8 lg:mb-10 shadow-lg hover:bg-white/15 transition-all duration-300">
+                          <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-white animate-pulse" />
+                          <span className="text-xs sm:text-sm font-semibold text-white tracking-wide uppercase">WHATSAPP GROWTH STRATEGY</span>
+                        </div>
+                      </AnimateOnScroll>
+
+                      {/* Main heading with enhanced typography */}
+                      <AnimateOnScroll yOffset={30} delay={0.2}>
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-black leading-tight mb-6 sm:mb-8 text-white">
+                          <span className="block text-white mb-2 drop-shadow-lg">
+                            Explode Your
+                          </span>
+                          <span className="relative inline-block group">
+                            <span className="relative z-10 text-white drop-shadow-lg">
+                              Status Views
+                            </span>
+                            <span className="absolute left-0 -bottom-2 w-0 h-1 bg-gradient-to-r from-white to-white/60 transition-all duration-700 group-hover:w-full rounded-full shadow-lg"></span>
+                          </span>
+                        </h1>
+                      </AnimateOnScroll>
+
+                      {/* Enhanced subheading */}
+                      <AnimateOnScroll yOffset={20} delay={0.3}>
+                        <p className="text-lg sm:text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto lg:mx-0 mb-8 sm:mb-10 lg:mb-12 leading-relaxed font-light">
+                          The <span className="text-white font-semibold">community-powered platform</span> where contacts multiply and status views go exponential.
+                          <span className="block text-white font-medium mt-4 text-base sm:text-lg">Join thousands of satisfied users today.</span>
+                        </p>
+                      </AnimateOnScroll>
+
+                      {/* Enhanced CTA section */}
+                      <AnimateOnScroll yOffset={20} delay={0.4}>
+                        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center justify-center lg:justify-start mb-8 sm:mb-10 lg:mb-12">
+                          <Button
+                            size="lg"
+                            onClick={handleFlip}
+                            onTouchStart={(e) => e.currentTarget.classList.add('active:scale-95')}
+                            onTouchEnd={(e) => e.currentTarget.classList.remove('active:scale-95')}
+                            className="relative overflow-hidden group bg-gradient-to-r from-white to-gray-100 hover:from-gray-100 hover:to-white text-[#1a5632] font-bold text-base sm:text-lg md:text-xl px-8 sm:px-12 py-6 sm:py-8 rounded-full shadow-2xl hover:shadow-white/30 hover:scale-105 active:scale-95 transition-all duration-300 touch-manipulation w-full sm:w-auto sm:min-w-[280px]"
+                            style={{
+                              WebkitTapHighlightColor: 'transparent',
+                              WebkitTouchCallout: 'none',
+                              WebkitUserSelect: 'none',
+                              KhtmlUserSelect: 'none',
+                              MozUserSelect: 'none',
+                              msUserSelect: 'none',
+                              userSelect: 'none',
+                            }}
+                          >
+                            <span className="relative z-10 flex items-center justify-center">
+                              Boost My Status Now
+                              <Rocket className="ml-2 sm:ml-3 w-5 h-5 sm:w-6 sm:h-6 group-hover:translate-x-1 transition-transform" />
+                            </span>
+                            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                          </Button>
+
+                          <Button
+                            variant="outline"
+                            size="lg"
+                            className="group font-bold text-base sm:text-lg px-8 sm:px-12 py-6 sm:py-8 rounded-full border-2 border-white/30 hover:border-white/50 hover:bg-white/10 text-white hover:text-white transition-all duration-300 w-full sm:w-auto backdrop-blur-sm"
+                          >
+                            <Play className="mr-2 sm:mr-3 w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:scale-125 transition-transform" />
+                            How it works
+                          </Button>
+                        </div>
+                      </AnimateOnScroll>
+
+                      {/* Trust indicators with enhanced styling */}
+                      <AnimateOnScroll yOffset={20} delay={0.5}>
+                        <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 sm:gap-x-8 gap-y-3 sm:gap-y-4 text-sm text-gray-300">
+                          <div className="flex items-center space-x-2">
+                            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                            <span className="font-medium">No credit card required</span>
+                          </div>
+                          <div className="hidden sm:block w-px h-6 bg-white/20" />
+                          <div className="flex items-center space-x-2">
+                            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse animation-delay-500"></div>
+                            <span className="font-medium">7-day free trial</span>
+                          </div>
+                          <div className="hidden sm:block w-px h-6 bg-white/20" />
+                          <div className="flex items-center space-x-2">
+                            <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse animation-delay-1000"></div>
+                            <span className="font-medium">Cancel anytime</span>
+                          </div>
+                        </div>
+                      </AnimateOnScroll>
+                    </div>
+
+                    {/* Image Section - Right Side */}
+                    <div className="lg:col-span-6 xl:col-span-7 relative order-2 h-full min-h-[400px] sm:min-h-[500px] flex items-center justify-center">
+                      <AnimateOnScroll yOffset={40} delay={0.2}>
+                        <div className="relative group w-full h-full flex items-center justify-center">
+                          {/* Image that scales with viewport */}
+                          <div className="relative w-full h-full flex items-center justify-center max-w-lg mx-auto">
+                            <img
+                              src="/img/1760164223448 (1).png"
+                              alt="WhatsApp Growth Strategy Platform"
+                              className="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-500 max-h-[400px] sm:max-h-[500px]"
+                            />
+
+                            {/* Subtle overlay for better text readability */}
+                            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-background/5 to-background/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                            {/* Floating accent elements */}
+                            <div className="absolute -top-4 -right-4 w-6 h-6 sm:w-8 sm:h-8 bg-primary/20 rounded-full animate-pulse shadow-2xl" />
+                            <div className="absolute -bottom-4 -left-4 w-5 h-5 sm:w-6 sm:h-6 bg-accent/20 rounded-full animate-pulse animation-delay-1000 shadow-xl" />
+                          </div>
+                        </div>
+                      </AnimateOnScroll>
+                    </div>
                   </div>
-                </AnimateOnScroll>
-                
-                {/* Trust indicators */}
-                <AnimateOnScroll yOffset={20} delay={0.6}>
-                  <div className="mt-8 text-sm text-muted-foreground flex flex-wrap items-center justify-center gap-4">
-                    <div className="flex items-center">
-                      <Check className="w-4 h-4 text-green-500 mr-2" />
-                      No credit card required
-                    </div>
-                    <div className="hidden sm:block w-px h-4 bg-border" />
-                    <div className="flex items-center">
-                      <Check className="w-4 h-4 text-green-500 mr-2" />
-                      7-day free trial
-                    </div>
-                    <div className="hidden sm:block w-px h-4 bg-border" />
-                    <div className="flex items-center">
-                      <Check className="w-4 h-4 text-green-500 mr-2" />
-                      Cancel anytime
-                    </div>
-                  </div>
-                </AnimateOnScroll>
+                </div>
               </div>
-            </div>
-            
-            {/* Back side - Contact Form */}
-            <div className={styles.flipBack}>
-              <div className="w-full h-full">
-                <ContactForm onBack={handleFlip} />
+
+              {/* Back side - Contact Form */}
+              <div className={styles.flipBack}>
+                <div className="w-full h-full pt-24 sm:pt-32">
+                  <ContactForm onBack={handleFlip} />
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" />
-    </section>
+      </section>
+
+      {/* Curved bottom extension - separate from hero section */}
+      <div className="relative w-full h-[90px] bg-[#06e777] hero-curve-extension z-0"></div>
+    </React.Fragment>
   );
 };
 

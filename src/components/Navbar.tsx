@@ -102,6 +102,13 @@ const Navbar = () => {
                     theme === 'dark' ? "bg-accent/50 hover:bg-accent/40" : "bg-accent/20 hover:bg-accent/10"
                   )}
                   size="lg"
+                  onClick={() => {
+                    window.location.hash = 'submit-form';
+                    // Force a reflow to ensure the browser processes the hash change
+                    setTimeout(() => {
+                      window.scrollBy(0, -80); // Adjust offset if needed
+                    }, 0);
+                  }}
                 >
                   Get Started
                 </Button>
@@ -162,6 +169,16 @@ const Navbar = () => {
                         theme === 'dark' ? "bg-accent/50 hover:bg-accent/40" : "bg-accent/20 hover:bg-accent/10"
                       )}
                       size="lg"
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                        setTimeout(() => {
+                          window.location.hash = 'submit-form';
+                          // Force a reflow to ensure the browser processes the hash change
+                          setTimeout(() => {
+                            window.scrollBy(0, -80); // Adjust offset if needed
+                          }, 0);
+                        }, 100); // Small delay to allow menu to close
+                      }}
                     >
                       Get Started
                     </Button>

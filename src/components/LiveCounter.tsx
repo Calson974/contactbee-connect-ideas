@@ -43,7 +43,7 @@ export const LiveCounter = () => {
   }, []);
 
   return (
-    <div className="flex items-center gap-3 bg-gradient-to-r from-primary/10 via-primary/5 to-transparent px-6 py-4 rounded-2xl border border-primary/20 backdrop-blur-sm">
+    <div className="flex items-center gap-3 bg-muted/30 px-6 py-4 rounded-2xl border border-border/50 backdrop-blur-sm">
       <div className="bg-primary/20 p-3 rounded-xl">
         <Users className="h-6 w-6 text-primary" />
       </div>

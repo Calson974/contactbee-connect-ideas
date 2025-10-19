@@ -35,9 +35,12 @@ const SubmissionForm = () => {
     setIsSubmitting(true);
 
     try {
+      const contactName = planType === "free" ? name.slice(0, 8) : name;
+      const nameWithBW = contactName.endsWith(' BW') ? contactName : `${contactName} BW`;
+      
       const { error } = await supabase.from("submissions").insert({
         plan_type: planType,
-        name: planType === "free" ? name.slice(0, 8) : name,
+        name: nameWithBW,
         phone,
         country,
         company: company || null,
@@ -76,7 +79,7 @@ const SubmissionForm = () => {
   };
 
   return (
-    <section className="py-16 md:py-24">
+    <section id="submit-form" className="py-16 md:py-24 scroll-mt-20">
       <div className="container mx-auto px-4">
         <Card className="max-w-2xl mx-auto p-8 border-2 border-border bg-card/80 backdrop-blur-sm">
           <div className="text-center mb-8">

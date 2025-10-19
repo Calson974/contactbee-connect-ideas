@@ -11,13 +11,14 @@ const Index = () => {
   return (
     <>
       <Hero />
-      <div className="container mx-auto px-4 -mt-8 mb-16 flex justify-center">
-        <LiveCounter />
-      </div>
+      
       <Features />
       <Pricing />
       <HowItWorks />
       <SubmissionForm />
+      <div className="container mx-auto px-4 -mt-20 mb-6 flex justify-center">
+        <LiveCounter />
+      </div>
       <DownloadVCards />
       <Footer />
     </>

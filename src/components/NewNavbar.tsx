@@ -145,7 +145,8 @@ const NewNavbar = () => {
               className="hidden md:block"
             >
               <Button 
-                className="group relative overflow-hidden bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold rounded-full px-5 h-10 text-sm"
+                className="group relative overflow-hidden bg-gradient-to-r from-primary/90 to-accent/90 hover:from-primary/80 hover:to-accent/80 dark:from-primary dark:to-accent dark:hover:from-primary/90 dark:hover:to-accent/90 text-white font-semibold rounded-full px-5 h-10 text-sm transition-all duration-200"
+                onClick={(e) => handleNavClick(e, '#submit-form')}
               >
                 <span className="relative z-10 flex items-center">
                   Get Started
@@ -296,7 +297,18 @@ const NewNavbar = () => {
                   }}
                 >
                   <Button 
-                    className="group w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold rounded-xl h-12 text-base"
+                    className="group w-full bg-gradient-to-r from-primary/90 to-accent/90 hover:from-primary/80 hover:to-accent/80 dark:from-primary dark:to-accent dark:hover:from-primary/90 dark:hover:to-accent/90 text-white font-semibold rounded-xl h-12 text-base transition-all duration-200"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setIsMenuOpen(false);
+                      const formSection = document.getElementById('submit-form');
+                      if (formSection) {
+                        // Wait for the menu to close before scrolling
+                        setTimeout(() => {
+                          formSection.scrollIntoView({ behavior: 'smooth' });
+                        }, 100);
+                      }
+                    }}
                   >
                     <span className="flex items-center">
                       Get Started
