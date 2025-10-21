@@ -3,10 +3,38 @@
   display: none;
 }
 
-/* Hide scrollbar for IE, Edge and Firefox */
-.noScrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+/* Performance optimizations */
+.flipContainer,
+.flipFront,
+.flipBack {
+  will-change: transform;
+}
+
+.animate-pulse,
+.animate-blob {
+  will-change: transform, opacity;
+}
+
+/* Hardware acceleration for better performance */
+.flipContainer {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+}
+
+.flipFront,
+.flipBack {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+}
+
+/* Optimize animations for mobile */
+@media (max-width: 768px) {
+  .flipContainer {
+    /* Reduce animation complexity on mobile */
+    transform-style: preserve-3d;
+  }
 }
 
 .flipContainer {
@@ -53,8 +81,8 @@
   height: 100%;
   display: flex;
   justify-content: center;
-  -webkit-transform: rotateY(180deg) translateZ(1px);
-  transform: rotateY(180deg) translateZ(1px);
+  -webkit-transform: rotateY(180deg);
+  transform: rotateY(180deg);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }

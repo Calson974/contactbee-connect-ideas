@@ -24,15 +24,37 @@ const NewNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeItem, setActiveItem] = useState('');
   const [scrolled, setScrolled] = useState(false);
+  const [heroInView, setHeroInView] = useState(true);
   const navRef = useRef<HTMLElement>(null);
-  
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
 
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setHeroInView(entry.isIntersecting);
+      },
+      {
+        rootMargin: '-80px 0px 0px 0px', // Trigger when hero is 80px from top of viewport
+        threshold: 0.1
+      }
+    );
+
+    const heroElement = document.getElementById('home');
+    if (heroElement) {
+      observer.observe(heroElement);
+    }
+
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (heroElement) {
+        observer.unobserve(heroElement);
+      }
+    };
   }, []);
 
   const handleNavClick = (e: React.MouseEvent, href: string) => {
@@ -46,13 +68,15 @@ const NewNavbar = () => {
   };
 
   return (
-    <motion.nav 
+    <motion.nav
       ref={navRef}
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
-        scrolled 
-          ? "py-2 bg-background/95 backdrop-blur-md border-b border-border/10 shadow-xl" 
-          : "py-4 bg-gradient-to-b from-background/95 to-transparent"
+        heroInView
+          ? "bg-[#06e777]/95 backdrop-blur-md"
+          : scrolled
+            ? "py-2 bg-background/95 backdrop-blur-md border-b border-border/10 shadow-xl"
+            : "py-4 bg-gradient-to-b from-background/95 to-transparent"
       )}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
@@ -61,35 +85,50 @@ const NewNavbar = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <motion.div 
+          <motion.div
             className="flex items-center group"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            <a 
-              href="#home" 
+            <a
+              href="#home"
               className="flex items-center space-x-3"
               onClick={(e) => handleNavClick(e, '#home')}
             >
-              <motion.div 
-                className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent p-1"
+              <motion.div
+                className={cn(
+                  "w-10 h-10 rounded-xl p-1",
+                  heroInView ? "bg-white/20" : "bg-gradient-to-br from-primary to-accent"
+                )}
                 whileHover={{ rotate: 10 }}
               >
-                <div className="w-full h-full bg-background rounded-lg flex items-center justify-center">
-                  <Zap className="w-5 h-5 text-primary" />
+                <div className={cn(
+                  "w-full h-full rounded-lg flex items-center justify-center",
+                  heroInView ? "bg-white" : "bg-background"
+                )}>
+                  <Zap className={cn(
+                    "w-5 h-5",
+                    heroInView ? "text-[#06e777]" : "text-primary"
+                  )} />
                 </div>
               </motion.div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              <span className={cn(
+                "text-2xl font-bold",
+                heroInView ? "text-white" : "bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+              )}>
                 ContactBee
               </span>
             </a>
           </motion.div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-1 bg-background/80 backdrop-blur-sm rounded-full px-2 py-1 border border-border/10 shadow-sm">
+          <div className={cn(
+            "hidden lg:flex items-center space-x-1 rounded-full px-2 py-1 shadow-sm",
+            heroInView ? "bg-white/20 backdrop-blur-sm border border-white/20" : "bg-background/80 backdrop-blur-sm border border-border/10"
+          )}>
             {menuItems.map((item) => (
-              <motion.div 
-                key={item.name} 
+              <motion.div
+                key={item.name}
                 className="relative"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -100,21 +139,36 @@ const NewNavbar = () => {
                     onClick={(e) => handleNavClick(e, item.href)}
                     className={cn(
                       "relative px-4 py-2 text-sm font-medium flex items-center rounded-full transition-all",
-                      activeItem === item.href 
-                        ? "text-primary bg-primary/5" 
-                        : "text-foreground/80 hover:text-foreground hover:bg-accent/5"
+                      activeItem === item.href
+                        ? heroInView ? "text-white bg-white/20" : "text-primary bg-primary/5"
+                        : heroInView
+                          ? "text-white/80 hover:text-white hover:bg-white/10"
+                          : "text-foreground/80 hover:text-foreground hover:bg-accent/5"
                     )}
                   >
-                    {item.icon}
-                    {item.name}
+                    <span className={cn(
+                      heroInView ? "text-white/80" : "text-foreground/60"
+                    )}>{item.icon}</span>
+                    <span className={cn(
+                      heroInView ? "text-white" : "text-foreground"
+                    )}>{item.name}</span>
                   </a>
                 ) : (
                   <Link
                     to={item.href}
-                    className="relative px-4 py-2 text-sm font-medium flex items-center rounded-full transition-all text-foreground/80 hover:text-foreground hover:bg-accent/5"
+                    className={cn(
+                      "relative px-4 py-2 text-sm font-medium flex items-center rounded-full transition-all",
+                      heroInView
+                        ? "text-white/80 hover:text-white hover:bg-white/10"
+                        : "text-foreground/80 hover:text-foreground hover:bg-accent/5"
+                    )}
                   >
-                    {item.icon}
-                    {item.name}
+                    <span className={cn(
+                      heroInView ? "text-white/80" : "text-foreground/60"
+                    )}>{item.icon}</span>
+                    <span className={cn(
+                      heroInView ? "text-white" : "text-foreground"
+                    )}>{item.name}</span>
                   </Link>
                 )}
               </motion.div>
@@ -130,30 +184,43 @@ const NewNavbar = () => {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-8 h-8 flex items-center justify-center rounded-full bg-accent/10 hover:bg-accent/20 transition-colors"
+                  className={cn(
+                    "w-8 h-8 flex items-center justify-center rounded-full transition-colors",
+                    heroInView ? "bg-white/20 hover:bg-white/30" : "bg-accent/10 hover:bg-accent/20"
+                  )}
                   whileHover={{ y: -2, scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <span className="text-foreground/80">{social.icon}</span>
+                  <span className={cn(
+                    heroInView ? "text-white/80" : "text-foreground/80"
+                  )}>{social.icon}</span>
                 </motion.a>
               ))}
             </div>
-            
-            <motion.div 
+
+            <motion.div
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               className="hidden md:block"
             >
-              <Button 
-                className="group relative overflow-hidden bg-gradient-to-r from-primary/90 to-accent/90 hover:from-primary/80 hover:to-accent/80 dark:from-primary dark:to-accent dark:hover:from-primary/90 dark:hover:to-accent/90 text-white font-semibold rounded-full px-5 h-10 text-sm transition-all duration-200"
+              <Button
+                className={cn(
+                  "group relative overflow-hidden font-semibold rounded-full px-5 h-10 text-sm transition-all duration-200",
+                  heroInView
+                    ? "bg-white/90 hover:bg-white text-[#06e777] border border-white/20"
+                    : "bg-gradient-to-r from-primary/90 to-accent/90 hover:from-primary/80 hover:to-accent/80 dark:from-primary dark:to-accent dark:hover:from-primary/90 dark:hover:to-accent/90 text-white"
+                )}
                 onClick={(e) => handleNavClick(e, '#submit-form')}
               >
                 <span className="relative z-10 flex items-center">
                   Get Started
                   <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </span>
-                <motion.span 
-                  className="absolute inset-0 bg-white/10"
+                <motion.span
+                  className={cn(
+                    "absolute inset-0",
+                    heroInView ? "bg-[#06e777]/10" : "bg-white/10"
+                  )}
                   initial={{ opacity: 0 }}
                   whileHover={{ opacity: 1 }}
                   transition={{ duration: 0.3 }}
@@ -161,19 +228,32 @@ const NewNavbar = () => {
               </Button>
             </motion.div>
 
-            <ThemeToggle />
+            <div className={cn(
+              heroInView ? "bg-white/20 border-white/20" : ""
+            )}>
+              <ThemeToggle />
+            </div>
 
             {/* Mobile menu button */}
             <motion.button
-              className="lg:hidden p-2 -mr-2 rounded-lg hover:bg-accent/10 transition-colors"
+              className={cn(
+                "lg:hidden p-2 -mr-2 rounded-lg hover:bg-accent/10 transition-colors",
+                heroInView ? "hover:bg-white/10" : ""
+              )}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               whileTap={{ scale: 0.9 }}
               aria-label="Toggle menu"
             >
               {isMenuOpen ? (
-                <X className="w-6 h-6 text-foreground" />
+                <X className={cn(
+                  "w-6 h-6",
+                  heroInView ? "text-white" : "text-foreground"
+                )} />
               ) : (
-                <Menu className="w-6 h-6 text-foreground" />
+                <Menu className={cn(
+                  "w-6 h-6",
+                  heroInView ? "text-white" : "text-foreground"
+                )} />
               )}
             </motion.button>
           </div>
@@ -183,89 +263,117 @@ const NewNavbar = () => {
       {/* Mobile menu */}
       <AnimatePresence>
         {isMenuOpen && (
-          <motion.div 
-            className="lg:hidden bg-background/95 backdrop-blur-lg border-t border-border/10"
+          <motion.div
+            className={cn(
+              "lg:hidden border-t",
+              heroInView ? "bg-[#06e777]/95 backdrop-blur-lg border-white/20" : "bg-background/95 backdrop-blur-lg border-border/10"
+            )}
             initial={{ opacity: 0, height: 0 }}
-            animate={{ 
-              opacity: 1, 
+            animate={{
+              opacity: 1,
               height: 'auto',
               transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] }
             }}
-            exit={{ 
-              opacity: 0, 
+            exit={{
+              opacity: 0,
               height: 0,
               transition: { duration: 0.2, ease: [0.4, 0, 0.2, 1] }
             }}
           >
             <div className="px-4 py-3 space-y-2">
-              {menuItems.map((item, index) => (
-                item.isHash ? (
-                  <motion.a
-                    key={item.name}
-                    href={item.href}
-                    onClick={(e) => handleNavClick(e, item.href)}
-                    className={cn(
-                      "flex items-center px-4 py-3 rounded-xl transition-colors",
-                      activeItem === item.href
-                        ? "bg-accent/10 text-primary"
-                        : "text-foreground/90 hover:bg-accent/5"
-                    )}
-                    initial={{ x: -20, opacity: 0 }}
-                    animate={{ 
-                      x: 0, 
-                      opacity: 1,
-                      transition: { 
-                        duration: 0.3,
-                        delay: 0.05 * index,
-                        ease: [0.4, 0, 0.2, 1]
-                      }
-                    }}
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center mr-3">
-                      {item.icon}
-                    </div>
-                    <span className="font-medium">{item.name}</span>
-                    <ChevronRight className="w-4 h-4 ml-auto text-foreground/40" />
-                  </motion.a>
-                ) : (
-                  <motion.div
-                    key={item.name}
-                    initial={{ x: -20, opacity: 0 }}
-                    animate={{ 
-                      x: 0, 
-                      opacity: 1,
-                      transition: { 
-                        duration: 0.3,
-                        delay: 0.05 * index,
-                        ease: [0.4, 0, 0.2, 1]
-                      }
-                    }}
-                  >
-                    <Link
-                      to={item.href}
-                      className="flex items-center px-4 py-3 rounded-xl transition-colors text-foreground/90 hover:bg-accent/5"
-                      onClick={() => setIsMenuOpen(false)}
+              <>
+                {menuItems.map((item, index) => (
+                  item.isHash ? (
+                    <motion.a
+                      key={item.name}
+                      href={item.href}
+                      onClick={(e) => handleNavClick(e, item.href)}
+                      className={cn(
+                        "flex items-center px-4 py-3 rounded-xl transition-colors",
+                        activeItem === item.href
+                          ? heroInView ? "bg-white/20 text-white" : "bg-accent/10 text-primary"
+                          : heroInView
+                            ? "text-white/90 hover:bg-white/10"
+                            : "text-foreground/90 hover:bg-accent/5"
+                      )}
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{
+                        x: 0,
+                        opacity: 1,
+                        transition: {
+                          duration: 0.3,
+                          delay: 0.05 * index,
+                          ease: [0.4, 0, 0.2, 1]
+                        }
+                      }}
                     >
-                      <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center mr-3">
-                        {item.icon}
+                      <div className={cn(
+                        "w-8 h-8 rounded-lg flex items-center justify-center mr-3",
+                        heroInView ? "bg-white/20" : "bg-accent/10"
+                      )}>
+                        <span className={cn(
+                          heroInView ? "text-white/80" : "text-foreground/60"
+                        )}>{item.icon}</span>
                       </div>
                       <span className="font-medium">{item.name}</span>
-                      <ChevronRight className="w-4 h-4 ml-auto text-foreground/40" />
-                    </Link>
-                  </motion.div>
-                )
-              ))}
-              
+                      <ChevronRight className={cn(
+                        "w-4 h-4 ml-auto",
+                        heroInView ? "text-white/40" : "text-foreground/40"
+                      )} />
+                    </motion.a>
+                  ) : (
+                    <motion.div
+                      key={item.name}
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{
+                        x: 0,
+                        opacity: 1,
+                        transition: {
+                          duration: 0.3,
+                          delay: 0.05 * index,
+                          ease: [0.4, 0, 0.2, 1]
+                        }
+                      }}
+                    >
+                      <Link
+                        to={item.href}
+                        className={cn(
+                          "flex items-center px-4 py-3 rounded-xl transition-colors",
+                          heroInView
+                            ? "text-white/90 hover:bg-white/10"
+                            : "text-foreground/90 hover:bg-accent/5"
+                        )}
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <div className={cn(
+                          "w-8 h-8 rounded-lg flex items-center justify-center mr-3",
+                          heroInView ? "bg-white/20" : "bg-accent/10"
+                        )}>
+                          <span className={cn(
+                            heroInView ? "text-white/80" : "text-foreground/60"
+                          )}>{item.icon}</span>
+                        </div>
+                        <span className="font-medium">{item.name}</span>
+                        <ChevronRight className={cn(
+                          "w-4 h-4 ml-auto",
+                          heroInView ? "text-white/40" : "text-foreground/40"
+                        )} />
+                      </Link>
+                    </motion.div>
+                  )
+                ))}
+              </>
+
               <div className="pt-2 px-4">
-                <motion.div 
+                <motion.div
                   className="grid grid-cols-3 gap-2 mb-4"
                   initial={{ opacity: 0, y: 10 }}
-                  animate={{ 
-                    opacity: 1, 
+                  animate={{
+                    opacity: 1,
                     y: 0,
-                    transition: { 
+                    transition: {
                       delay: 0.1 + (menuItems.length * 0.05),
-                      duration: 0.3 
+                      duration: 0.3
                     }
                   }}
                 >
@@ -275,29 +383,40 @@ const NewNavbar = () => {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex flex-col items-center justify-center p-3 rounded-xl bg-accent/5 hover:bg-accent/10 transition-colors"
+                      className={cn(
+                        "flex flex-col items-center justify-center p-3 rounded-xl transition-colors",
+                        heroInView ? "bg-white/10 hover:bg-white/20" : "bg-accent/5 hover:bg-accent/10"
+                      )}
                       whileHover={{ y: -2 }}
                       whileTap={{ scale: 0.95 }}
                     >
                       <span className="text-xl mb-1">{social.icon}</span>
-                      <span className="text-xs text-foreground/60">{social.name}</span>
+                      <span className={cn(
+                        "text-xs",
+                        heroInView ? "text-white/60" : "text-foreground/60"
+                      )}>{social.name}</span>
                     </motion.a>
                   ))}
                 </motion.div>
-                
+
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
-                  animate={{ 
-                    opacity: 1, 
+                  animate={{
+                    opacity: 1,
                     y: 0,
-                    transition: { 
+                    transition: {
                       delay: 0.15 + (menuItems.length * 0.05),
-                      duration: 0.3 
+                      duration: 0.3
                     }
                   }}
                 >
-                  <Button 
-                    className="group w-full bg-gradient-to-r from-primary/90 to-accent/90 hover:from-primary/80 hover:to-accent/80 dark:from-primary dark:to-accent dark:hover:from-primary/90 dark:hover:to-accent/90 text-white font-semibold rounded-xl h-12 text-base transition-all duration-200"
+                  <Button
+                    className={cn(
+                      "group w-full font-semibold rounded-xl h-12 text-base transition-all duration-200",
+                      heroInView
+                        ? "bg-white/90 hover:bg-white text-[#06e777] border border-white/20"
+                        : "bg-gradient-to-r from-primary/90 to-accent/90 hover:from-primary/80 hover:to-accent/80 dark:from-primary dark:to-accent dark:hover:from-primary/90 dark:hover:to-accent/90 text-white"
+                    )}
                     onClick={(e) => {
                       e.preventDefault();
                       setIsMenuOpen(false);

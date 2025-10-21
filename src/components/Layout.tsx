@@ -73,7 +73,7 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <div className="min-h-screen bg-background flex flex-col overflow-x-hidden">
       <NewNavbar />
-      <main className="flex-1 pt-20 relative">
+      <main className="flex-1 relative">
         {children}
         
         {/* Large Text Overlay - Reveals on scroll up from footer */}
