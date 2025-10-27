@@ -1,24 +1,18 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronRight, Zap, Sparkles, ArrowRight, MessageSquare, BarChart2, Users, CreditCard, Archive, Shield } from "lucide-react";
+import { Menu, X, ChevronRight, Zap, Sparkles, ArrowRight, MessageSquare, BarChart2, Users, Archive, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
-import logoFull from "@/assets/logo-full.png";
+// Removed logoFull import as we're using favicon.png from public folder
 import { Link } from "react-router-dom";
 
 const menuItems = [
   { name: 'Features', href: '#features', icon: <BarChart2 className="w-4 h-4 mr-2" />, isHash: true },
-  { name: 'Pricing', href: '#pricing', icon: <CreditCard className="w-4 h-4 mr-2" />, isHash: true },
   { name: 'Archive', href: '/archive', icon: <Archive className="w-4 h-4 mr-2" />, isHash: false },
   { name: 'Admin', href: '/admin', icon: <Shield className="w-4 h-4 mr-2" />, isHash: false },
 ];
 
-const socialLinks = [
-  { name: 'Twitter', href: '#', icon: '🐦' },
-  { name: 'LinkedIn', href: '#', icon: '💼' },
-  { name: 'GitHub', href: '#', icon: '💻' },
-];
 
 const NewNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -95,28 +89,18 @@ const NewNavbar = () => {
               className="flex items-center space-x-3"
               onClick={(e) => handleNavClick(e, '#home')}
             >
-              <motion.div
+              <img 
+                src="/favicon.png" 
+                alt="BoostWhats" 
                 className={cn(
-                  "w-10 h-10 rounded-xl p-1",
-                  heroInView ? "bg-white/20" : "bg-gradient-to-br from-primary to-accent"
-                )}
-                whileHover={{ rotate: 10 }}
-              >
-                <div className={cn(
-                  "w-full h-full rounded-lg flex items-center justify-center",
-                  heroInView ? "bg-white" : "bg-background"
-                )}>
-                  <Zap className={cn(
-                    "w-5 h-5",
-                    heroInView ? "text-[#06e777]" : "text-primary"
-                  )} />
-                </div>
-              </motion.div>
+                  "h-8 w-8 mr-2",
+                  heroInView ? "opacity-90" : "opacity-100"
+                )} 
+              />
               <span className={cn(
-                "text-2xl font-bold",
-                heroInView ? "text-white" : "bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+                "text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-white"
               )}>
-                ContactBee
+                BoostWhats
               </span>
             </a>
           </motion.div>
@@ -177,26 +161,6 @@ const NewNavbar = () => {
 
           {/* Right side controls */}
           <div className="flex items-center space-x-3">
-            <div className="hidden md:flex items-center space-x-2 mr-2">
-              {socialLinks.map((social) => (
-                <motion.a
-                  key={social.name}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    "w-8 h-8 flex items-center justify-center rounded-full transition-colors",
-                    heroInView ? "bg-white/20 hover:bg-white/30" : "bg-accent/10 hover:bg-accent/20"
-                  )}
-                  whileHover={{ y: -2, scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <span className={cn(
-                    heroInView ? "text-white/80" : "text-foreground/80"
-                  )}>{social.icon}</span>
-                </motion.a>
-              ))}
-            </div>
 
             <motion.div
               whileHover={{ scale: 1.03 }}

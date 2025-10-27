@@ -1,112 +1,41 @@
-import { Facebook, Twitter, Instagram, Youtube, Mail } from "lucide-react";
-import logoFull from "@/assets/logo-full.png";
+import { Mail, Phone, MapPin } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-b from-background to-muted/20 border-t border-border py-16">
+    <footer className="bg-background border-t border-border/50 py-12">
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-4 gap-12 mb-12">
-          <div className="space-y-4">
-            <img src={logoFull} alt="BoostWhats" className="h-10 w-auto" />
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Build, save, and manage your WhatsApp contacts easily. Amplify your reach and grow your audience today.
-            </p>
+        <div className="flex flex-col items-center text-center space-y-8">
+          {/* Logo */}
+          <div className="text-2xl font-bold text-primary">
+            BoostWhats
           </div>
-
-          <div>
-            <h3 className="font-bold text-lg mb-4">Quick Links</h3>
-            <ul className="space-y-3 text-sm">
-              <li>
-                <a href="#home" className="text-muted-foreground hover:text-primary transition-colors">
-                  Home
-                </a>
-              </li>
-              <li>
-                <a href="#features" className="text-muted-foreground hover:text-primary transition-colors">
-                  Features
-                </a>
-              </li>
-              <li>
-                <a href="#pricing" className="text-muted-foreground hover:text-primary transition-colors">
-                  Pricing
-                </a>
-              </li>
-              <li>
-                <a href="#how-it-works" className="text-muted-foreground hover:text-primary transition-colors">
-                  How It Works
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-bold text-lg mb-4">Support</h3>
-            <ul className="space-y-3 text-sm">
-              <li>
-                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                  Help Center
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                  FAQs
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                  Terms of Service
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                  Privacy Policy
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-bold text-lg mb-4">Connect With Us</h3>
-            <div className="flex space-x-3 mb-6">
-              <a
-                href="#"
-                className="w-11 h-11 bg-primary/10 hover:bg-primary hover:text-primary-foreground rounded-xl flex items-center justify-center transition-all hover:scale-110"
-              >
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                className="w-11 h-11 bg-primary/10 hover:bg-primary hover:text-primary-foreground rounded-xl flex items-center justify-center transition-all hover:scale-110"
-              >
-                <Twitter className="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                className="w-11 h-11 bg-primary/10 hover:bg-primary hover:text-primary-foreground rounded-xl flex items-center justify-center transition-all hover:scale-110"
-              >
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                className="w-11 h-11 bg-primary/10 hover:bg-primary hover:text-primary-foreground rounded-xl flex items-center justify-center transition-all hover:scale-110"
-              >
-                <Youtube className="w-5 h-5" />
-              </a>
+          
+          {/* Contact Info */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-muted-foreground">
+            <div className="flex items-center justify-center space-x-2">
+              <MapPin className="w-4 h-4" />
+              <span>Cameroon</span>
             </div>
-            <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+            <div className="flex items-center justify-center space-x-2">
               <Mail className="w-4 h-4" />
-              <a href="mailto:contact@boostwhats.com" className="hover:text-primary transition-colors">
-                contact@boostwhats.com
+              <a href="mailto:boostwhats@gmail.com" className="hover:text-primary transition-colors">
+                boostwhats@gmail.com
+              </a>
+            </div>
+            <div className="flex items-center justify-center space-x-2">
+              <Phone className="w-4 h-4" />
+              <a href="tel:+237 676 078 168" className="hover:text-primary transition-colors">
+                +237 676 078 168
               </a>
             </div>
           </div>
-        </div>
+          
+          {/* Copyright */}
+          <div className="text-sm text-muted-foreground pt-4 border-t border-border/30 w-full max-w-md">
+            <p>&copy; {new Date().getFullYear()} Disclaimer: All transactions carried out involving any WV contact is at your discretion. Be Wise!
 
-        <div className="border-t border-border pt-8 text-center text-sm text-muted-foreground space-y-2">
-          <p>&copy; {new Date().getFullYear()} BoostWhats. All rights reserved.</p>
-          <p>
-            Disclaimer: All transactions involving any BoostWhats contact are at your discretion. Be wise!
-          </p>
+© Copyright 2025 WassapViews - Get more WhatsApp views</p>
+          </div>
         </div>
       </div>
     </footer>

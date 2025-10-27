@@ -7,18 +7,65 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { CountrySelect } from "@/components/ui/country-select";
+import { format, startOfDay } from "date-fns";
 
 const SubmissionForm = () => {
-  const [planType, setPlanType] = useState("free");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [country, setCountry] = useState("");
   const [showOptional, setShowOptional] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [todaysCount, setTodaysCount] = useState<number | null>(null);
+  const [isLoadingCount, setIsLoadingCount] = useState(true);
+
+  // Fetch today's submission count
+  useEffect(() => {
+    const fetchTodaysCount = async () => {
+      try {
+        setIsLoadingCount(true);
+        const today = format(new Date(), 'yyyy-MM-dd');
+        
+        const { count, error } = await supabase
+          .from('submissions')
+          .select('*', { count: 'exact', head: true })
+          .gte('created_at', `${today}T00:00:00`)
+          .lt('created_at', `${today}T23:59:59`);
+
+        if (error) throw error;
+        
+        setTodaysCount(count);
+      } catch (error) {
+        console.error('Error fetching today\'s count:', error);
+      } finally {
+        setIsLoadingCount(false);
+      }
+    };
+
+    fetchTodaysCount();
+
+    // Set up realtime subscription
+    const subscription = supabase
+      .channel('submissions')
+      .on('postgres_changes', 
+        { 
+          event: 'INSERT', 
+          schema: 'public', 
+          table: 'submissions' 
+        }, 
+        () => {
+          fetchTodaysCount();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
   
   // Optional fields
   const [company, setCompany] = useState("");
@@ -35,11 +82,11 @@ const SubmissionForm = () => {
     setIsSubmitting(true);
 
     try {
-      const contactName = planType === "free" ? name.slice(0, 8) : name;
+      const contactName = name.slice(0, 8);
       const nameWithBW = contactName.endsWith(' BW') ? contactName : `${contactName} BW`;
       
       const { error } = await supabase.from("submissions").insert({
-        plan_type: planType,
+        plan_type: "free",
         name: nameWithBW,
         phone,
         country,
@@ -89,46 +136,28 @@ const SubmissionForm = () => {
                 Entry
               </span>
             </h2>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground mb-3">
               Start growing your WhatsApp audience today
             </p>
+            {!isLoadingCount && todaysCount !== null && (
+              <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-muted/50 text-muted-foreground">
+                <span className="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></span>
+                {todaysCount.toLocaleString()} contacts added today
+              </div>
+            )}
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-3">
-              <Label className="text-base font-semibold">Package Type</Label>
-              <RadioGroup value={planType} onValueChange={setPlanType}>
-                <div className="flex items-center space-x-3 p-4 border-2 border-border rounded-lg hover:border-primary transition-colors cursor-pointer">
-                  <RadioGroupItem value="free" id="free" />
-                  <Label htmlFor="free" className="flex-1 cursor-pointer">
-                    <span className="font-semibold">Free</span>
-                    <span className="block text-sm text-muted-foreground">
-                      For personal use - Maximum 8 characters
-                    </span>
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-3 p-4 border-2 border-border rounded-lg hover:border-primary transition-colors cursor-pointer">
-                  <RadioGroupItem value="premium" id="premium" />
-                  <Label htmlFor="premium" className="flex-1 cursor-pointer">
-                    <span className="font-semibold">Premium ($1)</span>
-                    <span className="block text-sm text-muted-foreground">
-                      For businesses - Unlimited characters
-                    </span>
-                  </Label>
-                </div>
-              </RadioGroup>
-            </div>
 
             <div className="space-y-2">
               <Label htmlFor="name" className="text-base font-semibold">
-                Name {planType === "free" && <span className="text-sm text-muted-foreground">(Max 8 characters)</span>}
+                Name
               </Label>
               <Input
                 id="name"
                 placeholder="Enter your name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                maxLength={planType === "free" ? 8 : undefined}
                 required
                 className="text-base"
               />

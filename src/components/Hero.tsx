@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from "@/components/ui/button";
-import { Play, Zap, Check, Rocket, ArrowLeft, ChevronDown } from "lucide-react";
+import { Play, Check, Rocket, ArrowLeft, ChevronDown } from "lucide-react";
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import styles from './Hero.module.css';
+import { Helmet } from 'react-helmet-async';
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -62,9 +63,9 @@ const ParticleField = () => {
 // Floating elements component
 const FloatingElements = () => {
   const elements = [
-    { icon: '🚀', delay: 0, duration: 4 },
-    { icon: '⭐', delay: 1, duration: 5 },
-    { icon: '💫', delay: 2, duration: 6 },
+    { icon: '', delay: 0, duration: 4 },
+    { icon: '', delay: 1, duration: 5 },
+    { icon: '', delay: 2, duration: 6 },
   ];
 
   return (
@@ -173,7 +174,7 @@ const ContactForm = ({ onBack }: ContactFormProps) => {
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
-          <h2 className="text-2xl font-bold">Submit Your Entry</h2>
+          <h2 className="text-xl">Submit Your Entry</h2>
         </div>
         <p className="text-muted-foreground">Start growing your WhatsApp audience today</p>
       </div>
@@ -184,40 +185,15 @@ const ContactForm = ({ onBack }: ContactFormProps) => {
           onSubmit={handleSubmit} 
           className="flex-1 overflow-y-auto px-6 py-3 space-y-4 noScrollbar"
         >
-        <div className="space-y-3"> 
-          <Label className="text-base font-semibold">Package Type</Label>
-          <RadioGroup value={planType} onValueChange={setPlanType}>
-            <div className="flex items-center space-x-3 p-4 border-2 border-border rounded-lg hover:border-primary transition-colors cursor-pointer">
-              <RadioGroupItem value="free" id="free" />
-              <Label htmlFor="free" className="flex-1 cursor-pointer">
-                <span className="font-semibold">Free</span>
-                <span className="block text-sm text-muted-foreground">
-                  For personal use - Maximum 8 characters
-                </span>
-              </Label>
-            </div>
-            <div className="flex items-center space-x-3 p-4 border-2 border-border rounded-lg hover:border-primary transition-colors cursor-pointer">
-              <RadioGroupItem value="premium" id="premium" />
-              <Label htmlFor="premium" className="flex-1 cursor-pointer">
-                <span className="font-semibold">Premium ($1)</span>
-                <span className="block text-sm text-muted-foreground">
-                  For businesses - Unlimited characters
-                </span>
-              </Label>
-            </div>
-          </RadioGroup>
-        </div>
-
         <div className="space-y-2">
           <Label htmlFor="name" className="text-base font-semibold">
-            Name {planType === "free" && <span className="text-sm text-muted-foreground">(Max 8 characters)</span>}
+            Name
           </Label>
           <Input
             id="name"
             placeholder="Enter your name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            maxLength={planType === "free" ? 8 : undefined}
             required
             className="text-base"
           />
@@ -230,14 +206,14 @@ const ContactForm = ({ onBack }: ContactFormProps) => {
           <Input
             id="phone"
             type="tel"
-            placeholder="+1 234 567 8900"
+            placeholder="+237 6xx xx xx xx"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             required
             className="text-base"
           />
           <p className="text-sm text-muted-foreground">
-            Include country code (e.g., +1 for USA)
+            Include country code (e.g., +237 for Cameroon)
           </p>
           
           <div className="space-y-2">
@@ -452,11 +428,26 @@ const Hero = () => {
 
   return (
     <React.Fragment>
-      <section ref={containerRef} id="home" className="relative h-[calc(100vh-40px)] xs:h-[calc(100vh-60px)] sm:h-[calc(100vh-80px)] md:h-[calc(100vh-100px)] lg:h-[calc(100vh-120px)] w-full flex items-center justify-center overflow-hidden bg-[#06e777] rounded-b-[50px] xs:rounded-b-[60px] sm:rounded-b-[70px] md:rounded-b-[50px] lg:rounded-b-[90px]"
+      <style jsx global>{`
+        /* Global styles are now in index.css */
+      `}</style>
+      <section 
+        ref={containerRef} 
+        id="home" 
+        className="relative h-[90vh] xs:h-[92vh] sm:h-[95vh] md:h-[96vh] lg:h-[97vh] w-full flex items-center justify-center overflow-hidden rounded-b-[50px] xs:rounded-b-[60px] sm:rounded-b-[70px] md:rounded-b-[50px] lg:rounded-b-[90px]"
+        style={{
+          backgroundImage: "url('/img/greenbackground.jpg')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          position: 'relative'
+        }}
+      
         role="main"
-        aria-label="Hero section with WhatsApp growth strategy information"
+        aria-label="Hero section with WhatsApp status growth information"
         tabIndex={-1}
-        >
+      >
+        <div className="absolute inset-0 bg-black/40" />
         {/* Enhanced animated background elements with parallax */}
         <motion.div className="absolute inset-0 overflow-hidden" style={{ y: backgroundY }}>
           <motion.div 
@@ -487,12 +478,12 @@ const Hero = () => {
         {/* Floating elements */}
         <FloatingElements />
 
-        <div className="container mx-auto px-3 xs:px-4 sm:px-6 lg:px-8 pt-16 xs:pt-20 sm:pt-20 lg:pt-24 pb-6 xs:pb-8 sm:pb-12 lg:pb-16 relative z-10 h-full flex items-center">
+        <div className="container mx-auto px-3 xs:px-4 sm:px-6 lg:px-8 pt-12 xs:pt-16 sm:pt-20 lg:pt-24 pb-4 xs:pb-6 sm:pb-8 lg:pb-12 relative z-10 h-full flex items-center min-h-[80vh] xs:min-h-[85vh] sm:min-h-[90vh] md:min-h-[92vh] lg:min-h-[95vh]">
           <div className="max-w-7xl mx-auto w-full">
             <motion.div
               className={`${styles.flipContainer} ${isFlipped ? styles.flipped : ''}`}
               style={{
-                minHeight: isFlipped ? (window.innerWidth < 768 ? '120vh' : 'auto') : 'auto',
+                minHeight: isFlipped ? '120vh' : 'auto',
                 touchAction: 'manipulation',
                 position: 'relative',
                 zIndex: isFlipped ? 40 : 'auto',
@@ -523,89 +514,57 @@ const Hero = () => {
                   </motion.div>
 
                   {/* Hero Content Grid */}
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 xs:gap-8 sm:gap-10 lg:gap-12 xl:gap-16 items-center h-full min-h-[45vh] xs:min-h-[50vh] sm:min-h-[60vh]">
+                  <div className="grid grid-cols-2 gap-2 xs:gap-3 sm:gap-4 md:gap-6 lg:gap-8 xl:gap-10 items-center h-full min-h-[60vh] xs:min-h-[65vh] sm:min-h-[70vh] md:min-h-[75vh] lg:min-h-[80vh] relative">
                     {/* Content Section - Left Side */}
-                    <motion.div 
-                      className="lg:col-span-6 xl:col-span-5 text-center lg:text-left order-1 text-white space-y-3 xs:space-y-4 sm:space-y-6 md:space-y-8"
-                      initial={{ opacity: 0, x: -50 }}
+                    <motion.div
+                      className="col-span-1 text-left text-white space-y-3 xs:space-y-4 sm:space-y-5 px-2 xs:px-3 sm:px-4 pb-4 xs:pb-6 sm:pb-8 mr-2 xs:mr-4 sm:mr-6"
+                      initial={{ opacity: 0, x: -30 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.8, ease: "easeOut" }}
+                      transition={{ duration: 0.6, ease: "easeOut" }}
                     >
-                      {/* Animated badge */}
-                      <motion.div 
-                        className="inline-flex items-center justify-center lg:justify-start space-x-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-2 xs:px-3 sm:px-4 md:px-6 py-1.5 xs:py-2 sm:py-2 md:py-3 mb-3 xs:mb-4 sm:mb-6 md:mb-8 lg:mb-10 shadow-lg hover:bg-white/15 transition-all duration-300"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
-                        whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.15)" }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <motion.div
-                          animate={{ rotate: [0, 10, -10, 0] }}
-                          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                        >
-                          <Zap className="w-2.5 h-2.5 xs:w-3 xs:h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-white animate-pulse" />
-                        </motion.div>
-                        <span className="text-xs xs:text-xs sm:text-xs md:text-sm font-semibold text-white tracking-wide uppercase">WHATSAPP GROWTH STRATEGY</span>
-                      </motion.div>
 
                       {/* Main heading with enhanced typography */}
-                      <motion.h1 
-                        className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-black leading-tight mb-3 xs:mb-4 sm:mb-6 md:mb-8 text-white"
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
-                      >
-                        <motion.span 
-                          className="block text-white mb-2 drop-shadow-lg"
-                          animate={{ textShadow: ["0 0 0px rgba(255,255,255,0.5)", "0 0 20px rgba(255,255,255,0.8)", "0 0 0px rgba(255,255,255,0.5)"] }}
-                          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                        >
-                          Explode Your
-                        </motion.span>
-                        <motion.span 
-                          className="relative inline-block group"
-                          whileHover={{ scale: 1.05 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          <motion.span 
-                            className="relative z-10 text-white drop-shadow-lg"
-                            animate={{ backgroundPosition: ["0%", "100%"] }}
-                            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                            style={{ background: "linear-gradient(45deg, #fff, #f0f, #ff0, #fff)", backgroundClip: "text", WebkitBackgroundClip: "text", color: "transparent" }}
-                          >
-                            Status Views
-                          </motion.span>
-                          <motion.span 
-                            className="absolute left-0 -bottom-2 w-0 h-1 bg-gradient-to-r from-white to-white/60 transition-all duration-700 group-hover:w-full rounded-full shadow-lg"
-                            whileHover={{ width: "100%", height: "2px" }}
-                          />
-                        </motion.span>
-                      </motion.h1>
+                      <motion.h1
+  className="leading-tight mb-4 xs:mb-5 sm:mb-6 md:mb-8 text-white whitespace-nowrap"
+  initial={{ opacity: 0, y: 30 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.4, duration: 0.8, ease: 'easeOut' }}
+>
+  <motion.span
+    className="block text-white mb-2 xs:mb-3 text-xl xs:text-xl sm:text-2xl md:text-3xl lg:text-5xl whitespace-nowrap"
+  >
+    Tired of the same
+  </motion.span>
+  <motion.span
+    className="relative inline-block group whitespace-nowrap"
+    whileHover={{ scale: 1.02 }}
+    transition={{ duration: 0.2 }}
+  >
+    <motion.span
+      className="relative z-10 text-white text-xl xs:text-xl sm:text-2xl md:text-3xl lg:text-5xl whitespace-nowrap"
+    >
+      50 Status views?
+    </motion.span>
+  </motion.span>
+</motion.h1>
+
 
                       {/* Enhanced subheading */}
-                      <motion.p 
-                        className="text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 max-w-3xl mx-auto lg:mx-0 mb-4 xs:mb-6 sm:mb-8 md:mb-10 lg:mb-12 leading-relaxed font-light"
+                      <motion.p
+                        className="text-sm xs:text-base sm:text-lg md:text-xl text-gray-100 max-w-full mb-4 xs:mb-6 sm:mb-8 leading-relaxed font-normal px-2 xs:px-0 whitespace-nowrap"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.6, duration: 0.8, ease: "easeOut" }}
                       >
-                        The <motion.span 
-                          className="text-white font-semibold"
-                          animate={{ color: ["#ffffff", "#06e777", "#ffffff"] }}
-                          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                        >community-powered platform</motion.span> where contacts multiply and status views go exponential.
-                        <motion.span 
-                          className="block text-white font-medium mt-3 sm:mt-4 text-sm sm:text-base md:text-lg"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ delay: 1, duration: 0.8 }}
-                        >Join thousands of satisfied users today.</motion.span>
+                        Tap into a shared contact pool and watch your <motion.span
+                          className="text-white font-normal"
+                        > elevate your WhatsApp audience scale automatically.</motion.span>
+                        
                       </motion.p>
 
                       {/* Enhanced CTA section */}
-                      <motion.div 
-                        className="flex flex-col xs:flex-col sm:flex-row gap-2 xs:gap-3 sm:gap-4 md:gap-6 items-center justify-center lg:justify-start mb-4 xs:mb-6 sm:mb-8 md:mb-10 lg:mb-12"
+                      <motion.div
+                        className="flex flex-row gap-2 xs:gap-3 sm:gap-4 items-center justify-start mb-4 xs:mb-6 sm:mb-8"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.8, duration: 0.8, ease: "easeOut" }}
@@ -626,7 +585,7 @@ const Hero = () => {
                               if (navigator.vibrate) navigator.vibrate(50);
                             }}
                             onTouchEnd={(e) => e.currentTarget.classList.remove('active:scale-95')}
-                            className="relative overflow-hidden group bg-gradient-to-r from-white to-gray-100 hover:from-gray-100 hover:to-white text-[#1a5632] font-bold text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl px-4 xs:px-6 sm:px-8 md:px-10 lg:px-12 py-3 xs:py-4 sm:py-6 md:py-7 lg:py-8 rounded-full shadow-2xl hover:shadow-white/30 hover:scale-105 active:scale-95 transition-all duration-300 touch-manipulation w-full sm:w-auto min-w-[160px] xs:min-w-[180px] sm:min-w-[200px] md:min-w-[240px] lg:min-w-[280px]"
+                            className="relative overflow-hidden group bg-gradient-to-r from-white to-gray-100 hover:from-gray-100 hover:to-white text-[#1a5632] font-normal text-xs xs:text-sm sm:text-base px-2 xs:px-4 sm:px-6 md:px-8 py-2 xs:py-3 sm:py-4 md:py-5 rounded-full hover:shadow-white/30 hover:scale-105 active:scale-95 transition-all duration-300 touch-manipulation w-auto min-w-[100px] xs:min-w-[120px] sm:min-w-[140px]"
                             style={{
                               WebkitTapHighlightColor: 'transparent',
                               WebkitTouchCallout: 'none',
@@ -640,12 +599,12 @@ const Hero = () => {
                             aria-label="Open contact form to boost your WhatsApp status views"
                             aria-describedby="cta-description"
                           >
-                            <motion.span 
+                            <motion.span
                               className="relative z-10 flex items-center justify-center"
                               whileHover={{ x: 5 }}
                               transition={{ duration: 0.2 }}
                             >
-                              Boost My Status Now
+                              Let's Goo
                               <motion.div
                                 animate={{ x: [0, 5, 0] }}
                                 transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
@@ -653,7 +612,7 @@ const Hero = () => {
                                 <Rocket className="ml-2 sm:ml-2 md:ml-3 w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 group-hover:translate-x-1 transition-transform" />
                               </motion.div>
                             </motion.span>
-                            <motion.span 
+                            <motion.span
                               className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
                               animate={{ x: ["-100%", "100%"] }}
                               transition={{ duration: 2, repeat: Infinity, ease: "linear", repeatDelay: 3 }}
@@ -671,7 +630,7 @@ const Hero = () => {
                             size="lg"
                             onFocus={() => setFocusedButton('secondary-button')}
                             onBlur={() => setFocusedButton(null)}
-                            className="group font-bold text-xs xs:text-sm sm:text-base md:text-lg px-4 xs:px-6 sm:px-8 md:px-10 lg:px-12 py-3 xs:py-4 sm:py-6 md:py-7 lg:py-8 rounded-full border-2 border-white/30 hover:border-white/50 hover:bg-white/10 text-white hover:text-white transition-all duration-300 w-full sm:w-auto backdrop-blur-sm"
+                            className="group font-normal text-xs xs:text-sm sm:text-base px-2 xs:px-4 sm:px-6 md:px-8 py-2 xs:py-3 sm:py-4 md:py-5 rounded-full border-2 border-white/30 hover:border-white/50 hover:bg-white/10 text-white hover:text-white transition-all duration-300 w-auto min-w-[100px] xs:min-w-[120px] sm:min-w-[140px]"
                             style={{
                               minHeight: '44px', // Minimum touch target size
                             }}
@@ -692,113 +651,43 @@ const Hero = () => {
                       <div id="cta-description" className="sr-only">
                         Click or press Enter to open the contact form and start growing your WhatsApp audience
                       </div>
-
-                      {/* Trust indicators with enhanced styling */}
-                      <motion.div 
-                        className="flex flex-wrap items-center justify-center lg:justify-start gap-x-3 xs:gap-x-4 sm:gap-x-6 gap-y-1.5 xs:gap-y-2 sm:gap-y-3 text-xs xs:text-xs sm:text-sm text-gray-300"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 1, duration: 0.8, ease: "easeOut" }}
-                      >
-                        <motion.div 
-                          className="flex items-center space-x-2"
-                          whileHover={{ scale: 1.05 }}
-                        >
-                          <motion.div 
-                            className="w-2 h-2 bg-green-500 rounded-full animate-pulse"
-                            animate={{ scale: [1, 1.5, 1] }}
-                            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                          />
-                          <span className="font-medium">No credit card required</span>
-                        </motion.div>
-                        <div className="hidden sm:block w-px h-4 sm:h-6 bg-white/20" />
-                        <motion.div 
-                          className="flex items-center space-x-2"
-                          whileHover={{ scale: 1.05 }}
-                        >
-                          <motion.div 
-                            className="w-2 h-2 bg-blue-500 rounded-full animate-pulse animation-delay-500"
-                            animate={{ scale: [1, 1.5, 1] }}
-                            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                          />
-                          <span className="font-medium">7-day free trial</span>
-                        </motion.div>
-                        <div className="hidden sm:block w-px h-4 sm:h-6 bg-white/20" />
-                        <motion.div 
-                          className="flex items-center space-x-2"
-                          whileHover={{ scale: 1.05 }}
-                        >
-                          <motion.div 
-                            className="w-2 h-2 bg-purple-500 rounded-full animate-pulse animation-delay-1000"
-                            animate={{ scale: [1, 1.5, 1] }}
-                            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                          />
-                          <span className="font-medium">Cancel anytime</span>
-                        </motion.div>
-                      </motion.div>
                     </motion.div>
 
                     {/* Image Section - Right Side */}
-                    <motion.div 
-                      className="lg:col-span-6 xl:col-span-7 relative order-2 h-full min-h-[200px] xs:min-h-[250px] sm:min-h-[350px] md:min-h-[400px] lg:min-h-[500px] flex items-center justify-center"
-                      initial={{ opacity: 0, x: 50, scale: 0.9 }}
+                    <motion.div
+                      className="col-span-1 relative h-full flex items-end justify-center pt-4"
+                      initial={{ opacity: 0, x: 30, scale: 0.9 }}
                       animate={{ opacity: 1, x: 0, scale: 1 }}
-                      transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
-                      whileHover={{ scale: 1.02 }}
-                      style={{ y: elementsY }}
+                      transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
                     >
-                      <div className="relative group w-full h-full flex items-center justify-center">
-                        {/* Image that scales with viewport */}
-                        <motion.div 
-                          className="relative w-full h-full flex items-center justify-center max-w-xs xs:max-w-sm sm:max-w-md lg:max-w-lg mx-auto"
-                          whileHover={{ scale: 1.05, rotateY: 5 }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          <motion.img
-                            src="/img/1760164223448 (1).png"
-                            alt="WhatsApp Growth Strategy Platform"
-                            className="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-500 max-h-[200px] xs:max-h-[250px] sm:max-h-[350px] md:max-h-[400px] lg:max-h-[500px]"
-                            animate={{ y: [0, -10, 0] }}
-                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                          />
+                      <div className="relative w-full h-full flex items-center justify-end">
+  <div className="relative w-full max-w-xs sm:max-w-md lg:max-w-lg h-[90vh] flex items-end justify-end z-40">
+    <motion.img
+      src="/img/excited-lady.png"
+      alt="Professional woman with WhatsApp growth platform"
+      className="w-full h-auto max-h-full object-contain"
+      style={{
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+      }}
+    />
+  </div>
+</div>
 
-                          {/* Subtle overlay for better text readability */}
-                          <motion.div 
-                            className="absolute inset-0 bg-gradient-to-l from-transparent via-background/5 to-background/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                            whileHover={{ opacity: 0.1 }}
-                          />
-
-                          {/* Enhanced floating accent elements */}
-                          <motion.div 
-                            className="absolute -top-2 -right-2 w-3 h-3 xs:w-4 xs:h-4 sm:w-6 sm:h-6 md:w-8 md:h-8 bg-primary/20 rounded-full shadow-2xl"
-                            animate={{ scale: [1, 1.5, 1], rotate: [0, 180, 360] }}
-                            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                          />
-                          <motion.div 
-                            className="absolute -bottom-2 -left-2 w-2 h-2 xs:w-3 xs:h-3 sm:w-5 sm:h-5 md:w-6 md:h-6 bg-accent/20 rounded-full shadow-xl"
-                            animate={{ scale: [1, 1.3, 1], y: [0, -5, 0] }}
-                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                          />
-                          <motion.div 
-                            className="absolute top-1/2 -right-4 w-2 h-2 xs:w-3 xs:h-3 bg-white/30 rounded-full"
-                            animate={{ opacity: [0.3, 0.8, 0.3], scale: [1, 1.4, 1] }}
-                            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                          />
-                        </motion.div>
-                      </div>
                     </motion.div>
                   </div>
                 </motion.div>
               </motion.div>
 
               {/* Back side - Contact Form */}
-              <motion.div 
+              <motion.div
                 className={styles.flipBack}
                 animate={{ opacity: isFlipped ? 1 : 0 }}
                 transition={{ duration: 0.4, ease: "easeInOut", delay: isFlipped ? 0.4 : 0 }}
-                style={{ 
+                style={{
                   position: 'absolute',
-                  top: 0,
+                  top: 120,
                   left: 0,
                   width: '100%',
                   height: '100%',
@@ -806,7 +695,7 @@ const Hero = () => {
                   pointerEvents: isFlipped ? 'auto' : 'none'
                 }}
               >
-                <div className="w-full h-full pt-8 xs:pt-12 sm:pt-16 md:pt-20">
+                <div className="w-full h-full pt-6 xs:pt-8 sm:pt-12 md:pt-16 min-h-[70vh] xs:min-h-[85vh] sm:min-h-[100vh] md:min-h-[140vh]">
                   <ContactForm onBack={handleFlip} />
                 </div>
               </motion.div>

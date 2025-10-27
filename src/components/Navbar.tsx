@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, ChevronDown, Moon, Sun } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import logoFull from "@/assets/logo-full.png";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
 import { ThemeToggle } from "./ThemeToggle";
@@ -50,15 +49,23 @@ const Navbar = () => {
             whileTap={{ scale: 0.95 }}
           >
             <a href="#home" className="flex items-center">
-              <img 
-                src={logoFull} 
-                alt="ContactBee" 
-                className={cn(
-                  "transition-all duration-300",
-                  scrolled ? "opacity-100" : "opacity-90",
-                  compact ? 'h-6' : 'h-8'
-                )} 
-              />
+              <div className="flex items-center">
+                <img 
+                  src="/favicon.png" 
+                  alt="BoostWhats" 
+                  className={cn(
+                    "transition-all duration-300 mr-2",
+                    scrolled ? "opacity-100" : "opacity-90",
+                    compact ? 'h-6 w-6' : 'h-8 w-8'
+                  )} 
+                />
+                <span className={cn(
+                  "font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent",
+                  compact ? 'text-lg' : 'text-xl'
+                )}>
+                  BoostWhats
+                </span>
+              </div>
             </a>
           </motion.div>
 

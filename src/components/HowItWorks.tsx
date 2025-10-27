@@ -1,26 +1,31 @@
-import { UserPlus, Users, TrendingUp, Sparkles } from "lucide-react";
+import { Upload, Clock, Download, Smartphone, BarChart2 } from "lucide-react";
 
 const HowItWorks = () => {
   const steps = [
     {
-      icon: UserPlus,
-      title: "Sign Up",
-      description: "Create your free account in seconds. No credit card required to start.",
+      icon: Upload,
+      title: "Submit Your WhatsApp Contact",
+      description: "Submit your WhatsApp contact via our simple form to get started.",
     },
     {
-      icon: Users,
-      title: "Join Community",
-      description: "Connect with thousands of users ready to save each other's contacts.",
+      icon: Clock,
+      title: "Return by 9:30 PM Daily",
+      description: "Come back by 9:30 PM daily to download your fresh VCF file with new contacts.",
     },
     {
-      icon: TrendingUp,
-      title: "Watch Growth",
-      description: "Sit back as your WhatsApp status views multiply automatically.",
+      icon: Download,
+      title: "Import Contacts",
+      description: "Easily import the contacts to your phone (works for both Android and iPhone).",
     },
     {
-      icon: Sparkles,
-      title: "Maximize Reach",
-      description: "Upgrade to premium for unlimited growth and advanced features.",
+      icon: Smartphone,
+      title: "Post Your Status",
+      description: "Share your status as you normally would on WhatsApp.",
+    },
+    {
+      icon: BarChart2,
+      title: "Watch Your Views Soar",
+      description: "See your views increase from 1000 to 5000 and beyond, all without paid ads or tricks.",
     }
   ];
 
@@ -36,12 +41,12 @@ const HowItWorks = () => {
         {/* Title */}
         <div className="text-center mb-24 space-y-6 animate-fade-in">
           <h2 className="text-6xl lg:text-7xl font-black">
-            <span className="inline-block transform -rotate-1">Get Started</span>
+            <span className="inline-block transform -rotate-1">How to Boost Your</span>
             <br />
-            <span className="inline-block text-primary transform rotate-1">In Minutes</span>
+            <span className="inline-block text-primary transform rotate-1">WhatsApp Views</span>
           </h2>
           <p className="text-2xl text-muted-foreground max-w-2xl mx-auto">
-            Four simple steps to explosive growth
+            No tricks or paid ads required - just real growth
           </p>
         </div>
 
@@ -98,7 +103,7 @@ const HowItWorks = () => {
         {/* Bottom CTA */}
         <div className="text-center mt-24 animate-fade-in" style={{ animationDelay: '0.8s' }}>
           <div className="inline-block bg-gradient-to-r from-primary to-secondary text-primary-foreground px-12 py-6 rounded-full font-black text-2xl shadow-2xl hover:scale-110 transition-transform cursor-pointer">
-            Ready to Explode Your Growth? →
+            Start Growing Your Views Now →
           </div>
         </div>
       </div>

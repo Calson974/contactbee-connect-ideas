@@ -35,8 +35,8 @@ export function ContactFlipForm({ onClose }: ContactFlipFormProps) {
   };
 
   return (
-    <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-card rounded-2xl shadow-2xl w-full max-w-md relative overflow-hidden border border-border/50">
+    <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-start justify-center pt-16 pb-4 px-4">
+      <div className="bg-card rounded-2xl shadow-2xl w-full max-w-md relative overflow-hidden border border-border/50 min-h-[80vh] max-h-[90vh] overflow-y-auto">
         <button
           onClick={onClose}
           className="absolute right-4 top-4 text-muted-foreground hover:text-foreground transition-colors z-10"

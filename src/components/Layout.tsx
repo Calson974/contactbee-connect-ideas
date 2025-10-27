@@ -75,16 +75,16 @@ const Layout = ({ children }: LayoutProps) => {
       <NewNavbar />
       <main className="flex-1 relative">
         {children}
-        
-        {/* Large Text Overlay - Reveals on scroll up from footer */}
-        <div 
+
+        {/* Enhanced Large Text Overlay - Reveals on scroll up from footer */}
+        <div
           ref={boostTextRef}
           style={{
             position: 'fixed',
             bottom: '20px',
             left: '50%',
             transform: 'translateX(-50%) translateY(60px)',
-            zIndex: 0, // Changed to 0 to be above background but below content
+            zIndex: 0,
             pointerEvents: 'none',
             userSelect: 'none',
             textAlign: 'center',
@@ -92,49 +92,56 @@ const Layout = ({ children }: LayoutProps) => {
             transition: 'opacity 0.8s ease-out, transform 1s cubic-bezier(0.16, 1, 0.3, 1)',
             willChange: 'opacity, transform',
             width: '100%',
-            maxWidth: '1200px',
+            maxWidth: '1400px',
             padding: '0 20px',
             boxSizing: 'border-box'
           }}
         >
-          <div 
+          <div
             style={{
-              fontSize: 'clamp(4rem, 25vw, 20rem)',
+              fontSize: 'clamp(4rem, 20vw, 18rem)',
               fontWeight: 900,
               lineHeight: 0.8,
-              letterSpacing: '-0.03em',
-              color: 'rgba(0, 0, 0, 0.08)', // Slightly darker for better visibility
+              letterSpacing: '-0.02em',
+              color: 'rgba(0, 0, 0, 0.06)',
               position: 'relative',
               display: 'inline-block',
               textShadow: 'none',
               whiteSpace: 'nowrap',
-              fontFamily: 'var(--font-sans), system-ui, -apple-system, sans-serif',
+              fontFamily: 'var(--font-display), Georgia, serif',
               textTransform: 'uppercase',
               margin: '0 auto',
               maxWidth: '100%',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
-              background: 'linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.05) 100%)',
+              background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(5, 150, 105, 0.04) 50%, rgba(16, 185, 129, 0.08) 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text'
             }}
           >
             boostwhats
-            <div 
+            <div
               style={{
                 position: 'absolute',
                 top: 0,
                 left: 0,
                 right: 0,
                 bottom: 0,
-                background: 'linear-gradient(to top, var(--background) 0%, transparent 70%)',
+                background: 'linear-gradient(to top, rgba(240, 253, 244, 0.9) 0%, transparent 70%)',
                 pointerEvents: 'none',
                 zIndex: 1,
                 opacity: 0.8
               }}
             />
           </div>
+        </div>
+
+        {/* Sophisticated Background Pattern */}
+        <div className="fixed inset-0 pointer-events-none z-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-transparent via-emerald-500/5 to-transparent dark:from-transparent dark:via-transparent dark:to-transparent"></div>
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-radial opacity-30 dark:opacity-0"></div>
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-radial opacity-20 dark:opacity-0"></div>
         </div>
       </main>
     </div>

@@ -5,6 +5,10 @@ export default {
   content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
+    fontFamily: {
+      sans: ['Poppins', 'sans-serif'],
+      heading: ['"Climate Crisis"', 'sans-serif'],
+    },
     container: {
       center: true,
       padding: "2rem",
@@ -13,6 +17,62 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['Poppins', 'sans-serif'],
+      },
+      fontSize: {
+        'xs': '0.75rem',
+        'sm': '0.875rem',
+        'base': '1rem',
+        'lg': '1.125rem',
+        'xl': '1.25rem',
+        '2xl': '1.5rem',
+        '3xl': '1.75rem',
+        '4xl': '2rem',
+        '5xl': '2.25rem',
+        '6xl': '2.5rem',
+        '7xl': '3rem',
+        '8xl': '3.5rem',
+        '9xl': '4rem',
+      },
+      typography: {
+        DEFAULT: {
+          css: {
+            h1: {
+              fontFamily: 'Climate Crisis, sans-serif',
+              fontWeight: '400',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px',
+              fontSize: '1.5rem',
+              lineHeight: '2rem',
+            },
+            h2: {
+              fontFamily: 'Climate Crisis, sans-serif',
+              fontWeight: '400',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px',
+              fontSize: '1.25rem',
+              lineHeight: '1.75rem',
+            },
+            h3: {
+              fontFamily: 'Climate Crisis, sans-serif',
+              fontWeight: '400',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px',
+              fontSize: '1.125rem',
+              lineHeight: '1.5rem',
+            },
+            h4: {
+              fontFamily: 'Climate Crisis, sans-serif',
+              fontWeight: '400',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px',
+              fontSize: '1rem',
+              lineHeight: '1.5rem',
+            },
+          }
+        }
+      },
       screens: {
         'xs': '480px',
         'sm': '640px',
