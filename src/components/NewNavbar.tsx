@@ -330,40 +330,6 @@ const NewNavbar = () => {
 
               <div className="pt-2 px-4">
                 <motion.div
-                  className="grid grid-cols-3 gap-2 mb-4"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                    transition: {
-                      delay: 0.1 + (menuItems.length * 0.05),
-                      duration: 0.3
-                    }
-                  }}
-                >
-                  {socialLinks.map((social) => (
-                    <motion.a
-                      key={social.name}
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={cn(
-                        "flex flex-col items-center justify-center p-3 rounded-xl transition-colors",
-                        heroInView ? "bg-white/10 hover:bg-white/20" : "bg-accent/5 hover:bg-accent/10"
-                      )}
-                      whileHover={{ y: -2 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <span className="text-xl mb-1">{social.icon}</span>
-                      <span className={cn(
-                        "text-xs",
-                        heroInView ? "text-white/60" : "text-foreground/60"
-                      )}>{social.name}</span>
-                    </motion.a>
-                  ))}
-                </motion.div>
-
-                <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{
                     opacity: 1,

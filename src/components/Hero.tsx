@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from "@/components/ui/button";
-import { Play, Check, Rocket, ArrowLeft, ChevronDown } from "lucide-react";
+import { Play, ArrowLeft, ChevronDown } from "lucide-react";
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import styles from './Hero.module.css';
 import { Helmet } from 'react-helmet-async';
@@ -14,89 +14,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { CountrySelect } from "@/components/ui/country-select";
-
-// Particle animation component for enhanced visual effects
-const ParticleField = () => {
-  const [particles, setParticles] = useState<Array<{id: number, x: number, y: number, size: number, delay: number}>>([]);
-
-  useEffect(() => {
-    const particleCount = window.innerWidth < 768 ? 15 : 25;
-    const newParticles = Array.from({ length: particleCount }, (_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 3 + 1,
-      delay: Math.random() * 4,
-    }));
-    setParticles(newParticles);
-  }, []);
-
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {particles.map((particle) => (
-        <motion.div
-          key={particle.id}
-          className="absolute bg-white/10 rounded-full"
-          style={{
-            left: `${particle.x}%`,
-            top: `${particle.y}%`,
-            width: `${particle.size}px`,
-            height: `${particle.size}px`,
-          }}
-          animate={{
-            y: [0, -20, 0],
-            opacity: [0.3, 0.8, 0.3],
-            scale: [1, 1.2, 1],
-          }}
-          transition={{
-            duration: 3 + Math.random() * 2,
-            repeat: Infinity,
-            delay: particle.delay,
-            ease: "easeInOut",
-          }}
-        />
-      ))}
-    </div>
-  );
-};
-
-// Floating elements component
-const FloatingElements = () => {
-  const elements = [
-    { icon: '', delay: 0, duration: 4 },
-    { icon: '', delay: 1, duration: 5 },
-    { icon: '', delay: 2, duration: 6 },
-  ];
-
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {elements.map((element, index) => (
-        <motion.div
-          key={index}
-          className="absolute text-2xl opacity-20"
-          style={{
-            left: `${20 + index * 30}%`,
-            top: `${30 + index * 20}%`,
-          }}
-          animate={{
-            y: [0, -30, 0],
-            x: [0, 10, 0],
-            rotate: [0, 360],
-            scale: [1, 1.1, 1],
-          }}
-          transition={{
-            duration: element.duration,
-            repeat: Infinity,
-            delay: element.delay,
-            ease: "easeInOut",
-          }}
-        >
-          {element.icon}
-        </motion.div>
-      ))}
-    </div>
-  );
-};
 
 // Form component for the flip side
 interface ContactFormProps {
@@ -116,7 +33,8 @@ const ContactForm = ({ onBack }: ContactFormProps) => {
   const [email, setEmail] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [website, setWebsite] = useState("");
-  const [customField, setCustomField] = useState("");
+  const [customFieldLabel, setCustomFieldLabel] = useState("");
+  const [customFieldValue, setCustomFieldValue] = useState("");
   const [address, setAddress] = useState("");
   const [notes, setNotes] = useState("");
 
@@ -134,7 +52,8 @@ const ContactForm = ({ onBack }: ContactFormProps) => {
         email: email || null,
         job_title: jobTitle || null,
         website: website || null,
-        custom_field: customField || null,
+        custom_field_label: customFieldLabel || null,
+        custom_field: customFieldValue || null,
         address: address || null,
         notes: notes || null,
       });
@@ -150,7 +69,8 @@ const ContactForm = ({ onBack }: ContactFormProps) => {
       setCompany("");
       setEmail("");
       setWebsite("");
-      setCustomField("");
+      setCustomFieldLabel("");
+      setCustomFieldValue("");
       setAddress("");
       setNotes("");
       setShowOptional(false);
@@ -164,17 +84,17 @@ const ContactForm = ({ onBack }: ContactFormProps) => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto bg-card rounded-2xl border border-border/50 shadow-xl flex flex-col relative z-30 max-h-[80vh] sm:max-h-[70vh] md:max-h-[65vh]">
+    <div className="w-full max-w-md mx-auto bg-card/80 backdrop-blur-xl rounded-3xl border border-white/20 shadow-2xl flex flex-col relative z-30 max-h-[80vh] sm:max-h-[70vh] md:max-h-[65vh]">
       <div className="p-6 pb-4 border-b border-border/50">
         <div className="flex items-center mb-2">
           <button 
             onClick={(e) => onBack(e as React.MouseEvent)}
-            className="mr-4 p-1 rounded-full hover:bg-accent/50 transition-colors"
+            className="mr-4 p-2 rounded-full hover:bg-white/10 transition-colors"
             aria-label="Back to hero"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
-          <h2 className="text-xl">Submit Your Entry</h2>
+          <h2 className="text-xl font-semibold">Submit Your Entry</h2>
         </div>
         <p className="text-muted-foreground">Start growing your WhatsApp audience today</p>
       </div>
@@ -195,7 +115,7 @@ const ContactForm = ({ onBack }: ContactFormProps) => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            className="text-base"
+            className="text-base bg-background/50 backdrop-blur-sm"
           />
         </div>
 
@@ -210,7 +130,7 @@ const ContactForm = ({ onBack }: ContactFormProps) => {
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             required
-            className="text-base"
+            className="text-base bg-background/50 backdrop-blur-sm"
           />
           <p className="text-sm text-muted-foreground">
             Include country code (e.g., +237 for Cameroon)
@@ -233,7 +153,7 @@ const ContactForm = ({ onBack }: ContactFormProps) => {
             <Button 
               type="button"
               variant="outline"
-              className="w-full flex items-center justify-between"
+              className="w-full flex items-center justify-between hover:bg-white/5"
             >
               <span>Add Optional Information</span>
               <ChevronDown className={`h-4 w-4 transition-transform ${showOptional ? "rotate-180" : ""}`} />
@@ -249,7 +169,7 @@ const ContactForm = ({ onBack }: ContactFormProps) => {
                 placeholder="Your company name"
                 value={company}
                 onChange={(e) => setCompany(e.target.value)}
-                className="text-base"
+                className="text-base bg-background/50 backdrop-blur-sm"
               />
             </div>
 
@@ -263,7 +183,7 @@ const ContactForm = ({ onBack }: ContactFormProps) => {
                 placeholder="your@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="text-base"
+                className="text-base bg-background/50 backdrop-blur-sm"
               />
             </div>
 
@@ -276,7 +196,7 @@ const ContactForm = ({ onBack }: ContactFormProps) => {
                 placeholder="Your job title"
                 value={jobTitle}
                 onChange={(e) => setJobTitle(e.target.value)}
-                className="text-base"
+                className="text-base bg-background/50 backdrop-blur-sm"
               />
             </div>
 
@@ -289,20 +209,33 @@ const ContactForm = ({ onBack }: ContactFormProps) => {
                 placeholder="https://"
                 value={website}
                 onChange={(e) => setWebsite(e.target.value)}
-                className="text-base"
+                className="text-base bg-background/50 backdrop-blur-sm"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="customField" className="text-base">
-                Custom Field
+              <Label htmlFor="customFieldLabel" className="text-base">
+                Custom Field Label
               </Label>
               <Input
-                id="customField"
-                placeholder="Any additional information"
-                value={customField}
-                onChange={(e) => setCustomField(e.target.value)}
-                className="text-base"
+                id="customFieldLabel"
+                placeholder="e.g., Instagram, Telegram"
+                value={customFieldLabel}
+                onChange={(e) => setCustomFieldLabel(e.target.value)}
+                className="text-base bg-background/50 backdrop-blur-sm"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="customFieldValue" className="text-base">
+                Custom Field Value
+              </Label>
+              <Input
+                id="customFieldValue"
+                placeholder="Value for custom field"
+                value={customFieldValue}
+                onChange={(e) => setCustomFieldValue(e.target.value)}
+                className="text-base bg-background/50 backdrop-blur-sm"
               />
             </div>
 
@@ -315,7 +248,7 @@ const ContactForm = ({ onBack }: ContactFormProps) => {
                 placeholder="Your full address"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                className="text-base"
+                className="text-base bg-background/50 backdrop-blur-sm"
                 rows={3}
               />
             </div>
@@ -329,7 +262,7 @@ const ContactForm = ({ onBack }: ContactFormProps) => {
                 placeholder="Any additional notes"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                className="text-base"
+                className="text-base bg-background/50 backdrop-blur-sm"
                 rows={3}
               />
             </div>
@@ -355,7 +288,6 @@ const ContactForm = ({ onBack }: ContactFormProps) => {
 
 const Hero = () => {
   const [isFlipped, setIsFlipped] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
   const [focusedButton, setFocusedButton] = useState<string | null>(null);
 
@@ -365,26 +297,7 @@ const Hero = () => {
     offset: ["start start", "end start"]
   });
 
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
-  const elementsY = useTransform(scrollYProgress, [0, 1], ["0%", "-30%"]);
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        setMousePosition({
-          x: (e.clientX - rect.left) / rect.width,
-          y: (e.clientY - rect.top) / rect.height,
-        });
-      }
-    };
-
-    const container = containerRef.current;
-    if (container) {
-      container.addEventListener('mousemove', handleMouseMove);
-      return () => container.removeEventListener('mousemove', handleMouseMove);
-    }
-  }, []);
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
 
   // Optimize flip animation with better performance
   const handleFlip = useCallback((e: React.MouseEvent | React.TouchEvent | React.KeyboardEvent) => {
@@ -397,15 +310,6 @@ const Hero = () => {
     // Add haptic feedback for supported devices
     if (navigator.vibrate && 'ontouchstart' in window) {
       navigator.vibrate(50);
-    }
-
-    // Force a reflow to ensure the animation works smoothly
-    const element = document.querySelector(`.${styles.flipContainer}`) as HTMLElement;
-    if (element) {
-      element.style.transition = 'none';
-      // Trigger reflow
-      void element.offsetHeight;
-      element.style.transition = 'transform 0.6s ease-in-out';
     }
 
     setIsFlipped(!isFlipped);
@@ -428,279 +332,231 @@ const Hero = () => {
 
   return (
     <React.Fragment>
-      <style jsx global>{`
-        /* Global styles are now in index.css */
-      `}</style>
+      <Helmet>
+        <title>BoostWhats - Grow Your WhatsApp Status Views Exponentially</title>
+        <meta name="description" content="Tired of the same 50 status views? Join thousands growing their WhatsApp audience by 1000+ contacts through our shared contact pool. Start boosting your reach today!" />
+      </Helmet>
+      
       <section 
         ref={containerRef} 
         id="home" 
-        className="relative h-[90vh] xs:h-[92vh] sm:h-[95vh] md:h-[96vh] lg:h-[97vh] w-full flex items-center justify-center overflow-hidden rounded-b-[50px] xs:rounded-b-[60px] sm:rounded-b-[70px] md:rounded-b-[50px] lg:rounded-b-[90px]"
-        style={{
-          backgroundImage: "url('/img/greenbackground.jpg')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          position: 'relative'
-        }}
-      
+        className="relative min-h-screen w-full flex items-center justify-center overflow-hidden"
         role="main"
         aria-label="Hero section with WhatsApp status growth information"
-        tabIndex={-1}
       >
-        <div className="absolute inset-0 bg-black/40" />
-        {/* Enhanced animated background elements with parallax */}
-        <motion.div className="absolute inset-0 overflow-hidden" style={{ y: backgroundY }}>
-          <motion.div 
-            className="absolute -top-20 -right-20 w-72 h-72 sm:w-96 sm:h-96 bg-white/5 rounded-full mix-blend-overlay filter blur-3xl"
-            animate={{ scale: [1, 1.1, 1], opacity: [0.5, 0.8, 0.5] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div 
-            className="absolute -bottom-20 left-20 w-72 h-72 sm:w-96 sm:h-96 bg-white/5 rounded-full mix-blend-overlay filter blur-3xl"
-            animate={{ scale: [1.1, 1, 1.1], opacity: [0.3, 0.6, 0.3] }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          />
-          <motion.div 
-            className="absolute top-1/2 left-1/2 w-72 h-72 sm:w-96 sm:h-96 bg-white/5 rounded-full mix-blend-overlay filter blur-3xl"
-            animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.7, 0.4] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          />
-          <motion.div 
-            className="absolute top-1/4 right-1/4 w-48 h-48 sm:w-72 sm:h-72 bg-white/3 rounded-full mix-blend-overlay filter blur-2xl"
-            animate={{ scale: [0.9, 1.2, 0.9], opacity: [0.2, 0.5, 0.2] }}
-            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 3 }}
-          />
-        </motion.div>
+        {/* Fixed Background Image */}
+        <div 
+          className="fixed inset-0 w-full h-full"
+          style={{
+            backgroundImage: "url('/img/greenbackground.jpg')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            backgroundAttachment: 'fixed',
+          }}
+        />
+        
+        {/* Gradient Overlay */}
+        <div className="fixed inset-0 bg-gradient-to-br from-black/60 via-black/40 to-transparent" />
 
-        {/* Particle field for enhanced visual effects */}
-        <ParticleField />
+        {/* Animated Background Elements */}
+        <div className="fixed inset-0 overflow-hidden pointer-events-none">
+          <motion.div 
+            className="absolute -top-40 -right-40 w-96 h-96 bg-primary/20 rounded-full mix-blend-overlay filter blur-3xl"
+            animate={{ 
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div 
+            className="absolute -bottom-40 -left-40 w-96 h-96 bg-accent/20 rounded-full mix-blend-overlay filter blur-3xl"
+            animate={{ 
+              scale: [1.2, 1, 1.2],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          />
+        </div>
 
-        {/* Floating elements */}
-        <FloatingElements />
-
-        <div className="container mx-auto px-3 xs:px-4 sm:px-6 lg:px-8 pt-12 xs:pt-16 sm:pt-20 lg:pt-24 pb-4 xs:pb-6 sm:pb-8 lg:pb-12 relative z-10 h-full flex items-center min-h-[80vh] xs:min-h-[85vh] sm:min-h-[90vh] md:min-h-[92vh] lg:min-h-[95vh]">
-          <div className="max-w-7xl mx-auto w-full">
-            <motion.div
-              className={`${styles.flipContainer} ${isFlipped ? styles.flipped : ''}`}
-              style={{
-                minHeight: isFlipped ? '120vh' : 'auto',
-                touchAction: 'manipulation',
-                position: 'relative',
-                zIndex: isFlipped ? 40 : 'auto',
-              }}
-              transition={{ duration: 0.8, ease: "easeInOut" }}
+        {/* Content Container */}
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-20 min-h-screen flex items-center">
+          <motion.div
+            className={`${styles.flipContainer} ${isFlipped ? styles.flipped : ''} w-full`}
+            style={{
+              minHeight: isFlipped ? '120vh' : 'auto',
+              touchAction: 'manipulation',
+            }}
+          >
+            {/* Front side - Hero Content */}
+            <motion.div 
+              className={styles.flipFront}
+              animate={{ opacity: isFlipped ? 0 : 1 }}
+              transition={{ duration: 0.3, ease: "easeInOut", delay: isFlipped ? 0 : 0.1 }}
+              style={{ pointerEvents: isFlipped ? 'none' : 'auto' }}
             >
-              {/* Front side - Hero Content */}
               <motion.div 
-                className={styles.flipFront}
-                animate={{ opacity: isFlipped ? 0 : 1 }}
-                transition={{ duration: 0.3, ease: "easeInOut", delay: isFlipped ? 0 : 0.1 }}
-                style={{ pointerEvents: isFlipped ? 'none' : 'auto' }}
+                className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[80vh]"
+                style={{ y: contentY }}
               >
-                {/* Main content area with sophisticated layout */}
-                <motion.div className="relative" style={{ y: elementsY }}>
-                  {/* Background decorative elements */}
-                  <motion.div className="absolute inset-0 -z-10">
-                    <motion.div 
-                      className="absolute top-1/4 left-1/4 w-72 h-72 bg-white/5 rounded-full mix-blend-overlay filter blur-3xl"
-                      animate={{ scale: [1, 1.1, 1] }}
-                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                    />
-                    <motion.div 
-                      className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-white/5 rounded-full mix-blend-overlay filter blur-3xl"
-                      animate={{ scale: [1.1, 1, 1.1] }}
-                      transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                    />
+                {/* Left Content */}
+                <motion.div
+                  className="space-y-6 text-white order-2 lg:order-1"
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                >
+                  {/* Badge */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <span className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-sm font-medium">
+                      🚀 Join 10,000+ Users Growing Their Reach
+                    </span>
                   </motion.div>
 
-                  {/* Hero Content Grid */}
-                  <div className="grid grid-cols-2 gap-2 xs:gap-3 sm:gap-4 md:gap-6 lg:gap-8 xl:gap-10 items-center h-full min-h-[60vh] xs:min-h-[65vh] sm:min-h-[70vh] md:min-h-[75vh] lg:min-h-[80vh] relative">
-                    {/* Content Section - Left Side */}
+                  {/* Main Heading */}
+                  <motion.h1
+                    className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3, duration: 0.8 }}
+                  >
+                    <span className="block mb-2">Tired of the same</span>
+                    <span className="block bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-transparent">
+                      50 Status views?
+                    </span>
+                  </motion.h1>
+
+                  {/* Subheading */}
+                  <motion.p
+                    className="text-lg sm:text-xl lg:text-2xl text-gray-200 max-w-2xl leading-relaxed"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                  >
+                    Tap into a shared contact pool and watch your{' '}
+                    <span className="text-white font-semibold">
+                      WhatsApp audience scale automatically
+                    </span>
+                  </motion.p>
+
+                  {/* CTA Buttons */}
+                  <motion.div
+                    className="flex flex-col sm:flex-row gap-4 pt-4"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.7 }}
+                  >
                     <motion.div
-                      className="col-span-1 text-left text-white space-y-3 xs:space-y-4 sm:space-y-5 px-2 xs:px-3 sm:px-4 pb-4 xs:pb-6 sm:pb-8 mr-2 xs:mr-4 sm:mr-6"
-                      initial={{ opacity: 0, x: -30 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.6, ease: "easeOut" }}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                     >
-
-                      {/* Main heading with enhanced typography */}
-                      <motion.h1
-  className="leading-tight mb-4 xs:mb-5 sm:mb-6 md:mb-8 text-white whitespace-nowrap"
-  initial={{ opacity: 0, y: 30 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ delay: 0.4, duration: 0.8, ease: 'easeOut' }}
->
-  <motion.span
-    className="block text-white mb-2 xs:mb-3 text-xl xs:text-xl sm:text-2xl md:text-3xl lg:text-5xl whitespace-nowrap"
-  >
-    Tired of the same
-  </motion.span>
-  <motion.span
-    className="relative inline-block group whitespace-nowrap"
-    whileHover={{ scale: 1.02 }}
-    transition={{ duration: 0.2 }}
-  >
-    <motion.span
-      className="relative z-10 text-white text-xl xs:text-xl sm:text-2xl md:text-3xl lg:text-5xl whitespace-nowrap"
-    >
-      50 Status views?
-    </motion.span>
-  </motion.span>
-</motion.h1>
-
-
-                      {/* Enhanced subheading */}
-                      <motion.p
-                        className="text-sm xs:text-base sm:text-lg md:text-xl text-gray-100 max-w-full mb-4 xs:mb-6 sm:mb-8 leading-relaxed font-normal px-2 xs:px-0 whitespace-nowrap"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.6, duration: 0.8, ease: "easeOut" }}
+                      <Button
+                        size="lg"
+                        onClick={handleFlip}
+                        onFocus={() => setFocusedButton('cta-button')}
+                        onBlur={() => setFocusedButton(null)}
+                        className="group relative overflow-hidden bg-white hover:bg-white/90 text-primary font-semibold text-lg px-8 py-6 rounded-full transition-all duration-300 min-h-[56px] shadow-xl hover:shadow-2xl"
+                        aria-label="Open contact form to boost your WhatsApp status views"
                       >
-                        Tap into a shared contact pool and watch your <motion.span
-                          className="text-white font-normal"
-                        > elevate your WhatsApp audience scale automatically.</motion.span>
-                        
-                      </motion.p>
+                        <span className="relative z-10 flex items-center gap-2">
+                          Let's Grow 
+                          <motion.span
+                            animate={{ x: [0, 5, 0] }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                          >
+                            →
+                          </motion.span>
+                        </span>
+                      </Button>
+                    </motion.div>
 
-                      {/* Enhanced CTA section */}
-                      <motion.div
-                        className="flex flex-row gap-2 xs:gap-3 sm:gap-4 items-center justify-start mb-4 xs:mb-6 sm:mb-8"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.8, duration: 0.8, ease: "easeOut" }}
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Button
+                        variant="outline"
+                        size="lg"
+                        className="group font-semibold text-lg px-8 py-6 rounded-full border-2 border-white/30 hover:border-white/50 hover:bg-white/10 text-white backdrop-blur-sm transition-all min-h-[56px]"
+                        aria-label="Learn how the WhatsApp growth platform works"
                       >
-                        <motion.div
-                          whileHover={{ scale: 1.05, y: -2 }}
-                          whileTap={{ scale: 0.95 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          <Button
-                            size="lg"
-                            onClick={handleFlip}
-                            onFocus={() => setFocusedButton('cta-button')}
-                            onBlur={() => setFocusedButton(null)}
-                            onTouchStart={(e) => {
-                              e.currentTarget.classList.add('active:scale-95');
-                              // Add haptic feedback for mobile
-                              if (navigator.vibrate) navigator.vibrate(50);
-                            }}
-                            onTouchEnd={(e) => e.currentTarget.classList.remove('active:scale-95')}
-                            className="relative overflow-hidden group bg-gradient-to-r from-white to-gray-100 hover:from-gray-100 hover:to-white text-[#1a5632] font-normal text-xs xs:text-sm sm:text-base px-2 xs:px-4 sm:px-6 md:px-8 py-2 xs:py-3 sm:py-4 md:py-5 rounded-full hover:shadow-white/30 hover:scale-105 active:scale-95 transition-all duration-300 touch-manipulation w-auto min-w-[100px] xs:min-w-[120px] sm:min-w-[140px]"
-                            style={{
-                              WebkitTapHighlightColor: 'transparent',
-                              WebkitTouchCallout: 'none',
-                              WebkitUserSelect: 'none',
-                              KhtmlUserSelect: 'none',
-                              MozUserSelect: 'none',
-                              msUserSelect: 'none',
-                              userSelect: 'none',
-                              minHeight: '44px', // Minimum touch target size
-                            }}
-                            aria-label="Open contact form to boost your WhatsApp status views"
-                            aria-describedby="cta-description"
-                          >
-                            <motion.span
-                              className="relative z-10 flex items-center justify-center"
-                              whileHover={{ x: 5 }}
-                              transition={{ duration: 0.2 }}
-                            >
-                              Let's Goo
-                              <motion.div
-                                animate={{ x: [0, 5, 0] }}
-                                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                              >
-                                <Rocket className="ml-2 sm:ml-2 md:ml-3 w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 group-hover:translate-x-1 transition-transform" />
-                              </motion.div>
-                            </motion.span>
-                            <motion.span
-                              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
-                              animate={{ x: ["-100%", "100%"] }}
-                              transition={{ duration: 2, repeat: Infinity, ease: "linear", repeatDelay: 3 }}
-                            />
-                          </Button>
-                        </motion.div>
+                        <Play className="mr-2 w-5 h-5" />
+                        How it works
+                      </Button>
+                    </motion.div>
+                  </motion.div>
 
-                        <motion.div
-                          whileHover={{ scale: 1.05, y: -2 }}
-                          whileTap={{ scale: 0.95 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          <Button
-                            variant="outline"
-                            size="lg"
-                            onFocus={() => setFocusedButton('secondary-button')}
-                            onBlur={() => setFocusedButton(null)}
-                            className="group font-normal text-xs xs:text-sm sm:text-base px-2 xs:px-4 sm:px-6 md:px-8 py-2 xs:py-3 sm:py-4 md:py-5 rounded-full border-2 border-white/30 hover:border-white/50 hover:bg-white/10 text-white hover:text-white transition-all duration-300 w-auto min-w-[100px] xs:min-w-[120px] sm:min-w-[140px]"
-                            style={{
-                              minHeight: '44px', // Minimum touch target size
-                            }}
-                            aria-label="Learn how the WhatsApp growth platform works"
-                          >
-                            <motion.div
-                              whileHover={{ scale: 1.2, rotate: 10 }}
-                              transition={{ duration: 0.2 }}
-                            >
-                              <Play className="mr-1 xs:mr-2 sm:mr-2 md:mr-3 w-3 h-3 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white group-hover:scale-125 transition-transform" />
-                            </motion.div>
-                            How it works
-                          </Button>
-                        </motion.div>
-                      </motion.div>
-
-                      {/* Hidden description for screen readers */}
-                      <div id="cta-description" className="sr-only">
-                        Click or press Enter to open the contact form and start growing your WhatsApp audience
+                  {/* Stats */}
+                  <motion.div
+                    className="flex flex-wrap gap-6 pt-8"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.9 }}
+                  >
+                    {[
+                      { value: "10K+", label: "Active Users" },
+                      { value: "1M+", label: "Contacts Shared" },
+                      { value: "500%", label: "Avg. Growth" },
+                    ].map((stat, index) => (
+                      <div key={index} className="text-center">
+                        <div className="text-2xl sm:text-3xl font-bold text-white">
+                          {stat.value}
+                        </div>
+                        <div className="text-sm text-gray-300">{stat.label}</div>
                       </div>
-                    </motion.div>
+                    ))}
+                  </motion.div>
+                </motion.div>
 
-                    {/* Image Section - Right Side */}
-                    <motion.div
-                      className="col-span-1 relative h-full flex items-end justify-center pt-4"
-                      initial={{ opacity: 0, x: 30, scale: 0.9 }}
-                      animate={{ opacity: 1, x: 0, scale: 1 }}
-                      transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
-                    >
-                      <div className="relative w-full h-full flex items-center justify-end">
-  <div className="relative w-full max-w-xs sm:max-w-md lg:max-w-lg h-[90vh] flex items-end justify-end z-40">
-    <motion.img
-      src="/img/excited-lady.png"
-      alt="Professional woman with WhatsApp growth platform"
-      className="w-full h-auto max-h-full object-contain"
-      style={{
-        position: 'absolute',
-        bottom: 0,
-        right: 0,
-      }}
-    />
-  </div>
-</div>
-
-                    </motion.div>
+                {/* Right Image - Fixed */}
+                <motion.div
+                  className="relative order-1 lg:order-2 flex items-center justify-center lg:justify-end"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.4, duration: 0.8 }}
+                >
+                  <div className="relative w-full max-w-md lg:max-w-lg">
+                    {/* Glow Effect */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-accent/30 rounded-full blur-3xl opacity-50" />
+                    
+                    {/* Image */}
+                    <motion.img
+                      src="/img/excited-lady.png"
+                      alt="Professional woman excited about WhatsApp growth"
+                      className="relative z-10 w-full h-auto drop-shadow-2xl"
+                      animate={{
+                        y: [0, -10, 0],
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                    />
                   </div>
                 </motion.div>
               </motion.div>
-
-              {/* Back side - Contact Form */}
-              <motion.div
-                className={styles.flipBack}
-                animate={{ opacity: isFlipped ? 1 : 0 }}
-                transition={{ duration: 0.4, ease: "easeInOut", delay: isFlipped ? 0.4 : 0 }}
-                style={{
-                  position: 'absolute',
-                  top: 120,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
-                  zIndex: isFlipped ? 10 : -1,
-                  pointerEvents: isFlipped ? 'auto' : 'none'
-                }}
-              >
-                <div className="w-full h-full pt-6 xs:pt-8 sm:pt-12 md:pt-16 min-h-[70vh] xs:min-h-[85vh] sm:min-h-[100vh] md:min-h-[140vh]">
-                  <ContactForm onBack={handleFlip} />
-                </div>
-              </motion.div>
             </motion.div>
-          </div>
+
+            {/* Back side - Contact Form */}
+            <motion.div
+              className={styles.flipBack}
+              animate={{ opacity: isFlipped ? 1 : 0 }}
+              transition={{ duration: 0.4, ease: "easeInOut", delay: isFlipped ? 0.4 : 0 }}
+              style={{
+                pointerEvents: isFlipped ? 'auto' : 'none',
+                zIndex: isFlipped ? 40 : -1,
+              }}
+            >
+              <div className="w-full h-full pt-20 min-h-screen flex items-center justify-center">
+                <ContactForm onBack={handleFlip} />
+              </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
     </React.Fragment>
