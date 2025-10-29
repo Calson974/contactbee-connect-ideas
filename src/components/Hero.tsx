@@ -99,11 +99,11 @@ const ContactForm = ({ onBack }: ContactFormProps) => {
         <p className="text-muted-foreground">Start growing your WhatsApp audience today</p>
       </div>
       
-      <div className="flex-1 overflow-hidden flex flex-col noScrollbar">
+      <div className={`flex-1 overflow-hidden flex flex-col ${styles.noScrollbar}`}>
         <form 
           id="contact-form"
           onSubmit={handleSubmit} 
-          className="flex-1 overflow-y-auto px-6 py-3 space-y-4 noScrollbar"
+          className={`flex-1 overflow-y-auto px-6 py-3 space-y-4 ${styles.noScrollbar}`}
         >
         <div className="space-y-2">
           <Label htmlFor="name" className="text-base font-semibold">
