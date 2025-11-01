@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from "@/components/ui/button";
 import { Play, ArrowLeft, ChevronDown } from "lucide-react";
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import styles from './Hero.module.css';
+import './Hero.module.css';
 import { Helmet } from 'react-helmet-async';
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -99,11 +99,11 @@ const ContactForm = ({ onBack }: ContactFormProps) => {
         <p className="text-muted-foreground">Start growing your WhatsApp audience today</p>
       </div>
       
-      <div className={`flex-1 overflow-hidden flex flex-col ${styles.noScrollbar}`}>
+      <div className="flex-1 overflow-hidden flex flex-col scrollbar-hide">
         <form 
           id="contact-form"
           onSubmit={handleSubmit} 
-          className={`flex-1 overflow-y-auto px-6 py-3 space-y-4 ${styles.noScrollbar}`}
+          className="flex-1 overflow-y-auto px-6 py-3 space-y-4 scrollbar-hide"
         >
         <div className="space-y-2">
           <Label htmlFor="name" className="text-base font-semibold">
@@ -383,7 +383,8 @@ const Hero = () => {
         {/* Content Container */}
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-20 min-h-screen flex items-center">
           <motion.div
-            className={`${styles.flipContainer} ${isFlipped ? styles.flipped : ''} w-full`}
+            className="flip-container w-full"
+            data-flipped={isFlipped}
             style={{
               minHeight: isFlipped ? '120vh' : 'auto',
               touchAction: 'manipulation',
@@ -391,7 +392,7 @@ const Hero = () => {
           >
             {/* Front side - Hero Content */}
             <motion.div 
-              className={styles.flipFront}
+              className="flip-front"
               animate={{ opacity: isFlipped ? 0 : 1 }}
               transition={{ duration: 0.3, ease: "easeInOut", delay: isFlipped ? 0 : 0.1 }}
               style={{ pointerEvents: isFlipped ? 'none' : 'auto' }}
@@ -545,7 +546,7 @@ const Hero = () => {
 
             {/* Back side - Contact Form */}
             <motion.div
-              className={styles.flipBack}
+              className="flip-back"
               animate={{ opacity: isFlipped ? 1 : 0 }}
               transition={{ duration: 0.4, ease: "easeInOut", delay: isFlipped ? 0.4 : 0 }}
               style={{

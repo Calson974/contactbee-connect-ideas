@@ -1,15 +1,15 @@
-/* Hide scrollbar */
-.noScrollbar::-webkit-scrollbar {
+/* Hide scrollbar - using global classes */
+:global(.scrollbar-hide)::-webkit-scrollbar {
   display: none;
 }
 
-.noScrollbar {
+:global(.scrollbar-hide) {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
 /* Flip Container */
-.flipContainer {
+.flip-container {
   perspective: 2000px;
   width: 100%;
   position: relative;
@@ -17,13 +17,13 @@
   transform-style: preserve-3d;
 }
 
-.flipContainer.flipped {
+.flip-container[data-flipped="true"] {
   transform: rotateY(180deg);
 }
 
 /* Front and Back Faces */
-.flipFront,
-.flipBack {
+.flip-front,
+.flip-back {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   width: 100%;
@@ -31,11 +31,11 @@
   transform-style: preserve-3d;
 }
 
-.flipFront {
+.flip-front {
   transform: rotateY(0deg);
 }
 
-.flipBack {
+.flip-back {
   position: absolute;
   top: 0;
   left: 0;
@@ -48,9 +48,9 @@
 }
 
 /* Performance optimizations */
-.flipContainer,
-.flipFront,
-.flipBack {
+.flip-container,
+.flip-front,
+.flip-back {
   will-change: transform;
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
@@ -58,7 +58,7 @@
 
 /* Mobile optimizations */
 @media (max-width: 768px) {
-  .flipContainer {
+  .flip-container {
     perspective: 1500px;
   }
 }
