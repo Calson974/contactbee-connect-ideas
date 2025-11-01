@@ -345,7 +345,7 @@ const Hero = () => {
         role="main"
         aria-label="Hero section with WhatsApp status growth information"
       >
-        {/* Fixed Background Image */}
+        {/* Background Image */}
         <div 
           className="absolute inset-0 w-full h-full"
           style={{
