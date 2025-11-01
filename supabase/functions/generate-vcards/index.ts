@@ -16,6 +16,7 @@ interface Submission {
   job_title?: string;
   website?: string;
   custom_field?: string;
+  custom_field_label?: string;
   address?: string;
   notes?: string;
   created_at: string;
@@ -34,6 +35,11 @@ function generateVCard(submission: Submission): string {
   
   // Phone number
   lines.push(`TEL;TYPE=CELL:${submission.phone}`);
+  
+  // Country
+  if (submission.country) {
+    lines.push(`X-COUNTRY:${submission.country}`);
+  }
   
   // Optional fields
   if (submission.email) {
@@ -60,8 +66,10 @@ function generateVCard(submission: Submission): string {
     lines.push(`NOTE:${submission.notes.replace(/\n/g, ' ')}`);
   }
   
-  if (submission.custom_field) {
-    lines.push(`X-CUSTOM:${submission.custom_field}`);
+  // Add custom field with label if both are provided
+  if (submission.custom_field_label && submission.custom_field) {
+    const fieldName = submission.custom_field_label.toUpperCase().replace(/\s+/g, '-');
+    lines.push(`X-${fieldName}:${submission.custom_field}`);
   }
   
   lines.push('END:VCARD');

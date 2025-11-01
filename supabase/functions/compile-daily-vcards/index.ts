@@ -33,6 +33,9 @@ function generateVCard(submission: Submission): string {
   lines.push(`N:${displayName};;;;`);
   lines.push(`TEL;TYPE=CELL:${submission.phone}`);
   
+  // Country
+  if (submission.country) lines.push(`X-COUNTRY:${submission.country}`);
+  
   if (submission.email) lines.push(`EMAIL:${submission.email}`);
   if (submission.company) lines.push(`ORG:${submission.company}`);
   if (submission.job_title) lines.push(`TITLE:${submission.job_title}`);
