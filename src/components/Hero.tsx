@@ -345,22 +345,23 @@ const Hero = () => {
         role="main"
         aria-label="Hero section with WhatsApp status growth information"
       >
-        {/* Background Image */}
+        {/* Fixed Background Image */}
         <div 
-          className="absolute inset-0 w-full h-full"
+          className="fixed inset-0 w-full h-full"
           style={{
             backgroundImage: "url('/img/greenbackground.jpg')",
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
+            backgroundAttachment: 'fixed',
           }}
         />
         
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-transparent" />
+        <div className="fixed inset-0 bg-gradient-to-br from-black/60 via-black/40 to-transparent" />
 
         {/* Animated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="fixed inset-0 overflow-hidden pointer-events-none">
           <motion.div 
             className="absolute -top-40 -right-40 w-96 h-96 bg-primary/20 rounded-full mix-blend-overlay filter blur-3xl"
             animate={{ 
