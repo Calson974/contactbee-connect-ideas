@@ -111,29 +111,7 @@ const ContactForm = ({ onBack }: ContactFormProps) => {
         <form 
           id="contact-form"
           onSubmit={handleSubmit} 
-          className="flex-1 overflow-y-auto px-6 py-3 space-y-4"
-          style={{
-            scrollbarWidth: 'thin',
-            scrollbarColor: '#9ca3af transparent',
-            msOverflowStyle: 'none',
-          }}
-          css={{
-            '&::-webkit-scrollbar': {
-              width: '8px',
-              height: '8px',
-            },
-            '&::-webkit-scrollbar-track': {
-              background: 'transparent',
-              borderRadius: '4px',
-            },
-            '&::-webkit-scrollbar-thumb': {
-              backgroundColor: '#9ca3af',
-              borderRadius: '4px',
-              '&:hover': {
-                backgroundColor: '#6b7280',
-              },
-            },
-          }}
+          className="flex-1 overflow-y-auto px-6 py-3 space-y-4 [scrollbar-width:thin] [scrollbar-color:#9ca3af_transparent] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-400 [&::-webkit-scrollbar-thumb]:rounded [&::-webkit-scrollbar-thumb:hover]:bg-gray-500"
         >
         <div className="space-y-2">
           <Label htmlFor="name" className="text-base font-semibold">
@@ -371,7 +349,7 @@ const Hero = () => {
       <section 
         ref={containerRef} 
         id="home" 
-        className="relative min-h-screen w-full flex items-center justify-center overflow-hidden"
+        className="relative w-full flex items-center justify-center overflow-hidden"
         role="main"
         aria-label="Hero section with WhatsApp status growth information"
       >
@@ -411,12 +389,11 @@ const Hero = () => {
         </div>
 
         {/* Content Container */}
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 min-h-[90vh] flex items-center">
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-8 flex items-center">
           <motion.div
             className="flip-container w-full"
             data-flipped={isFlipped}
             style={{
-              minHeight: isFlipped ? '120vh' : 'auto',
               touchAction: 'manipulation',
             }}
           >
@@ -428,7 +405,7 @@ const Hero = () => {
               style={{ pointerEvents: isFlipped ? 'none' : 'auto' }}
             >
               <motion.div 
-                className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[80vh]"
+                className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center"
                 style={{ y: contentY }}
               >
                 {/* Left Content */}
@@ -584,7 +561,7 @@ const Hero = () => {
                 zIndex: isFlipped ? 40 : -1,
               }}
             >
-              <div className="w-full h-full pt-20 min-h-screen flex items-center justify-center">
+              <div className="w-full h-full py-20 flex items-center justify-center">
                 <ContactForm onBack={handleFlip} />
               </div>
             </motion.div>
