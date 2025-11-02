@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronRight, Zap, Sparkles, ArrowRight, MessageSquare, BarChart2, Users, Archive, Shield } from "lucide-react";
+import { Menu, X, ChevronRight, Zap, Sparkles, ArrowRight, MessageSquare, BarChart2, Users, Download, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 const menuItems = [
   { name: 'Features', href: '#features', icon: <BarChart2 className="w-4 h-4 mr-2" />, isHash: true },
-  { name: 'Archive', href: '/archive', icon: <Archive className="w-4 h-4 mr-2" />, isHash: false },
+  { name: 'Downloads', href: '/downloads', icon: <Download className="w-4 h-4 mr-2" />, isHash: false },
   { name: 'Admin', href: '/admin', icon: <Shield className="w-4 h-4 mr-2" />, isHash: false },
 ];
 

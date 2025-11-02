@@ -128,7 +128,15 @@ const SubmissionForm = () => {
   return (
     <section id="submit-form" className="py-16 md:py-24 scroll-mt-20">
       <div className="container mx-auto px-4">
-        <Card className="max-w-2xl mx-auto p-8 border-2 border-border bg-card/80 backdrop-blur-sm">
+        <Card className="max-w-2xl mx-auto p-8 border-2 border-border bg-card/80 backdrop-blur-sm relative overflow-hidden">
+          {/* Chat icon positioned in the top-right corner */}
+          <div className="absolute top-4 right-4 w-16 h-16 z-10">
+            <img 
+              src="/img/svg/oc-chatting.svg" 
+              alt="Chatting illustration" 
+              className="w-full h-full object-contain"
+            />
+          </div>
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold mb-2">
               Submit Your{" "}

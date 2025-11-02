@@ -84,7 +84,15 @@ const ContactForm = ({ onBack }: ContactFormProps) => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto bg-card/80 backdrop-blur-xl rounded-3xl border border-white/20 shadow-2xl flex flex-col relative z-30 max-h-[80vh] sm:max-h-[70vh] md:max-h-[65vh]">
+    <div className="w-full max-w-md mx-auto bg-card/80 backdrop-blur-xl rounded-3xl border border-white/20 shadow-2xl flex flex-col relative z-30 max-h-[80vh] sm:max-h-[70vh] md:max-h-[65vh] overflow-hidden">
+      {/* Chat icon positioned inside the form container on the right */}
+      <div className="absolute top-15 right-2 w-16 h-16 z-10">
+        <img 
+          src="/img/svg/oc-chatting.svg" 
+          alt="Chatting illustration" 
+          className="w-full h-full object-contain"
+        />
+      </div>
       <div className="p-6 pb-4 border-b border-border/50">
         <div className="flex items-center mb-2">
           <button 
@@ -99,11 +107,33 @@ const ContactForm = ({ onBack }: ContactFormProps) => {
         <p className="text-muted-foreground">Start growing your WhatsApp audience today</p>
       </div>
       
-      <div className="flex-1 overflow-hidden flex flex-col scrollbar-hide">
+      <div className="flex-1 flex flex-col overflow-hidden">
         <form 
           id="contact-form"
           onSubmit={handleSubmit} 
-          className="flex-1 overflow-y-auto px-6 py-3 space-y-4 scrollbar-hide"
+          className="flex-1 overflow-y-auto px-6 py-3 space-y-4"
+          style={{
+            scrollbarWidth: 'thin',
+            scrollbarColor: '#9ca3af transparent',
+            msOverflowStyle: 'none',
+          }}
+          css={{
+            '&::-webkit-scrollbar': {
+              width: '8px',
+              height: '8px',
+            },
+            '&::-webkit-scrollbar-track': {
+              background: 'transparent',
+              borderRadius: '4px',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: '#9ca3af',
+              borderRadius: '4px',
+              '&:hover': {
+                backgroundColor: '#6b7280',
+              },
+            },
+          }}
         >
         <div className="space-y-2">
           <Label htmlFor="name" className="text-base font-semibold">
@@ -349,7 +379,7 @@ const Hero = () => {
         <div 
           className="fixed inset-0 w-full h-full"
           style={{
-            backgroundImage: "url('/img/greenbackground.jpg')",
+            backgroundImage: "url('https://res.cloudinary.com/dmxik1gea/image/upload/w_1000/q_auto/f_auto/v1762084948/greenbackground_wzknn8.jpg')",
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
@@ -381,7 +411,7 @@ const Hero = () => {
         </div>
 
         {/* Content Container */}
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-20 min-h-screen flex items-center">
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 min-h-[90vh] flex items-center">
           <motion.div
             className="flip-container w-full"
             data-flipped={isFlipped}
@@ -415,7 +445,7 @@ const Hero = () => {
                     transition={{ delay: 0.2 }}
                   >
                     <span className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-sm font-medium">
-                      🚀 Join 10,000+ Users Growing Their Reach
+                      🚀 Join 100+ Users Growing Their Reach
                     </span>
                   </motion.div>
 
@@ -428,8 +458,8 @@ const Hero = () => {
                   >
                     <span className="block mb-2">Tired of the same</span>
                     <span className="block bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-transparent">
-                      50 Status views?
-                    </span>
+                       </span><span className="text-white-500">50 Status</span> views?
+                    
                   </motion.h1>
 
                   {/* Subheading */}
@@ -440,7 +470,7 @@ const Hero = () => {
                     transition={{ delay: 0.5 }}
                   >
                     Tap into a shared contact pool and watch your{' '}
-                    <span className="text-white font-semibold">
+                    <span className="text-green-500">
                       WhatsApp audience scale automatically
                     </span>
                   </motion.p>
@@ -527,7 +557,7 @@ const Hero = () => {
                     
                     {/* Image */}
                     <motion.img
-                      src="/img/excited-lady.png"
+                      src="https://res.cloudinary.com/dmxik1gea/image/upload/w_1000/q_auto/f_auto/v1762084953/excited-lady_tektkt.png"
                       alt="Professional woman excited about WhatsApp growth"
                       className="relative z-10 w-full h-auto drop-shadow-2xl"
                       animate={{

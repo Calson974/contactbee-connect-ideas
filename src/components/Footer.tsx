@@ -32,7 +32,7 @@ const Footer = () => {
           
           {/* Copyright */}
           <div className="text-sm text-muted-foreground pt-4 border-t border-border/30 w-full max-w-md">
-            <p>&copy; {new Date().getFullYear()} Disclaimer: All transactions carried out involving any WV contact is at your discretion. Be Wise!
+            <p>&copy; {new Date().getFullYear()} Disclaimer: All transactions carried out involving any BW contact is at your discretion. Be Wise!
 
 © Copyright 2025 WassapViews - Get more WhatsApp views</p>
           </div>

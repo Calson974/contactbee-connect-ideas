@@ -1,4 +1,6 @@
+// @deno-types="https://esm.sh/v135/@supabase/supabase-js@2.58.0/mod.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.58.0';
+import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -27,7 +29,7 @@ function generateVCard(submission: Submission): string {
   
   // Format name - add suffix for free plan
   const displayName = submission.plan_type === 'free' 
-    ? `${submission.name} WV` 
+    ? `${submission.name} BW` 
     : submission.name;
   
   lines.push(`FN:${displayName}`);
@@ -77,17 +79,21 @@ function generateVCard(submission: Submission): string {
   return lines.join('\r\n');
 }
 
-Deno.serve(async (req) => {
+serve(async (req: Request) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    );
+    const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+    
+    if (!supabaseUrl || !supabaseKey) {
+      throw new Error('Missing Supabase environment variables');
+    }
+    
+    const supabaseClient = createClient(supabaseUrl, supabaseKey);
 
     // Get date parameter or use today
     const url = new URL(req.url);
@@ -121,7 +127,7 @@ Deno.serve(async (req) => {
     console.log(`Found ${submissions.length} submissions`);
 
     // Generate vCards for all submissions
-    const vcards = submissions.map((submission) => generateVCard(submission as Submission));
+    const vcards = (submissions as Submission[]).map((submission) => generateVCard(submission));
     const vcardContent = vcards.join('\r\n\r\n');
 
     // Return as downloadable file

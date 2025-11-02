@@ -41,14 +41,14 @@ const Features = () => {
   ];
 
   return (
-    <section id="features" className="py-32 relative overflow-hidden bg-gradient-to-b from-background/50 via-muted/40 to-muted">
+    <section id="features" className="pt-20 pb-24 relative overflow-hidden bg-gradient-to-b from-background/50 via-muted/40 to-muted -mt-4">
       {/* Diagonal decorative elements */}
       <div className="absolute top-0 right-0 w-1/3 h-full bg-primary/5 transform skew-x-12" />
       <div className="absolute bottom-0 left-0 w-1/4 h-2/3 bg-secondary/5 transform -skew-x-12" />
       
       <div className="container mx-auto px-4 relative z-10">
         {/* Centered title with unique styling */}
-        <div className="text-center mb-20 space-y-6 animate-fade-in">
+        <div className="text-center mb-16 space-y-4 animate-fade-in">
           <h2 className="text-6xl lg:text-7xl font-black">
             <span className="inline-block transform -rotate-2">Why</span>{" "}
             <span className="inline-block text-primary transform rotate-2">BoostWhats</span>

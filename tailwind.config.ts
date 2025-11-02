@@ -1,9 +1,11 @@
 import type { Config } from "tailwindcss";
+import tailwindScrollbar from 'tailwind-scrollbar';
 
 export default {
   darkMode: ["class"],
   content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
   prefix: "",
+  plugins: [tailwindScrollbar],
   theme: {
     fontFamily: {
       sans: ['Poppins', 'sans-serif'],

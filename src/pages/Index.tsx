@@ -4,6 +4,7 @@ import HowItWorks from "@/components/HowItWorks";
 import SubmissionForm from "@/components/SubmissionForm";
 import { FAQSection } from "@/components/FAQSection";
 import Footer from "@/components/Footer";
+import StatsBanner from "@/components/StatsBanner";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import { Link } from 'react-router-dom';
@@ -13,12 +14,16 @@ const Index = () => {
     <>
       <Hero />
       
+      <StatsBanner />
+      
       <Features />
       <HowItWorks />
-      <SubmissionForm />
+      <div className="py-12 md:py-16 relative z-10">
+        <SubmissionForm />
+      </div>
       
       {/* Grow Your Network Section */}
-      <section className="py-16 bg-gradient-to-b from-background to-muted/20">
+      <section className="py-16 bg-gradient-to-b from-background to-muted/20 relative z-10">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="md:w-1/2">
@@ -38,7 +43,7 @@ const Index = () => {
             <div className="md:w-1/2">
               <div className="rounded-xl overflow-hidden shadow-lg">
                 <img 
-                  src="/img/gain-1000+contacts.jpg" 
+                  src="https://res.cloudinary.com/dmxik1gea/image/upload/w_1000/q_auto/f_auto/v1762084957/gain-1000_contacts_dmnb9i.jpg" 
                   alt="Grow your network by 1000+ contacts" 
                   className="w-full h-auto object-cover"
                 />
@@ -48,7 +53,7 @@ const Index = () => {
         </div>
       </section>
 
-      <div className="text-center py-12">
+      <div className="text-center py-12 relative z-10">
         <h3 className="text-2xl font-bold mb-4">Ready to boost your views?</h3>
         <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
           Download our latest contact lists to start growing your WhatsApp status views
@@ -60,8 +65,12 @@ const Index = () => {
           </Link>
         </Button>
       </div>
-      <FAQSection />
-      <Footer />
+      <div className="relative z-10">
+        <FAQSection />
+      </div>
+      <div className="relative z-20 mt-auto">
+        <Footer />
+      </div>
     </>
   );
 };

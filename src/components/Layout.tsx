@@ -71,9 +71,9 @@ const Layout = ({ children }: LayoutProps) => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background flex flex-col overflow-x-hidden">
+    <div className="min-h-screen bg-background flex flex-col overflow-x-hidden relative">
       <NewNavbar />
-      <main className="flex-1 relative">
+      <main className="flex-1 relative z-10">
         {children}
 
         {/* Enhanced Large Text Overlay - Reveals on scroll up from footer */}
@@ -84,7 +84,7 @@ const Layout = ({ children }: LayoutProps) => {
             bottom: '20px',
             left: '50%',
             transform: 'translateX(-50%) translateY(60px)',
-            zIndex: 0,
+            zIndex: 1, // Increased z-index slightly
             pointerEvents: 'none',
             userSelect: 'none',
             textAlign: 'center',
@@ -94,7 +94,9 @@ const Layout = ({ children }: LayoutProps) => {
             width: '100%',
             maxWidth: '1400px',
             padding: '0 20px',
-            boxSizing: 'border-box'
+            boxSizing: 'border-box',
+            mixBlendMode: 'multiply',
+            filter: 'blur(0.5px)'
           }}
         >
           <div
@@ -140,8 +142,8 @@ const Layout = ({ children }: LayoutProps) => {
         {/* Sophisticated Background Pattern */}
         <div className="fixed inset-0 pointer-events-none z-0">
           <div className="absolute inset-0 bg-gradient-to-br from-transparent via-emerald-500/5 to-transparent dark:from-transparent dark:via-transparent dark:to-transparent"></div>
-          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-radial opacity-30 dark:opacity-0"></div>
-          <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-radial opacity-20 dark:opacity-0"></div>
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-radial opacity-10 dark:opacity-0"></div>
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-radial opacity-10 dark:opacity-0"></div>
         </div>
       </main>
     </div>
