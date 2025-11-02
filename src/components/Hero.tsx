@@ -404,12 +404,12 @@ const Hero = () => {
               style={{ pointerEvents: isFlipped ? 'none' : 'auto' }}
             >
               <motion.div 
-                className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center"
+                className="grid grid-cols-2 gap-4 sm:gap-6 lg:gap-12 items-center"
                 style={{ y: contentY }}
               >
                 {/* Left Content */}
                 <motion.div
-                  className="space-y-6 text-white order-2 lg:order-1"
+                  className="space-y-3 sm:space-y-4 lg:space-y-6 text-white"
                   initial={{ opacity: 0, x: -50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.8, ease: "easeOut" }}
@@ -427,7 +427,7 @@ const Hero = () => {
 
                   {/* Main Heading */}
                   <motion.h1
-                    className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight"
+                    className="text-2xl sm:text-4xl lg:text-6xl xl:text-7xl font-bold leading-tight"
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3, duration: 0.8 }}
@@ -440,7 +440,7 @@ const Hero = () => {
 
                   {/* Subheading */}
                   <motion.p
-                    className="text-lg sm:text-xl lg:text-2xl text-gray-200 max-w-2xl leading-relaxed"
+                    className="text-sm sm:text-lg lg:text-2xl text-gray-200 max-w-2xl leading-relaxed"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
@@ -453,7 +453,7 @@ const Hero = () => {
 
                   {/* CTA Buttons */}
                   <motion.div
-                    className="flex flex-col sm:flex-row gap-4 pt-4"
+                    className="flex flex-col gap-2 sm:flex-row sm:gap-4 pt-2 sm:pt-4"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.7 }}
@@ -467,7 +467,7 @@ const Hero = () => {
                         onClick={handleFlip}
                         onFocus={() => setFocusedButton('cta-button')}
                         onBlur={() => setFocusedButton(null)}
-                        className="group relative overflow-hidden bg-white hover:bg-white/90 text-primary font-semibold text-lg px-8 py-6 rounded-full transition-all duration-300 min-h-[56px] shadow-xl hover:shadow-2xl"
+                        className="group relative overflow-hidden bg-white hover:bg-white/90 text-primary font-semibold text-sm sm:text-lg px-4 py-3 sm:px-8 sm:py-6 rounded-full transition-all duration-300 min-h-[48px] sm:min-h-[56px] shadow-xl hover:shadow-2xl"
                         aria-label="Open contact form to boost your WhatsApp status views"
                       >
                         <span className="relative z-10 flex items-center gap-2">
@@ -489,7 +489,7 @@ const Hero = () => {
                       <Button
                         variant="outline"
                         size="lg"
-                        className="group font-semibold text-lg px-8 py-6 rounded-full border-2 border-white/30 hover:border-white/50 hover:bg-white/10 text-white backdrop-blur-sm transition-all min-h-[56px]"
+                        className="group font-semibold text-sm sm:text-lg px-4 py-3 sm:px-8 sm:py-6 rounded-full border-2 border-white/30 hover:border-white/50 hover:bg-white/10 text-white backdrop-blur-sm transition-all min-h-[48px] sm:min-h-[56px]"
                         aria-label="Learn how the WhatsApp growth platform works"
                       >
                         <Play className="mr-2 w-5 h-5" />
@@ -500,7 +500,7 @@ const Hero = () => {
 
                   {/* Stats */}
                   <motion.div
-                    className="flex flex-wrap gap-6 pt-8"
+                    className="flex flex-wrap gap-3 sm:gap-6 pt-4 sm:pt-8"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.9 }}
@@ -511,10 +511,10 @@ const Hero = () => {
                       { value: "500%", label: "Avg. Growth" },
                     ].map((stat, index) => (
                       <div key={index} className="text-center">
-                        <div className="text-2xl sm:text-3xl font-bold text-white">
+                        <div className="text-lg sm:text-2xl lg:text-3xl font-bold text-white">
                           {stat.value}
                         </div>
-                        <div className="text-sm text-gray-300">{stat.label}</div>
+                        <div className="text-xs sm:text-sm text-gray-300">{stat.label}</div>
                       </div>
                     ))}
                   </motion.div>
@@ -522,14 +522,14 @@ const Hero = () => {
 
                 {/* Right Image - Fixed */}
                 <motion.div
-                  className="relative order-1 lg:order-2 flex items-center justify-center lg:justify-end"
+                  className="relative flex items-center justify-center lg:justify-end"
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.4, duration: 0.8 }}
                 >
-                  <div className="relative w-full max-w-md lg:max-w-lg">
+                  <div className="relative w-full max-w-[200px] sm:max-w-sm lg:max-w-lg">
                     {/* Glow Effect */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-accent/30 rounded-full blur-3xl opacity-50" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-accent/30 rounded-full blur-2xl sm:blur-3xl opacity-50" />
                     
                     {/* Image */}
                     <motion.img
