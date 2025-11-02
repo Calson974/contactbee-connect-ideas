@@ -9,7 +9,7 @@ const stats = [
 
 const StatsBanner = () => {
   return (
-    <div className="bg-gradient-to-r from-primary/5 via-background to-secondary/5 py-8 border-y border-border/50">
+    <div className="bg-gradient-to-r from-primary/5 via-background to-secondary/5 py-6 border-y border-border/50">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {stats.map((stat, index) => (
