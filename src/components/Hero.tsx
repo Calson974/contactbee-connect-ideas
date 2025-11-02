@@ -527,7 +527,7 @@ const Hero = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.4, duration: 0.8 }}
                 >
-                  <div className="relative w-full max-w-[200px] sm:max-w-sm lg:max-w-lg">
+                  <div className="relative w-full max-w-sm lg:max-w-lg">
                     {/* Glow Effect */}
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-accent/30 rounded-full blur-2xl sm:blur-3xl opacity-50" />
                     
@@ -536,14 +536,6 @@ const Hero = () => {
                       src="https://res.cloudinary.com/dmxik1gea/image/upload/w_1000/q_auto/f_auto/v1762084953/excited-lady_tektkt.png"
                       alt="Professional woman excited about WhatsApp growth"
                       className="relative z-10 w-full h-auto drop-shadow-2xl"
-                      animate={{
-                        y: [0, -10, 0],
-                      }}
-                      transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                      }}
                     />
                   </div>
                 </motion.div>
