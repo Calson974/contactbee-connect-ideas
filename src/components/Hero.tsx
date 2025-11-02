@@ -349,27 +349,26 @@ const Hero = () => {
       <section 
         ref={containerRef} 
         id="home" 
-        className="relative w-full flex items-center justify-center overflow-hidden"
+        className="relative w-full min-h-[90vh] flex items-center justify-center overflow-hidden"
         role="main"
         aria-label="Hero section with WhatsApp status growth information"
       >
-        {/* Fixed Background Image */}
+        {/* Background Image */}
         <div 
-          className="fixed inset-0 w-full h-full"
+          className="absolute inset-0 w-full h-full"
           style={{
             backgroundImage: "url('https://res.cloudinary.com/dmxik1gea/image/upload/w_1000/q_auto/f_auto/v1762084948/greenbackground_wzknn8.jpg')",
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
-            backgroundAttachment: 'fixed',
           }}
         />
         
         {/* Gradient Overlay */}
-        <div className="fixed inset-0 bg-gradient-to-br from-black/60 via-black/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-transparent" />
 
         {/* Animated Background Elements */}
-        <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <motion.div 
             className="absolute -top-40 -right-40 w-96 h-96 bg-primary/20 rounded-full mix-blend-overlay filter blur-3xl"
             animate={{ 
@@ -561,7 +560,7 @@ const Hero = () => {
                 zIndex: isFlipped ? 40 : -1,
               }}
             >
-              <div className="w-full h-full py-20 flex items-center justify-center">
+              <div className="w-full h-full flex items-center justify-center">
                 <ContactForm onBack={handleFlip} />
               </div>
             </motion.div>
