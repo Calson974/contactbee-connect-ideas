@@ -191,7 +191,7 @@ const ContactForm = ({
       </div>
       
       {/* Submit button - fixed outside scrollable area */}
-      <div className="p-6 pt-4 border-t border-border/50 bg-card/80 backdrop-blur-sm">
+      <div className="p-6 pt-4 border-t border-border/50 bg-card/80">
         <Button type="submit" form="contact-form" className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90" disabled={isSubmitting}>
           {isSubmitting ? 'Submitting...' : 'Submit Entry'}
         </Button>
