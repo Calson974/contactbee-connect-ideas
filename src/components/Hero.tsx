@@ -203,14 +203,7 @@ const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [focusedButton, setFocusedButton] = useState<string | null>(null);
 
-  // Parallax scroll effect
-  const {
-    scrollYProgress
-  } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"]
-  });
-  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  // Removed parallax effect to prevent stretching and gaps
 
   // Optimize flip animation with better performance
   const handleFlip = useCallback((e: React.MouseEvent | React.TouchEvent | React.KeyboardEvent) => {
@@ -246,7 +239,7 @@ const Hero = () => {
         <meta name="description" content="Tired of the same 50 status views? Join thousands growing their WhatsApp audience by 1000+ contacts through our shared contact pool. Start boosting your reach today!" />
       </Helmet>
       
-      <section ref={containerRef} id="home" className="relative w-full min-h-[90vh] flex items-center justify-center overflow-hidden" role="main" aria-label="Hero section with WhatsApp status growth information">
+      <section ref={containerRef} id="home" className="relative w-full h-screen flex items-center justify-center overflow-hidden" role="main" aria-label="Hero section with WhatsApp status growth information">
         {/* Background Image */}
         <div className="absolute inset-0 w-full h-full" style={{
         backgroundImage: "url('https://res.cloudinary.com/dmxik1gea/image/upload/w_1000/q_auto/f_auto/v1762084948/greenbackground_wzknn8.jpg')",
@@ -294,9 +287,7 @@ const Hero = () => {
           }} style={{
             pointerEvents: isFlipped ? 'none' : 'auto'
           }}>
-              <motion.div className="grid grid-cols-2 gap-4 sm:gap-6 lg:gap-12 items-center" style={{
-              y: contentY
-            }}>
+              <motion.div className="grid grid-cols-2 gap-4 sm:gap-6 lg:gap-12 items-center">
                 {/* Left Content */}
                 <motion.div className="space-y-3 sm:space-y-4 lg:space-y-6 text-white" initial={{
                 opacity: 0,
