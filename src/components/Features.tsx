@@ -41,7 +41,7 @@ const Features = () => {
   ];
 
   return (
-    <section id="features" className="pt-8 pb-24 relative overflow-hidden bg-gradient-to-b from-background/50 via-muted/40 to-muted -mt-12">
+    <section id="features" className="pt-20 pb-24 relative overflow-hidden bg-gradient-to-b from-background/50 via-muted/40 to-muted -mt-4">
       {/* Diagonal decorative elements */}
       <div className="absolute top-0 right-0 w-1/3 h-full bg-primary/5 transform skew-x-12" />
       <div className="absolute bottom-0 left-0 w-1/4 h-2/3 bg-secondary/5 transform -skew-x-12" />
