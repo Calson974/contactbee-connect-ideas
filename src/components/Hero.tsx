@@ -273,7 +273,7 @@ const Hero = () => {
         </div>
 
         {/* Content Container */}
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-4 py-2 flex items-center rounded-none h-full max-h-[100vh]">
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-4 py-4 flex items-center rounded-none h-full">
           <motion.div className="flip-container w-full" data-flipped={isFlipped} style={{
           touchAction: 'manipulation'
         }}>
@@ -287,9 +287,9 @@ const Hero = () => {
           }} style={{
             pointerEvents: isFlipped ? 'none' : 'auto'
           }}>
-              <motion.div className="grid grid-cols-2 gap-3 sm:gap-4 lg:gap-8 items-center">
+              <motion.div className="grid grid-cols-2 gap-4 sm:gap-6 lg:gap-12 items-center">
                 {/* Left Content */}
-                <motion.div className="space-y-2 sm:space-y-3 lg:space-y-4 text-white" initial={{
+                <motion.div className="space-y-3 sm:space-y-4 lg:space-y-6 text-white" initial={{
                 opacity: 0,
                 x: -50
               }} animate={{
@@ -348,7 +348,7 @@ const Hero = () => {
                   </motion.p>
 
                   {/* CTA Buttons */}
-                  <motion.div className="flex flex-col gap-2 sm:flex-row sm:gap-3 pt-1 sm:pt-2" initial={{
+                  <motion.div className="flex flex-col gap-2 sm:flex-row sm:gap-4 pt-2 sm:pt-4" initial={{
                   opacity: 0,
                   y: 20
                 }} animate={{
@@ -390,7 +390,7 @@ const Hero = () => {
                   </motion.div>
 
                   {/* Stats */}
-                  <motion.div className="flex flex-wrap gap-2 sm:gap-4 pt-2 sm:pt-4" initial={{
+                  <motion.div className="flex flex-wrap gap-3 sm:gap-6 pt-4 sm:pt-8" initial={{
                   opacity: 0
                 }} animate={{
                   opacity: 1
