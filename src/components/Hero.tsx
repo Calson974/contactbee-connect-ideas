@@ -203,7 +203,14 @@ const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [focusedButton, setFocusedButton] = useState<string | null>(null);
 
-  // Removed parallax scroll effect to keep content fixed
+  // Parallax scroll effect
+  const {
+    scrollYProgress
+  } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  });
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
 
   // Optimize flip animation with better performance
   const handleFlip = useCallback((e: React.MouseEvent | React.TouchEvent | React.KeyboardEvent) => {
@@ -287,7 +294,9 @@ const Hero = () => {
           }} style={{
             pointerEvents: isFlipped ? 'none' : 'auto'
           }}>
-              <motion.div className="grid grid-cols-2 gap-4 sm:gap-6 lg:gap-12 items-center">
+              <motion.div className="grid grid-cols-2 gap-4 sm:gap-6 lg:gap-12 items-center" style={{
+              y: contentY
+            }}>
                 {/* Left Content */}
                 <motion.div className="space-y-3 sm:space-y-4 lg:space-y-6 text-white" initial={{
                 opacity: 0,
