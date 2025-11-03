@@ -246,7 +246,7 @@ const Hero = () => {
         <meta name="description" content="Tired of the same 50 status views? Join thousands growing their WhatsApp audience by 1000+ contacts through our shared contact pool. Start boosting your reach today!" />
       </Helmet>
       
-      <section ref={containerRef} id="home" className="relative w-full h-[100vh] flex items-center justify-center overflow-hidden" role="main" aria-label="Hero section with WhatsApp status growth information">
+      <section ref={containerRef} id="home" className="relative w-full min-h-[90vh] flex items-center justify-center overflow-hidden" role="main" aria-label="Hero section with WhatsApp status growth information">
         {/* Background Image */}
         <div className="absolute inset-0 w-full h-full" style={{
         backgroundImage: "url('https://res.cloudinary.com/dmxik1gea/image/upload/w_1000/q_auto/f_auto/v1762084948/greenbackground_wzknn8.jpg')",
@@ -280,7 +280,7 @@ const Hero = () => {
         </div>
 
         {/* Content Container */}
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-4 py-4 flex items-center rounded-none h-full">
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-4 pt-20 pb-8 flex items-center rounded-none">
           <motion.div className="flip-container w-full" data-flipped={isFlipped} style={{
           touchAction: 'manipulation'
         }}>
