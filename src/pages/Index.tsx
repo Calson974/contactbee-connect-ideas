@@ -1,76 +1,205 @@
-import Hero from "@/components/Hero";
-import Features from "@/components/Features";
-import HowItWorks from "@/components/HowItWorks";
-import SubmissionForm from "@/components/SubmissionForm";
-import { FAQSection } from "@/components/FAQSection";
-import Footer from "@/components/Footer";
-import StatsBanner from "@/components/StatsBanner";
+import HeroModern from "@/components/HeroModern";
+import FeaturesNew from "@/components/FeaturesNew";
+import HowItWorksNew from "@/components/HowItWorksNew";
+import SubmissionFormNew from "@/components/SubmissionFormNew";
+import FAQSectionNew from "@/components/FAQSectionNew";
+import FooterNew from "@/components/FooterNew";
+import StatsBannerNew from "@/components/StatsBannerNew";
 import { Button } from "@/components/ui/button";
-import { Download } from "lucide-react";
+import { Download, Sparkles, TrendingUp, Users } from "lucide-react";
 import { Link } from 'react-router-dom';
+import { motion } from "framer-motion";
 
+// Main landing page
 const Index = () => {
   return (
     <>
-      <Hero />
+      <HeroModern />
       
-      <StatsBanner />
+      <StatsBannerNew />
       
-      <Features />
-      <HowItWorks />
-      <div className="py-12 md:py-16 relative z-10">
-        <SubmissionForm />
-      </div>
+      <FeaturesNew />
+      <HowItWorksNew />
       
-      {/* Grow Your Network Section */}
-      <section className="py-16 bg-gradient-to-b from-background to-muted/20 relative z-10">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center gap-8">
-            <div className="md:w-1/2">
-              <h2 className="text-3xl font-bold mb-4">Grow Your Network Exponentially</h2>
-              <p className="text-muted-foreground mb-6">
-                Join thousands of professionals who have already expanded their network by 1000+ contacts. 
+      <SubmissionFormNew />
+      
+      {/* Grow Your Network Section - Modernized */}
+      <section className="relative py-16 lg:py-24 overflow-hidden bg-gradient-to-br from-teal/5 via-blue-whatsapp/5 to-green-light/5 dark:from-teal-dark/10 dark:via-teal/5 dark:to-blue-whatsapp/10">
+        {/* Background Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-teal/10 dark:bg-teal/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-whatsapp/10 dark:bg-blue-whatsapp/5 rounded-full blur-3xl" />
+        </div>
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left Content */}
+            <motion.div
+              className="space-y-6"
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal/10 dark:bg-teal/20 border border-teal/20 dark:border-teal/30">
+                <TrendingUp className="w-4 h-4 text-teal dark:text-green-light" />
+                <span className="text-sm font-semibold text-teal dark:text-green-light">Exponential Growth</span>
+              </div>
+
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 dark:text-white leading-tight">
+                Grow Your Network{" "}
+                <span className="bg-gradient-to-r from-green-600 to-blue-whatsapp-600 dark:from-green-400 dark:to-blue-whatsapp-400 bg-clip-text text-transparent">
+                  Exponentially
+                </span>
+              </h2>
+
+              <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+                Join thousands of professionals who have already expanded their network by{" "}
+                <span className="font-bold text-green-600 dark:text-green-400">1000+ contacts</span>. 
                 Our curated contact lists help you connect with like-minded individuals and grow your 
                 professional circle on WhatsApp.
               </p>
-              <Button asChild>
-                <Link to="/downloads" className="gap-2 inline-flex items-center">
-                  <Download className="h-4 w-4" />
-                  Get Started
-                </Link>
-              </Button>
-            </div>
-            <div className="md:w-1/2">
-              <div className="rounded-xl overflow-hidden shadow-lg">
+
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-4 py-4">
+                {[
+                  { value: "1K+", label: "Members", icon: Users },
+                  { value: "1000+", label: "Contacts", icon: TrendingUp },
+                  { value: "Daily", label: "Updates", icon: Sparkles }
+                ].map((stat, index) => (
+                  <motion.div
+                    key={index}
+                    className="text-center"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <div className="inline-flex p-2 rounded-lg bg-gradient-to-br from-green-500 to-blue-whatsapp-500 mb-2">
+                      <stat.icon className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="text-2xl font-black text-gray-900 dark:text-white">{stat.value}</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</div>
+                  </motion.div>
+                ))}
+              </div>
+
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+                <Button 
+                  size="lg" 
+                  className="group relative overflow-hidden bg-green-600 hover:bg-green-700 text-white font-bold transition-all duration-300 shadow-xl hover:shadow-2xl"
+                  asChild
+                >
+                  <Link to="/downloads" className="gap-3 inline-flex items-center">
+                    <Download className="h-5 w-5" />
+                    Download Contact Lists
+                    <motion.span animate={{ x: [0, 5, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+                      →
+                    </motion.span>
+                  </Link>
+                </Button>
+              </motion.div>
+            </motion.div>
+
+            {/* Right Image */}
+            <motion.div
+              className="relative"
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 z-10" />
                 <img 
                   src="https://res.cloudinary.com/dmxik1gea/image/upload/w_1000/q_auto/f_auto/v1762084957/gain-1000_contacts_dmnb9i.jpg" 
                   alt="Grow your network by 1000+ contacts" 
                   className="w-full h-auto object-cover"
                 />
               </div>
-            </div>
+              {/* Floating Badge */}
+              <motion.div
+                className="absolute -top-6 -right-6 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl p-6 shadow-2xl"
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 3, repeat: Infinity }}
+              >
+                <div className="text-white text-center">
+                  <div className="text-3xl font-black">1000+</div>
+                  <div className="text-sm font-semibold">New Contacts</div>
+                </div>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      <div className="text-center py-12 relative z-10">
-        <h3 className="text-2xl font-bold mb-4">Ready to boost your views?</h3>
-        <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-          Download our latest contact lists to start growing your WhatsApp status views
-        </p>
-        <Button asChild size="lg">
-          <Link to="/downloads" className="gap-2 inline-flex items-center">
-            <Download className="h-4 w-4" />
-            Go to Downloads
-          </Link>
-        </Button>
-      </div>
-      <div className="relative z-10">
-        <FAQSection />
-      </div>
-      <div className="relative z-20 mt-auto">
-        <Footer />
-      </div>
+      {/* Ready to Boost Section - Modernized */}
+      <section className="relative py-16 lg:py-20 overflow-hidden bg-gradient-to-br from-purple-600 via-pink-600 to-indigo-600">
+        {/* Pattern Overlay */}
+        <div className="absolute inset-0 dark:opacity-10 opacity-20">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300A884' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }} />
+        </div>
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            className="text-center space-y-8"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <motion.div
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal/20 backdrop-blur-sm border border-teal/40"
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <Sparkles className="w-4 h-4 text-teal-light" />
+              <span className="text-sm font-semibold text-teal-light">Start Today</span>
+            </motion.div>
+
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black bg-gradient-to-r from-teal to-green-light bg-clip-text text-transparent leading-tight">
+              Ready to Boost Your Views?
+            </h2>
+
+            <p className="text-xl text-teal-100/90 max-w-2xl mx-auto leading-relaxed">
+              Download our latest contact lists and start growing your WhatsApp status views instantly
+            </p>
+
+            <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.98 }}>
+              <Button asChild size="lg" className="bg-gradient-to-r from-teal to-green-light hover:from-teal-dark hover:to-teal text-white font-bold text-lg h-16 px-12 rounded-2xl shadow-2xl hover:shadow-teal/30 transition-all duration-300">
+                <Link to="/downloads" className="gap-3 inline-flex items-center">
+                  <Download className="h-6 w-6" />
+                  Go to Downloads
+                  <motion.span animate={{ x: [0, 5, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+                    →
+                  </motion.span>
+                </Link>
+              </Button>
+            </motion.div>
+
+            <div className="flex flex-wrap justify-center gap-8 pt-8 text-white/80 text-sm">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-white rounded-full" />
+                <span>Free to Start</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-white rounded-full" />
+                <span>Daily Updates</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-white rounded-full" />
+                <span>1,000+ Members</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      <FAQSectionNew />
+      
+      <FooterNew />
     </>
   );
 };

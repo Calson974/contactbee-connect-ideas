@@ -1,12 +1,7 @@
-import { Auth } from "@/components/Auth";
-import Layout from "@/components/Layout";
+import { AuthNew } from "@/components/AuthNew";
 
 const AuthPage = () => {
-  return (
-    <Layout>
-      <Auth />
-    </Layout>
-  );
+  return <AuthNew />;
 };
 
 export default AuthPage;

@@ -1,24 +1,69 @@
-# Logs
-logs
-*.log
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# Build files
+/dist
+/dist-ssr
+/.vite
+/build
+
+# Debug logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+.DS_Store
+
+# Documentation
+ALL_PAGES_REDESIGNED.md
+COMPLETE_REDESIGN.md
+
+# Local development
+.cache/
+.temp/
+.tmp/
+
+# Testing
+/coverage
+/cypress/videos/
+/cypress/screenshots/
+
+# Supabase
+/supabase/functions/**/node_modules
+/supabase/.temp
+/supabase/.wrangler
+/supabase/seed.sql
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+*.local
+#DOCUMENTATION
+ALL_PAGES_REDESIGNED.md
+COMPLETE_REDESIGN.md
+
+# Local development
