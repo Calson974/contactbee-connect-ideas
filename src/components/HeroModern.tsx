@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button } from "@/components/ui/button";
+import { Button } from './ui/button';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,6 +10,9 @@ import { Helmet } from 'react-helmet-async';
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { CountrySelect } from "@/components/ui/country-select";
+
+// Local image path
+const ladyImage = '/img/exited-lady-vectored.png';
 
 // Hero section with flip form animation
 const HeroModern = () => {
@@ -346,7 +349,7 @@ const HeroModern = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.4, duration: 0.8 }}
             >
-              <div className="relative w-full max-w-md xl:max-w-lg 2xl:max-w-xl">
+              <div className="relative w-full max-w-md xl:max-w-lg 2xl:max-w-xl mr-8 lg:mr-12">
                 {/* Subtle gradient background */}
                 <div className="absolute -inset-8 md:-inset-12 bg-gradient-to-tr from-teal-500/10 to-emerald-500/10 dark:from-teal-500/5 dark:to-emerald-500/5 rounded-full blur-3xl -z-10" />
                 
@@ -367,16 +370,16 @@ const HeroModern = () => {
                   }}
                 >
                   <img 
-                    src="img/exited-lady-vectored.png" 
+                    src={ladyImage}
                     alt="Professional woman excited about WhatsApp growth" 
                     className="w-full h-auto max-h-[500px] object-contain drop-shadow-2xl"
                     loading="eager"
-                    sizes="(max-width: 768px) 90vw, (max-width: 1280px) 50vw, 40vw"
-                    srcSet="
-                      img/exited-lady-vectored.png 400w,
-                      img/exited-lady-vectored@2x.png 800w,
-                      img/exited-lady-vectored@3x.png 1200w
-                    "
+                    onError={(e) => {
+                      console.error('Error loading image:', e);
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.alt = 'Image not available';
+                      e.currentTarget.className = 'hidden';
+                    }}
                   />
                 </motion.div>
                 
