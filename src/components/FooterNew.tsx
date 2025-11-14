@@ -8,19 +8,19 @@ const FooterNew = () => {
       { name: "Features", href: "#features" },
       { name: "How It Works", href: "#how-it-works" },
       { name: "Downloads", href: "/downloads" },
-      { name: "Pricing", href: "#home" }
+      { name: "Pricing", href: "#pricing" }
     ],
     company: [
-      { name: "About Us", href: "#home" },
-      { name: "Contact", href: "#home" },
+      { name: "About Us", href: "#about" },
+      { name: "Contact", href: "#contact" },
       { name: "FAQ", href: "#faq" },
-      { name: "Support", href: "#home" }
+      { name: "Support", href: "mailto:support@boostwhats.com" }
     ],
     legal: [
-      { name: "Privacy Policy", href: "#home" },
-      { name: "Terms of Service", href: "#home" },
-      { name: "Cookie Policy", href: "#home" },
-      { name: "Disclaimer", href: "#home" }
+      { name: "Privacy Policy", href: "/legal/privacy" },
+      { name: "Terms of Service", href: "/legal/terms" },
+      { name: "Cookie Policy", href: "/legal/cookies" },
+      { name: "Acceptable Use", href: "/legal/acceptable-use" }
     ]
   };
 
@@ -32,12 +32,17 @@ const FooterNew = () => {
   ];
 
   return (
-    <footer className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-teal-950 to-teal-900 text-white">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 overflow-hidden dark:opacity-10 opacity-20">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300A884' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-        }} />
+    <footer className="relative overflow-hidden text-white">
+      {/* Background Image */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center" 
+          style={{
+            backgroundImage: 'url("/img/footer background .png")',
+            opacity: 0.9
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900/90 via-teal-950/90 to-teal-900/90" />
       </div>
 
       {/* Gradient Orbs */}
@@ -130,13 +135,24 @@ const FooterNew = () => {
                 <ul className="space-y-3">
                   {links.map((link, index) => (
                     <li key={index}>
-                      <a
-                        href={link.href}
-                        className="text-gray-400 hover:text-teal-light transition-colors"
-                        aria-label={link.name}
-                      >
-                        {link.name}
-                      </a>
+                      {link.href.startsWith('http') || link.href.startsWith('mailto') ? (
+                        <a
+                          href={link.href}
+                          className="text-gray-400 hover:text-teal-light transition-colors"
+                          aria-label={link.name}
+                          {...(link.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                        >
+                          {link.name}
+                        </a>
+                      ) : (
+                        <Link
+                          to={link.href}
+                          className="text-gray-400 hover:text-teal-light transition-colors"
+                          aria-label={link.name}
+                        >
+                          {link.name}
+                        </Link>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -153,24 +169,27 @@ const FooterNew = () => {
           viewport={{ once: true }}
         >
           <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm border border-white/10 rounded-2xl p-6 lg:p-8">
-            <div className="grid md:grid-cols-2 gap-6 items-center">
-              <div>
-                <div className="flex items-center gap-2 mb-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
+              <div className="text-center sm:text-left">
+                <div className="flex items-center justify-center sm:justify-start gap-2 mb-2">
                   <Sparkles className="w-5 h-5 text-purple-400" />
                   <h3 className="text-xl font-bold">Stay Updated</h3>
                 </div>
-                <p className="text-gray-300">
+                <p className="text-gray-300 text-sm sm:text-base">
                   Get the latest updates and tips to grow your WhatsApp audience
                 </p>
               </div>
-              <div className="flex gap-3">
+              <div className="flex flex-col sm:flex-row gap-3 w-full">
                 <input
                   type="email"
                   placeholder="Enter your email"
-                  className="flex-1 px-4 py-3 rounded-xl bg-white/5 border border-white/10 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm sm:text-base"
                 />
-                <Link to="/downloads" className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-teal hover:bg-teal-dark text-white font-medium shadow-lg hover:shadow-xl transition-all duration-300">
-                  Get Started for Free
+                <Link 
+                  to="/downloads" 
+                  className="group inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-3 rounded-full bg-teal hover:bg-teal-dark text-white font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-sm sm:text-base whitespace-nowrap"
+                >
+                  Get Started
                   <span className="group-hover:translate-x-1 transition-transform">
                     <Sparkles className="w-4 h-4" />
                   </span>
@@ -187,15 +206,15 @@ const FooterNew = () => {
               Made with <Heart className="inline w-4 h-4 text-teal" /> by BoostWhats Team
             </p>
             <div className="flex items-center gap-4 mt-4 md:mt-0">
-              <a href="#" className="text-sm text-gray-400 hover:text-teal-light transition-colors">
+              <Link to="/legal/privacy" className="text-sm text-gray-400 hover:text-teal-light transition-colors">
                 Privacy Policy
-              </a>
+              </Link>
               <span className="text-teal/50">•</span>
-              <a href="#" className="text-sm text-gray-400 hover:text-teal-light transition-colors">
+              <Link to="/legal/terms" className="text-sm text-gray-400 hover:text-teal-light transition-colors">
                 Terms of Service
-              </a>
+              </Link>
               <span className="text-teal/50">•</span>
-              <a href="#" className="text-sm text-gray-400 hover:text-teal-light transition-colors">
+              <a href="mailto:support@boostwhats.com" className="text-sm text-gray-400 hover:text-teal-light transition-colors">
                 Contact Us
               </a>
             </div>

@@ -12,27 +12,23 @@ const FAQSectionNew = () => {
     },
     {
       question: "Is it really free to join?",
-      answer: "Yes! We offer a completely free plan that allows you to participate in the contact sharing pool. The free plan limits your name to 8 characters in the vCard. We also offer a premium plan with additional features like unlimited name length, priority placement, and extended contact information fields."
+      answer: "Yes! We offer a completely free Personal plan that allows you to participate in the contact sharing pool. The Personal plan limits your name to 8 characters in the vCard. We also offer a Business plan with additional features like unlimited name length, priority placement, and extended contact information fields."
     },
     {
       question: "How many contacts will I get?",
-      answer: "Our growing community has over 1,000 active members! You'll receive a daily vCard file containing hundreds of verified contacts. The number grows every day as more people join. Most members see their status views increase from around 50 to over 500 within the first week."
-    },
-    {
-      question: "Is my data safe and private?",
-      answer: "Absolutely! We take privacy seriously. Your contact information is only shared within our closed community of members who have also voluntarily submitted their details. We use bank-level encryption and never sell or share your data with third parties. You have full control and can request removal at any time."
+      answer: "Our growing community has over 1,000 active members! You'll receive a daily vCard file containing verified contacts. The number grows every day as more people join. Most members see their status views increase from around 50 to over 500 within the first week of consistently submiting their contacts daily."
     },
     {
       question: "How often are the contact lists updated?",
-      answer: "Contact lists are compiled and updated daily! Every day at midnight (UTC), we generate a fresh vCard file with all the new submissions from that day. This ensures you always have access to the most current and active community members."
+      answer: "Contact lists are compiled and updated daily! Every day at 9:00PM (UTC), we generate a fresh vCard file with all the new submissions from that day. This ensures you always have access to the most current and active community members."
     },
     {
       question: "Can I remove my contact later?",
-      answer: "Yes, you can request removal at any time. Simply contact our support team through the admin portal, and we'll remove your information from future compilations. However, please note that contacts already distributed in previous vCard files cannot be recalled from users who have already downloaded them."
+      answer: "No, please note that contacts submited and already distributed in previous vCard files cannot be recalled from users who have already downloaded them."
     },
     {
-      question: "What's the difference between Free and Premium?",
-      answer: "The Free plan limits your display name to 8 characters and includes basic contact info (name, phone, country). The Premium plan offers unlimited name length, all optional fields (company, email, job title, website, custom fields), priority placement in the contact list, and enhanced visibility to other members."
+      question: "What's the difference between Personal and Proffessional?",
+      answer: "The Personal plan limits your display name to 8 characters and includes basic contact info (name, phone, country). The Proffessiona plan offers unlimited name length, all optional fields (company, email, job title, website, custom fields), priority placement in the contact list, and enhanced visibility to other members."
     },
     {
       question: "Will this work on iPhone and Android?",

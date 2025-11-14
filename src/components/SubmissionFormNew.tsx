@@ -114,8 +114,25 @@ const SubmissionFormNew = () => {
   };
 
   return (
-    <section className="relative py-16 lg:py-24 overflow-hidden bg-gradient-to-b from-white via-teal-50/30 to-white dark:from-gray-950 dark:via-teal-900/20 dark:to-gray-950">
-      {/* Background Decoration */}
+    <section className="relative py-16 lg:py-24 overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <div 
+          className="w-full h-full"
+          style={{
+            backgroundImage: `url('/img/green-abstract-patterns.png')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            opacity: 0.1
+          }}
+        />
+      </div>
+      
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-teal-50/60 to-white/90 dark:from-gray-950/95 dark:via-teal-900/20 dark:to-gray-950/95" />
+      
+      {/* Decorative Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 right-0 w-96 h-96 bg-teal-300/20 dark:bg-teal-600/10 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-green-300/20 dark:bg-green-600/10 rounded-full blur-3xl" />
@@ -130,13 +147,7 @@ const SubmissionFormNew = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <motion.div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-teal-100 to-green-100 dark:from-teal-900/30 dark:to-green-900/30 border border-teal-200 dark:border-teal-800"
-            whileHover={{ scale: 1.05 }}
-          >
-            <Sparkles className="w-4 h-4 text-teal-600 dark:text-teal-400" />
-            <span className="text-sm font-semibold text-teal-600 dark:text-teal-400">Join the Community</span>
-          </motion.div>
+          
 
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 dark:text-white">
             Submit Your{" "}
@@ -168,25 +179,23 @@ const SubmissionFormNew = () => {
 
         {/* Form Card */}
         <motion.div
-          className="max-w-3xl mx-auto"
+          className="max-w-3xl mx-auto relative overflow-hidden rounded-3xl shadow-2xl bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200/50 dark:border-gray-800/50"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <div className="relative bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl rounded-3xl border border-gray-200/50 dark:border-gray-800/50 shadow-2xl p-8 lg:p-12">
-            {/* Gradient Accent */}
-            <div className="absolute inset-0 bg-gradient-to-br from-teal/5 to-green-light/5 rounded-3xl pointer-events-none" />
+          <div className="relative p-8 lg:p-12">
 
             {/* Plan Type Selector */}
             <div className="relative mb-8 space-y-4">
               <Label className="text-lg font-bold text-gray-900 dark:text-white">
-                Choose Your Plan
+                Choose Your Use Case
               </Label>
               <div className="grid sm:grid-cols-2 gap-4">
                 {[
-                  { value: "free", title: "Free Plan", desc: "Name limited to 8 characters" },
-                  { value: "premium", title: "Premium Plan", desc: "Full name & all features" }
+                  { value: "free", title: "Personal", desc: "Name limited to 8 characters" },
+                  { value: "premium", title: "Proffessional", desc: "Full name & all features" }
                 ].map((plan) => (
                   <motion.button
                     key={plan.value}
@@ -215,7 +224,10 @@ const SubmissionFormNew = () => {
             </div>
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-6 relative">
+            <form 
+              onSubmit={handleSubmit} 
+              className="space-y-6 relative"
+            >
               {/* Name */}
               <div className="space-y-2">
                 <Label htmlFor="name" className="text-base font-semibold text-gray-900 dark:text-white">

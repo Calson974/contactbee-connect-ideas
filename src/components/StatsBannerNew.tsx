@@ -7,30 +7,30 @@ const StatsBannerNew = () => {
       icon: Users, 
       value: "500+", 
       label: "Active Members",
-      gradient: "from-teal to-green-light"
+      gradient: "from-[#26A532] to-[#33E86A]"
     },
     { 
       icon: MessageSquare, 
       value: "5K+", 
       label: "Daily Messages",
-      gradient: "from-blue-whatsapp to-cyan-400"
+      gradient: "from-[#26A532] to-[#33E86A]"
     },
     { 
       icon: TrendingUp, 
       value: "150%", 
       label: "Engagement Growth",
-      gradient: "from-green-light to-green-400"
+      gradient: "from-[#26A532] to-[#33E86A]"
     },
     { 
       icon: Globe, 
       value: "30+", 
       label: "Countries",
-      gradient: "from-teal-dark to-teal"
+      gradient: "from-[#26A532] to-[#33E86A]"
     },
   ];
 
   return (
-    <section className="relative py-16 lg:py-20 overflow-hidden bg-gradient-to-br from-teal-dark via-teal to-teal-light dark:from-teal-dark/90 dark:via-teal/80 dark:to-teal-light/80">
+    <section className="relative py-16 lg:py-20 overflow-hidden bg-gradient-to-br from-[#1B7A24] via-[#26A532] to-[#33E86A] dark:from-[#1B7A24]/90 dark:via-[#26A532]/80 dark:to-[#33E86A]/80">
       {/* Animated Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{

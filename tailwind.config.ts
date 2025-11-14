@@ -12,9 +12,9 @@ export default {
       heading: ['"Climate Crisis"', 'sans-serif'],
     },
     colors: {
-      'teal': '#00A884',
-      'teal-dark': '#128C7E',
-      'green-light': '#25D366',
+      'teal': '#26A532',
+      'teal-dark': '#1E8A29',
+      'green-light': '#26A532',
       'blue-whatsapp': '#34B7F1',
       'background': '#F0F2F5',
       'text-primary': '#41525D',

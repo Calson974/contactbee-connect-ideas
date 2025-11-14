@@ -17,20 +17,7 @@ const FeaturesNew = () => {
       gradient: "from-teal-dark to-teal",
       stats: "1K+ members",
     },
-    {
-      icon: TrendingUp,
-      title: "Track & Optimize",
-      description: "Monitor your growth with powerful real-time analytics and insights to maximize your reach daily.",
-      gradient: "from-green-light to-teal",
-      stats: "Real-time data",
-    },
-    {
-      icon: Shield,
-      title: "Enterprise Security",
-      description: "Your data is protected with bank-level encryption. We never share your information with anyone.",
-      gradient: "from-blue-whatsapp to-teal",
-      stats: "100% secure",
-    },
+    
     {
       icon: Zap,
       title: "Lightning Fast",
@@ -52,8 +39,7 @@ const FeaturesNew = () => {
     "Grow your audience 5x faster than traditional methods",
     "100% automated - set it and forget it",
     "24/7 customer support",
-    "Cancel anytime, no questions asked",
-    "Trusted by 1,000+ users",
+
   ];
 
   return (
@@ -159,7 +145,9 @@ const FeaturesNew = () => {
               </div>
 
               <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">
-                Join 1,000+ users growing their WhatsApp status views
+                Join 1,000+ users growing their <span className="text-teal dark:text-green-light">
+              {" "}WhatsApp status views
+            </span>
               </h3>
 
               <p className="text-lg text-purple-100 leading-relaxed">
@@ -189,9 +177,7 @@ const FeaturesNew = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl">
-            Our platform provides all the tools and features you need to grow your WhatsApp status views and expand your network like never before.
-          </p>
+
           <div className="flex flex-col sm:flex-row gap-4 mt-8">
             <button className="px-6 py-3 bg-teal hover:bg-teal-dark text-white font-medium rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl">
               Get Started Now

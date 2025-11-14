@@ -8,14 +8,14 @@ const HowItWorksNew = () => {
       title: "Submit Your Contact",
       description: "Fill out our simple form with your WhatsApp contact details. Takes less than 2 minutes!",
       color: "from-teal to-blue-whatsapp",
-      details: ["Quick registration", "No credit card required", "Instant activation"]
+      details: ["Select your use case, could be Personal or Proffessional.", "Fill in your information", "Submit your information"]
     },
     {
       icon: Download,
       title: "Download Contact Pool",
       description: "Get access to our daily-updated vCard file containing hundreds of active community members.",
       color: "from-teal-dark to-teal",
-      details: ["Daily updates", "Verified contacts", "Easy import"]
+      details: ["Daily updates at 9:00PM", "Verified contacts", "Easy import"]
     },
     {
       icon: Users,
@@ -29,7 +29,7 @@ const HowItWorksNew = () => {
       title: "Watch Growth Happen",
       description: "Post your status and watch your views multiply as hundreds see your content organically.",
       color: "from-green-light to-teal",
-      details: ["Exponential reach", "Real engagement", "Track progress"]
+      details: ["Exponential reach", "Real engagement", "Submiting your contact daily increases your chances of growing faster."]
     },
   ];
 
