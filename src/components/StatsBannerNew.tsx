@@ -275,7 +275,7 @@ const StatsBannerNew = () => {
               transition={{ delay: 0.5 }}
             >
               <motion.a
-                href="#downloads"
+                href="/downloads"
                 className="relative text-white/80 hover:text-white text-sm font-medium transition-colors duration-300 group border-b border-white/50 hover:border-white pb-1"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
@@ -284,10 +284,17 @@ const StatsBannerNew = () => {
               </motion.a>
               
               <motion.a
-                href="/submit-contact"
-                className="relative text-white/80 hover:text-white text-sm font-medium transition-colors duration-300 group border-b border-white/50 hover:border-white pb-1"
+                href="#submit-form"
+                className="relative text-white/80 hover:text-white text-sm font-medium transition-colors duration-300 group border-b border-white/50 hover:border-white pb-1 cursor-pointer"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  const element = document.getElementById('submit-form');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
               >
                 Submit Your Today's Contact if You Haven't Yet
               </motion.a>
