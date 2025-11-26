@@ -37,17 +37,17 @@ const StatsBannerNew = () => {
         transition={{ type: "spring", stiffness: 400, damping: 10 }}
       >
         {/* Glow effect */}
-        <div className="absolute inset-0 bg-white/20 rounded-2xl blur-xl" />
+        <div className="absolute inset-0 bg-white/20 rounded-xl sm:rounded-2xl blur-xl" />
         
         {/* Timer card */}
-        <div className="relative bg-white/10 backdrop-blur-md border border-white/30 rounded-2xl p-6 min-w-[100px] shadow-2xl">
-          <div className="text-6xl font-bold text-white tabular-nums tracking-tight">
+        <div className="relative bg-white/10 backdrop-blur-md border border-white/30 rounded-xl sm:rounded-2xl p-3 sm:p-6 min-w-[70px] sm:min-w-[100px] shadow-2xl">
+          <div className="text-4xl sm:text-6xl font-bold text-white tabular-nums tracking-tight">
             {String(value).padStart(2, '0')}
           </div>
         </div>
       </motion.div>
       
-      <div className="mt-3 text-white/80 font-medium text-sm uppercase tracking-widest">
+      <div className="mt-2 sm:mt-3 text-white/80 font-medium text-xs sm:text-sm uppercase tracking-widest">
         {label}
       </div>
     </div>
@@ -154,12 +154,12 @@ const StatsBannerNew = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.5, duration: 0.6 }}
           >
-            <div className="flex items-center justify-center gap-4 md:gap-8 flex-wrap">
+            <div className="flex items-center justify-center gap-2 sm:gap-4 md:gap-8 flex-wrap px-2">
               <TimeUnit value={timeLeft.hours} label="Hours" />
               
               {/* Separator */}
               <motion.div
-                className="text-6xl font-bold text-white/60 pb-8"
+                className="text-4xl sm:text-6xl font-bold text-white/60 pb-4 sm:pb-8"
                 animate={{ opacity: [0.4, 1, 0.4] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
               >
@@ -170,7 +170,7 @@ const StatsBannerNew = () => {
               
               {/* Separator */}
               <motion.div
-                className="text-6xl font-bold text-white/60 pb-8"
+                className="text-4xl sm:text-6xl font-bold text-white/60 pb-4 sm:pb-8"
                 animate={{ opacity: [0.4, 1, 0.4] }}
                 transition={{ duration: 1.5, repeat: Infinity, delay: 0.75 }}
               >
