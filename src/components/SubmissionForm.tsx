@@ -7,8 +7,10 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
+import { motion, AnimatePresence } from "framer-motion";
+import { CheckCircle, Download, Clock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { CountrySelect } from "@/components/ui/country-select";
 import { format, startOfDay } from "date-fns";
@@ -21,6 +23,44 @@ const SubmissionForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [todaysCount, setTodaysCount] = useState<number | null>(null);
   const [isLoadingCount, setIsLoadingCount] = useState(true);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [countdown, setCountdown] = useState("");
+  const countdownRef = useRef<NodeJS.Timeout>();
+
+  // Set up countdown to 9 PM
+  useEffect(() => {
+    const updateCountdown = () => {
+      const now = new Date();
+      const target = new Date();
+      target.setHours(21, 0, 0, 0); // 9 PM
+      
+      if (now > target) {
+        // If it's past 9 PM, set target to 9 PM tomorrow
+        target.setDate(target.getDate() + 1);
+      }
+      
+      const diff = target.getTime() - now.getTime();
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      
+      setCountdown(`${hours}h ${minutes}m`);
+    };
+    
+    // Update immediately and then every minute
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 60000);
+    
+    return () => clearInterval(interval);
+  }, []);
+
+  // Clean up interval on unmount
+  useEffect(() => {
+    return () => {
+      if (countdownRef.current) {
+        clearInterval(countdownRef.current);
+      }
+    };
+  }, []);
 
   // Fetch today's submission count
   useEffect(() => {
@@ -102,7 +142,8 @@ const SubmissionForm = () => {
 
       if (error) throw error;
 
-      toast.success("Entry submitted successfully! Your contact will be included in today's vCard file.");
+      // Set submission success state
+      setIsSubmitted(true);
       
       // Reset form
       setName("");
@@ -117,6 +158,11 @@ const SubmissionForm = () => {
       setAddress("");
       setNotes("");
       setShowOptional(false);
+      
+      // Auto-hide success message after 8 seconds
+      setTimeout(() => {
+        setIsSubmitted(false);
+      }, 8000);
     } catch (error) {
       console.error("Error submitting entry:", error);
       toast.error("Failed to submit entry. Please try again.");
@@ -126,7 +172,69 @@ const SubmissionForm = () => {
   };
 
   return (
-    <section id="submit-form" className="py-16 md:py-24 scroll-mt-20">
+    <section id="submit-form" className="py-16 md:py-24 scroll-mt-20 relative">
+      <AnimatePresence>
+        {isSubmitted && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4, type: 'spring', damping: 25 }}
+            className="fixed inset-0 flex items-center justify-center z-50 bg-black/30 backdrop-blur-sm"
+          >
+            <motion.div 
+              className="bg-white dark:bg-gray-900 rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl border border-gray-200 dark:border-gray-800"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.3, type: 'spring', damping: 25 }}
+            >
+              <div className="text-center">
+                <motion.div 
+                  className="w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-6"
+                  initial={{ scale: 0 }}
+                  animate={{ 
+                    scale: [0, 1.2, 1],
+                    rotate: [0, 10, -10, 0]
+                  }}
+                  transition={{ 
+                    duration: 0.8,
+                    ease: "easeInOut",
+                    times: [0, 0.2, 0.5, 0.8, 1],
+                  }}
+                >
+                  <CheckCircle className="w-12 h-12 text-green-600 dark:text-green-400" />
+                </motion.div>
+                
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  Successfully Submitted!
+                </h3>
+                
+                <p className="text-gray-600 dark:text-gray-300 mb-6">
+                  Your contact information has been received and will be included in today's vCard file.
+                </p>
+                
+                <div className="flex items-center justify-center space-x-2 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 px-4 py-3 rounded-lg mb-6">
+                  <Clock className="w-5 h-5" />
+                  <span>Return at 9 PM to download the contact file</span>
+                  {countdown && (
+                    <span className="font-semibold ml-1">(in {countdown})</span>
+                  )}
+                </div>
+                
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setIsSubmitted(false)}
+                  className="mt-2"
+                >
+                  Got it, thanks!
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <div className="container mx-auto px-4">
         <Card className="max-w-2xl mx-auto p-8 border-2 border-border bg-card/80 backdrop-blur-sm relative overflow-hidden">
           {/* Chat icon positioned in the top-right corner */}

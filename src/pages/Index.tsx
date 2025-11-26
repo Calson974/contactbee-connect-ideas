@@ -24,44 +24,44 @@ const Index = () => {
       <SubmissionFormNew />
       
       {/* Grow Your Network Section - Modernized */}
-      <section className="relative py-16 lg:py-24 overflow-hidden bg-gradient-to-br from-teal/5 via-blue-whatsapp/5 to-green-light/5 dark:from-teal-dark/10 dark:via-teal/5 dark:to-blue-whatsapp/10">
-        {/* Background Elements */}
+      <section className="relative py-12 sm:py-16 lg:py-24 overflow-hidden bg-gradient-to-br from-teal/5 via-blue-whatsapp/5 to-green-light/5 dark:from-teal-dark/10 dark:via-teal/5 dark:to-blue-whatsapp/10">
+        {/* Background Elements - More subtle on mobile */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-teal/10 dark:bg-teal/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-whatsapp/10 dark:bg-blue-whatsapp/5 rounded-full blur-3xl" />
+          <div className="absolute top-0 right-0 w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 bg-teal/10 dark:bg-teal/5 rounded-full blur-3xl opacity-70" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 bg-blue-whatsapp/10 dark:bg-blue-whatsapp/5 rounded-full blur-3xl opacity-70" />
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
             {/* Left Content */}
             <motion.div
-              className="space-y-6"
-              initial={{ opacity: 0, x: -50 }}
+              className="space-y-4 sm:space-y-6"
+              initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal/10 dark:bg-teal/20 border border-teal/20 dark:border-teal/30">
-                <TrendingUp className="w-4 h-4 text-teal dark:text-green-light" />
-                <span className="text-sm font-semibold text-teal dark:text-green-light">Exponential Growth</span>
+              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-teal/10 dark:bg-teal/20 border border-teal/20 dark:border-teal/30">
+                <TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-teal dark:text-green-light" />
+                <span className="text-xs sm:text-sm font-semibold text-teal dark:text-green-light">Exponential Growth</span>
               </div>
 
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 dark:text-white leading-tight">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 dark:text-white leading-tight">
                 Grow Your Network{" "}
                 <span className="bg-gradient-to-r from-green-600 to-blue-whatsapp-600 dark:from-green-400 dark:to-blue-whatsapp-400 bg-clip-text text-transparent">
                   Exponentially
                 </span>
               </h2>
 
-              <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+              <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-2xl">
                 Join thousands of professionals who have already expanded their network by{" "}
                 <span className="font-bold text-green-600 dark:text-green-400">1000+ contacts</span>. 
                 Our curated contact lists help you connect with like-minded individuals and grow your 
                 professional circle on WhatsApp.
               </p>
 
-              {/* Stats */}
-              <div className="grid grid-cols-3 gap-4 py-4">
+              {/* Stats - Improved for mobile */}
+              <div className="grid grid-cols-3 gap-3 sm:gap-4 py-2 sm:py-4">
                 {[
                   { value: "1K+", label: "Members", icon: Users },
                   { value: "1000+", label: "Contacts", icon: TrendingUp },
@@ -69,31 +69,39 @@ const Index = () => {
                 ].map((stat, index) => (
                   <motion.div
                     key={index}
-                    className="text-center"
+                    className="text-center p-2 sm:p-3 rounded-xl bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
+                    viewport={{ once: true, margin: "-20px" }}
+                    transition={{ delay: index * 0.1, type: "spring", stiffness: 100 }}
                   >
-                    <div className="inline-flex p-2 rounded-lg bg-gradient-to-br from-green-500 to-blue-whatsapp-500 mb-2">
-                      <stat.icon className="w-5 h-5 text-white" />
+                    <div className="inline-flex p-1.5 sm:p-2 rounded-lg bg-gradient-to-br from-green-500 to-blue-whatsapp-500 mb-1.5 sm:mb-2">
+                      <stat.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
                     </div>
-                    <div className="text-2xl font-black text-gray-900 dark:text-white">{stat.value}</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</div>
+                    <div className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">{stat.value}</div>
+                    <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">{stat.label}</div>
                   </motion.div>
                 ))}
               </div>
 
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+              <motion.div 
+                className="w-full sm:w-auto"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+              >
                 <Button 
                   size="lg" 
-                  className="group relative overflow-hidden bg-green-600 hover:bg-green-700 text-white font-bold transition-all duration-300 shadow-xl hover:shadow-2xl"
+                  className="w-full sm:w-auto group relative overflow-hidden bg-green-600 hover:bg-green-700 text-white font-bold transition-all duration-300 shadow-lg hover:shadow-xl active:shadow-md"
                   asChild
                 >
-                  <Link to="/downloads" className="gap-3 inline-flex items-center">
-                    <Download className="h-5 w-5" />
-                    Download Contact Lists
-                    <motion.span animate={{ x: [0, 5, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+                  <Link to="/downloads" className="gap-2 sm:gap-3 inline-flex items-center justify-center">
+                    <Download className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <span>Download Contact Lists</span>
+                    <motion.span 
+                      className="hidden sm:inline-flex"
+                      animate={{ x: [0, 4, 0] }} 
+                      transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                    >
                       →
                     </motion.span>
                   </Link>

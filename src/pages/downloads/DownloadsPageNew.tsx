@@ -11,7 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 
 // Import illustration
-const ladyHoldingTablet = "/img/illustrations/lady-holding-tablet.png";
+const ladyHoldingTablet = "https://res.cloudinary.com/dmxik1gea/image/upload/v1763131169/lady-holding-tablet_sa2qxe.png";
 
 const DownloadsPageNew = () => {
   const [date, setDate] = useState<Date>(new Date());
@@ -298,8 +298,7 @@ const DownloadsPageNew = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
               >
-                <span className="inline-block bg-white/10 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-blue-100 mb-3 border border-white/20">✨ New Update Available</span>
-                <span className="block mt-2">Access and download your daily business connections with our <span className="font-semibold text-amber-200">enhanced</span> contact management system</span>
+                <span className="block mt-2">Access and download your daily <span className="font-semibold text-amber-200">contact</span> files.</span>
               </motion.p>
               
               <motion.div 
@@ -463,9 +462,7 @@ const DownloadsPageNew = () => {
             <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
               <div className="relative">
                 <div className="absolute -inset-4 bg-gradient-to-r from-teal-400 to-blue-500 rounded-full opacity-20 blur-xl"></div>
-                <div className="relative px-6 py-1.5 bg-gradient-to-r from-teal-500 to-blue-600 text-white text-sm font-medium rounded-full inline-flex items-center">
-                  <span className="relative z-10">New Feature</span>
-                </div>
+                
               </div>
             </div>
             <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl">
@@ -508,8 +505,8 @@ const DownloadsPageNew = () => {
                         day_today: "bg-teal-100 text-teal-900 font-bold dark:bg-teal-900/30 dark:text-teal-300",
                         day_selected: "bg-gradient-to-br from-teal-500 to-emerald-500 text-white font-bold hover:bg-teal-600 hover:text-white focus:bg-teal-600 focus:text-white",
                         day_disabled: "text-gray-300 dark:text-gray-600 cursor-not-allowed",
-                        head_cell: "text-gray-500 dark:text-gray-400 font-medium text-sm uppercase tracking-wider",
-                        day: "h-10 w-10 p-0 font-medium aria-selected:opacity-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors duration-200"
+                        head_cell: "text-gray-500 dark:text-gray-400 font-medium text-sm uppercase tracking-wider flex-1 text-center",
+                        day: "h-10 w-10 p-0 font-medium aria-selected:opacity-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors duration-200 flex-1"
                       }}
                       disabled={(date) => {
                         const today = new Date();

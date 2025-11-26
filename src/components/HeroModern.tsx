@@ -11,7 +11,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { CountrySelect } from "@/components/ui/country-select";
 
-const ladyImage = '/img/exited-lady-vectored.png';
+const ladyImage = 'https://res.cloudinary.com/dmxik1gea/image/upload/v1762512102/exited-lady-vectored_uyneb6.png';
 
 const HeroModern = () => {
   const [showForm, setShowForm] = useState(false);
@@ -77,6 +77,62 @@ const HeroModern = () => {
 
   return (
     <>
+      <style>{`
+        @property --angle {
+          syntax: '<angle>';
+          initial-value: 0deg;
+          inherits: false;
+        }
+
+        @keyframes rotate-border {
+          0% {
+            --angle: 0deg;
+          }
+          100% {
+            --angle: 360deg;
+          }
+        }
+
+        .glowing-border-container {
+          position: relative;
+          border-radius: 1rem;
+        }
+
+        .glowing-border-container::before,
+        .glowing-border-container::after {
+          content: '';
+          position: absolute;
+          inset: -3px;
+          border-radius: 1rem;
+          background: conic-gradient(
+            from var(--angle),
+            transparent 0deg 105deg,
+            rgb(20, 184, 166) 120deg,
+            transparent 135deg 255deg,
+            rgb(34, 197, 94) 270deg,
+            transparent 285deg 360deg
+          );
+          animation: rotate-border 3s linear infinite;
+          z-index: -1;
+        }
+
+        .glowing-border-container::after {
+          inset: -15px;
+          filter: blur(15px);
+          opacity: 0.4;
+        }
+
+        .glowing-border-inner {
+          position: relative;
+          background: white;
+          border-radius: 1rem;
+          z-index: 1;
+        }
+
+        .dark .glowing-border-inner {
+          background: rgb(31, 41, 55);
+        }
+      `}</style>
       <Helmet>
         <title>BoostWhats - Transform Your WhatsApp Status</title>
         <meta name="description" content="Join 1,000+ users growing their WhatsApp audience" />
@@ -251,7 +307,9 @@ const HeroModern = () => {
                 className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 lg:py-20"
               >
                 <div className="max-w-2xl mx-auto">
-                  <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-xl p-6 sm:p-8 lg:p-10">
+                  {/* Glowing border wrapper */}
+                  <div className="glowing-border-container">
+                    <div className="glowing-border-inner p-6 sm:p-8 lg:p-10">
                     
                     {/* Back Button */}
                     <Button
@@ -443,6 +501,7 @@ const HeroModern = () => {
                         )}
                       </Button>
                     </div>
+                  </div>
                   </div>
                 </div>
               </motion.div>

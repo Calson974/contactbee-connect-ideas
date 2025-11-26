@@ -38,7 +38,7 @@ const FooterNew = () => {
         <div 
           className="absolute inset-0 bg-cover bg-center" 
           style={{
-            backgroundImage: 'url("/img/footer background .png")',
+            backgroundImage: 'url("https://res.cloudinary.com/dmxik1gea/image/upload/v1763131886/footer_background_ewmwpr.png")',
             opacity: 0.9
           }}
         />

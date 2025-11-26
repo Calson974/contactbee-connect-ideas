@@ -16,3 +16,16 @@ h1, h2, h3, h4, h5, h6 {
   text-transform: uppercase !important;
   letter-spacing: 0.5px !important;
 }
+
+/* Shine animation for buttons */
+@keyframes shine {
+  0% { transform: translateX(-100%) rotate(10deg); }
+  20% { transform: translateX(100%) rotate(10deg); }
+  100% { transform: translateX(100%) rotate(10deg); }
+}
+
+/* Smooth font rendering */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

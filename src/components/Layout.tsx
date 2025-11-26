@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useRef } from 'react';
-import NavbarNew from "./NavbarNew";
+import EnhancedNavbar from "./EnhancedNavbar";
 
 type LayoutProps = {
   children: ReactNode;
@@ -72,7 +72,7 @@ const Layout = ({ children }: LayoutProps) => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col overflow-x-hidden relative">
-      <NavbarNew />
+      <EnhancedNavbar />
       <main className="flex-1 relative z-10">
         {children}
 

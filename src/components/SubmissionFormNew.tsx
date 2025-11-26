@@ -1,15 +1,16 @@
-import { ChevronDown, Sparkles, Users, CheckCircle, TrendingUp } from "lucide-react";
+import { ChevronDown, Sparkles, Users, TrendingUp, Clock, CheckCircle } from "lucide-react";
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { CountrySelect } from "@/components/ui/country-select";
 import { format } from "date-fns";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const SubmissionFormNew = () => {
   const [planType, setPlanType] = useState("free");
@@ -29,6 +30,58 @@ const SubmissionFormNew = () => {
   const [customFieldValue, setCustomFieldValue] = useState("");
   const [address, setAddress] = useState("");
   const [notes, setNotes] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [countdown, setCountdown] = useState("");
+  const countdownRef = useRef<NodeJS.Timeout>();
+
+  // Preload Lottie animation when component mounts
+  useEffect(() => {
+    const preloadLottie = async () => {
+      try {
+        const response = await fetch('https://lottie.host/b6ff1611-82ed-401c-9e35-dec5e7c34fc3/PXsxxuYKQx.lottie');
+        await response.blob(); // This will cache the animation
+      } catch (error) {
+        console.error('Error preloading Lottie animation:', error);
+      }
+    };
+
+    preloadLottie();
+  }, []);
+
+  // Set up countdown to 9 PM
+  useEffect(() => {
+    const updateCountdown = () => {
+      const now = new Date();
+      const target = new Date();
+      target.setHours(21, 0, 0, 0); // 9 PM
+      
+      if (now > target) {
+        // If it's past 9 PM, set target to 9 PM tomorrow
+        target.setDate(target.getDate() + 1);
+      }
+      
+      const diff = target.getTime() - now.getTime();
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      
+      setCountdown(`${hours}h ${minutes}m`);
+    };
+    
+    // Update immediately and then every minute
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 60000);
+    
+    return () => clearInterval(interval);
+  }, []);
+
+  // Clean up interval on unmount
+  useEffect(() => {
+    return () => {
+      if (countdownRef.current) {
+        clearInterval(countdownRef.current);
+      }
+    };
+  }, []);
 
   // Fetch today's submission count
   useEffect(() => {
@@ -90,8 +143,9 @@ const SubmissionFormNew = () => {
 
       if (error) throw error;
 
-      toast.success("🎉 Submission successful! Your contact will be included in today's vCard file.");
-
+      // Set submission success state
+      setIsSubmitted(true);
+      
       // Reset form
       setName("");
       setPhone("");
@@ -105,6 +159,11 @@ const SubmissionFormNew = () => {
       setAddress("");
       setNotes("");
       setShowOptional(false);
+      
+      // Auto-hide success message after 8 seconds
+      setTimeout(() => {
+        setIsSubmitted(false);
+      }, 80000);
     } catch (error) {
       console.error("Error submitting entry:", error);
       toast.error("Failed to submit. Please try again.");
@@ -114,17 +173,72 @@ const SubmissionFormNew = () => {
   };
 
   return (
-    <section className="relative py-16 lg:py-24 overflow-hidden">
+    <section id="submit-form" className="relative py-16 lg:py-24 overflow-hidden">
+{/* Success Modal */}
+      <AnimatePresence>
+        {isSubmitted && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4, type: 'spring', damping: 25 }}
+            className="fixed inset-0 flex items-center justify-center z-50 bg-black/60 [backdrop-filter:none]"
+          >
+            <motion.div 
+              className="bg-[#ffffff] dark:bg-[#1a1a1a] rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl border border-gray-200 dark:border-gray-700 [backdrop-filter:none] [background-blend-mode:normal] [background-color:rgb(255,255,255)] dark:[background-color:rgb(26,26,26)]"
+              initial={{ scale: 2, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.3, type: 'spring', damping: 25 }}
+            >
+              <div className="text-center">
+                <div className="w-40 h-40 mx-auto -mt-10 -mb-6">
+                  <DotLottieReact
+                    src="https://lottie.host/b6ff1611-82ed-401c-9e35-dec5e7c34fc3/PXsxxuYKQx.lottie"
+                    autoplay
+                    loop={false}
+                  />
+                </div>
+                
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  Successfully Submitted!
+                </h3>
+                
+                <p className="text-gray-700 dark:text-gray-200 mb-6">
+                  Your contact information has been received and will be included in today's vCard file.
+                </p>
+                
+                <div className="flex items-center justify-center space-x-2 bg-teal-50 dark:bg-teal-900/50 text-teal-700 dark:text-teal-200 px-4 py-3 rounded-lg mb-6 border border-teal-100 dark:border-teal-700/50">
+                  <Clock className="w-5 h-5" />
+                  <span>Return at 9 PM to download the contact file</span>
+                  {countdown && (
+                    <span className="font-semibold ml-1">(in {countdown})</span>
+                  )}
+                </div>
+                
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setIsSubmitted(false)}
+                  className="mt-2 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-100 border-gray-300 dark:border-gray-600"
+                >
+                  Got it, thanks!
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       {/* Background Image */}
       <div className="absolute inset-0">
         <div 
           className="w-full h-full"
           style={{
-            backgroundImage: `url('/img/green-abstract-patterns.png')`,
+            backgroundImage: `url('https://res.cloudinary.com/dmxik1gea/image/upload/v1762512088/green-abstract-patterns_bqt6g9.png')`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
-            opacity: 0.1
+            opacity: 0.3
           }}
         />
       </div>
