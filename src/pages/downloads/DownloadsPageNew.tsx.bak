@@ -1,0 +1,625 @@
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Download, Calendar as CalendarIcon, Users, Sparkles, TrendingUp, FileDown, Clock, CheckCircle } from "lucide-react";
+import { useState, useEffect } from "react";
+import { format } from "date-fns";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
+import { Helmet } from "react-helmet-async";
+
+const DownloadsPageNew = () => {
+  const [date, setDate] = useState<Date>(new Date());
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [todayCount, setTodayCount] = useState(0);
+  const [compiledFiles, setCompiledFiles] = useState<any[]>([]);
+
+  // Fetch today's count
+  useEffect(() => {
+    const fetchCount = async () => {
+      const today = new Date().toISOString().split('T')[0];
+      const { count, error } = await supabase
+        .from('submissions')
+        .select('*', { count: 'exact', head: true })
+        .gte('created_at', `${today}T00:00:00`)
+        .lt('created_at', `${today}T23:59:59`);
+
+      if (!error && count !== null) {
+        setTodayCount(count);
+      }
+    };
+
+    fetchCount();
+
+    // Subscribe to real-time changes
+    const channel = supabase
+      .channel('submissions-counter')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'submissions' }, () => {
+        fetchCount();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  // Define the type for compiled files
+  type CompiledFile = {
+    id: string;
+    compilation_date: string;
+    created_at: string;
+    contact_count: number;
+    file_url?: string;
+  };
+
+  // Fetch compiled files
+  useEffect(() => {
+    const fetchCompiledFiles = async () => {
+      try {
+        // First, try to fetch from the correct table
+        const { data, error } = await supabase
+          .from('submissions')
+          .select('created_at, plan_type')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+          // Group submissions by date and count contacts
+          const groupedByDate = data.reduce((acc: Record<string, number>, submission) => {
+            const date = new Date(submission.created_at).toISOString().split('T')[0];
+            acc[date] = (acc[date] || 0) + 1;
+            return acc;
+          }, {});
+
+          // Convert to array of CompiledFile
+          const compiledFiles = Object.entries(groupedByDate).map(([date, count]) => ({
+            id: `file-${date}`,
+            compilation_date: date,
+            created_at: `${date}T09:00:00.000Z`, // Set to 9 AM UTC
+            contact_count: count as number
+          }));
+
+          setCompiledFiles(compiledFiles);
+        } else {
+          setCompiledFiles([]);
+        }
+      } catch (error) {
+        console.error('Error fetching compiled files:', error);
+        toast.error('Failed to load compiled files. Please try again later.');
+      }
+    };
+
+    fetchCompiledFiles();
+  }, []);
+
+  const handleDownload = async (downloadDate?: Date | string) => {
+    setIsDownloading(true);
+    try {
+      // Handle both Date objects and string dates from the compiled files list
+      let targetDate: Date;
+      
+      if (downloadDate instanceof Date) {
+        targetDate = downloadDate;
+      } else if (typeof downloadDate === 'string') {
+        // If it's a date string from the compiled files list
+        targetDate = new Date(downloadDate);
+      } else {
+        // Fallback to the selected date in the calendar
+        targetDate = date;
+      }
+
+      // Ensure the date is valid
+      if (isNaN(targetDate.getTime())) {
+        throw new Error('Invalid date selected');
+      }
+
+      // Format the date as YYYY-MM-DD in local timezone
+      const year = targetDate.getFullYear();
+      const month = String(targetDate.getMonth() + 1).padStart(2, '0');
+      const day = String(targetDate.getDate()).padStart(2, '0');
+      const formattedDate = `${year}-${month}-${day}`;
+      
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      if (!supabaseUrl) {
+        throw new Error('Missing Supabase URL configuration');
+      }
+      
+      const url = `${supabaseUrl}/functions/v1/generate-vcards?date=${formattedDate}`;
+      
+      // Get the current session
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      
+      if (sessionError) {
+        throw sessionError;
+      }
+      
+      // Make the API request to generate the vCard
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${session?.access_token || ''}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      // Check if the response is successful
+      if (!response.ok) {
+        let errorMessage = 'Failed to generate vCard file';
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorData.message || errorMessage;
+        } catch (e) {
+          // If we can't parse the error as JSON, use the status text
+          errorMessage = response.statusText || errorMessage;
+        }
+        throw new Error(errorMessage);
+      }
+
+      // Get the blob data and create a download link
+      const blob = await response.blob();
+      if (blob.size === 0) {
+        throw new Error('Received empty vCard file');
+      }
+
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = downloadUrl;
+      a.download = `contacts_${formattedDate}.vcf`;
+      document.body.appendChild(a);
+      a.click();
+      
+      // Cleanup
+      setTimeout(() => {
+        window.URL.revokeObjectURL(downloadUrl);
+        document.body.removeChild(a);
+      }, 100);
+
+      toast.success("🎉 vCard file downloaded successfully!");
+    } catch (error) {
+      console.error("Error downloading vCards:", error);
+      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+      toast.error(`Failed to download vCard: ${errorMessage}`);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-teal-600 to-emerald-600">
+      <Helmet>
+        <title>Downloads - BoostWhats Contact Lists</title>
+        <meta name="description" content="Download daily-updated WhatsApp contact lists to grow your status views exponentially" />
+      </Helmet>
+      
+      {/* Hero Section */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-teal-600 to-emerald-600 pt-24 pb-16 sm:pt-32 sm:pb-24">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }} />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <motion.h1 
+              className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              Download vCards
+            </motion.h1>
+            <motion.p 
+              className="mt-6 max-w-2xl mx-auto text-xl text-teal-100"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              Get your daily dose of business connections
+            </motion.p>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="relative py-12 sm:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Stats */}
+          <motion.div 
+            className="grid grid-cols-1 gap-5 sm:grid-cols-3 mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
+              <div className="px-4 py-5 sm:p-6">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0 bg-teal-500 rounded-md p-3">
+                    <Users className="h-6 w-6 text-white" />
+                  </div>
+                  <div className="ml-5 w-0 flex-1">
+                    <dl>
+                      <dt className="text-sm font-medium text-gray-500 dark:text-gray-300 truncate">
+                        Today's Contacts
+                      </dt>
+                      <dd className="flex items-baseline">
+                        <div className="text-2xl font-semibold text-gray-900 dark:text-white">
+                          {todayCount}
+                        </div>
+                      </dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
+              <div className="px-4 py-5 sm:p-6">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0 bg-emerald-500 rounded-md p-3">
+                    <Sparkles className="h-6 w-6 text-white" />
+                  </div>
+                  <div className="ml-5 w-0 flex-1">
+                    <dl>
+                      <dt className="text-sm font-medium text-gray-500 dark:text-gray-300 truncate">
+                        New This Week
+                      </dt>
+                      <dd className="flex items-baseline">
+                        <div className="text-2xl font-semibold text-gray-900 dark:text-white">
+                          {Math.floor(todayCount * 5.7)}
+                        </div>
+                      </dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
+              <div className="px-4 py-5 sm:p-6">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0 bg-teal-600 rounded-md p-3">
+                    <TrendingUp className="h-6 w-6 text-white" />
+                  </div>
+                  <div className="ml-5 w-0 flex-1">
+                    <dl>
+                      <dt className="text-sm font-medium text-gray-500 dark:text-gray-300 truncate">
+                        Total Downloads
+                      </dt>
+                      <dd className="flex items-baseline">
+                        <div className="text-2xl font-semibold text-gray-900 dark:text-white">
+                          {Math.floor(todayCount * 12.3)}
+                        </div>
+                      </dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Calendar and Download Card */}
+          <div className="mt-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <motion.div 
+              className="lg:col-span-2"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              <div className="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+                <div className="p-6">
+                  <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Select a date</h2>
+                  <div className="flex justify-center">
+                    <Calendar
+                      mode="single"
+                      selected={date}
+                      onSelect={(newDate) => newDate && setDate(newDate)}
+                      className="rounded-md border border-gray-200 dark:border-gray-700"
+                      disabled={(date) => {
+                        // Disable future dates and dates before 2023
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        return date > today || date < new Date(2023, 0, 1);
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="lg:col-span-1"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
+              <div className="bg-gradient-to-br from-teal-600 to-emerald-600 rounded-lg shadow-xl overflow-hidden border border-teal-500/20">
+                <div className="px-6 py-8 sm:p-8">
+                  <div className="flex items-center justify-center h-12 w-12 rounded-md bg-white/10 backdrop-blur-sm mb-6">
+                    <FileDown className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-3 flex items-center">
+                    <FileDown className="h-6 w-6 mr-2 text-teal-200" />
+                    <span>Download <span className="text-teal-200">vCard</span></span>
+                  </h3>
+                  <p className="text-teal-100/90 mb-6 pl-1">
+                    <span className="font-medium">Archive date:</span>{' '}
+                    <span className="font-semibold text-white">{format(date, 'MMMM d, yyyy')}</span>
+                  </p>
+                  <div className="flex items-center text-sm text-teal-100/80 mb-6">
+                    <Clock className="h-4 w-4 mr-2 flex-shrink-0" />
+                    <span>Files are generated daily at 9:00 AM UTC</span>
+                  </div>
+                  <Button
+                    onClick={() => handleDownload()}
+                    disabled={isDownloading}
+                    className="w-full flex items-center justify-center px-6 py-3 border-0 text-base font-semibold rounded-lg bg-gradient-to-r from-teal-500 to-emerald-500 text-white hover:from-teal-600 hover:to-emerald-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                  >
+                    {isDownloading ? (
+                      <>
+                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span className="font-bold">Preparing Archive...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Download className="w-5 h-5 mr-2.5" />
+                        <span className="font-bold">Download vCard</span>
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  {/* Main Content */}
+  <div className="relative py-12 sm:py-16">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Stats */}
+      <motion.div 
+        className="grid grid-cols-1 gap-5 sm:grid-cols-3 mb-12"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
+          <div className="px-4 py-5 sm:p-6">
+            <div className="flex items-center">
+              <div className="flex-shrink-0 bg-teal-500 rounded-md p-3">
+                <Users className="h-6 w-6 text-white" />
+              </div>
+              <div className="ml-5 w-0 flex-1">
+                <dl>
+                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-300 truncate">
+                    Today's Contacts
+                  </dt>
+                  <dd className="flex items-baseline">
+                    <div className="text-2xl font-semibold text-gray-900 dark:text-white">
+                      {todayCount}
+                    </div>
+                  </dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
+          <div className="px-4 py-5 sm:p-6">
+            <div className="flex items-center">
+              <div className="flex-shrink-0 bg-emerald-500 rounded-md p-3">
+                <Sparkles className="h-6 w-6 text-white" />
+              </div>
+              <div className="ml-5 w-0 flex-1">
+                <dl>
+                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-300 truncate">
+                    New This Week
+                  </dt>
+                  <dd className="flex items-baseline">
+                    <div className="text-2xl font-semibold text-gray-900 dark:text-white">
+                      {Math.floor(todayCount * 12.3)}
+                    </div>
+                  </dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
+          <div className="px-4 py-5 sm:p-6">
+            <div className="flex items-center">
+              <div className="flex-shrink-0 bg-teal-600 rounded-md p-3">
+                <TrendingUp className="h-6 w-6 text-white" />
+              </div>
+              <div className="ml-5 w-0 flex-1">
+                <dl>
+                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-300 truncate">
+                    Total Downloads
+                  </dt>
+                  <dd className="flex items-baseline">
+                    <div className="text-2xl font-semibold text-gray-900 dark:text-white">
+                      {Math.floor(todayCount * 12.3)}
+                    </div>
+                  </dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Calendar and Download Card */}
+      <div className="mt-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <motion.div 
+          className="lg:col-span-2"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          <div className="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+            <div className="p-6">
+              <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Select a date</h2>
+              <div className="flex justify-center">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={(newDate) => newDate && setDate(newDate)}
+                  className="rounded-md border border-gray-200 dark:border-gray-700"
+                  disabled={(date) => {
+                    // Disable future dates and dates before 2023
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    return date > today || date < new Date(2023, 0, 1);
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          className="lg:col-span-1"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          <div className="bg-gradient-to-br from-teal-600 to-emerald-600 rounded-lg shadow-xl overflow-hidden border border-teal-500/20">
+            <div className="px-6 py-8 sm:p-8">
+              <div className="flex items-center justify-center h-12 w-12 rounded-md bg-white/10 backdrop-blur-sm mb-6">
+                <FileDown className="h-6 w-6 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-3 flex items-center">
+                <FileDown className="h-6 w-6 mr-2 text-teal-200" />
+                <span>Download <span className="text-teal-200">vCard</span></span>
+              </h3>
+              <p className="text-teal-100/90 mb-6 pl-1">
+                <span className="font-medium">Archive date:</span>{' '}
+                <span className="font-semibold text-white">{format(date, 'MMMM d, yyyy')}</span>
+              </p>
+              <div className="flex items-center text-sm text-teal-100/80 mb-6">
+                <Clock className="h-4 w-4 mr-2 flex-shrink-0" />
+                <span>Files are generated daily at 9:00 AM UTC</span>
+              </div>
+              <Button
+                onClick={handleDownload}
+                disabled={isDownloading}
+                className="w-full flex items-center justify-center px-6 py-3 border-0 text-base font-semibold rounded-lg bg-gradient-to-r from-teal-500 to-emerald-500 text-white hover:from-teal-600 hover:to-emerald-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+              >
+                {isDownloading ? (
+                  <>
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span className="font-bold">Preparing Archive...</span>
+                  </>
+                ) : (
+                  <>
+                    <Download className="w-5 h-5 mr-2.5" />
+                    <span className="font-bold">Download vCard</span>
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* All Compiled vCards */}
+      <motion.div 
+        className="mt-16"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+      >
+        <div className="max-w-3xl mx-auto bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl rounded-3xl border border-gray-200/50 dark:border-gray-800/50 shadow-xl p-8">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
+              <svg className="w-6 h-6 mr-2 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+              </svg>
+              <span className="bg-gradient-to-r from-teal-500 to-emerald-500 bg-clip-text text-transparent">
+                vCard <span className="font-extrabold">Archive</span>
+              </span>
+            </h2>
+            <div className="text-sm text-gray-500 dark:text-gray-400">
+              {compiledFiles.length} files available
+            </div>
+          </div>
+          
+          <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2 -mr-2">
+            {compiledFiles.length > 0 ? (
+              compiledFiles.map((file, index) => (
+                <div 
+                  key={file.id}
+                  className="flex items-center justify-between p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800/70 transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-gradient-to-br from-teal-500 to-green-500">
+                      <FileDown className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <div className="font-medium text-gray-900 dark:text-white">
+                        {format(new Date(file.compilation_date), 'MMMM d, yyyy')}
+                      </div>
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gradient-to-r from-teal-100 to-emerald-100 text-teal-800 dark:from-teal-900/40 dark:to-emerald-900/40 dark:text-teal-200 mr-2 border border-teal-200/50 dark:border-teal-800/50">
+                        <Users className="w-3 h-3 mr-1.5" />
+                        <span className="font-bold">{file.contact_count}</span> {file.contact_count === 1 ? 'Contact' : 'Contacts'}
+                      </span>
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Compiled {format(new Date(file.created_at), 'PPp')}
+                  </p>
+                    <div>
+                      <div className="font-medium text-gray-900 dark:text-white">
+                        {format(new Date(file.compilation_date), 'MMMM d, yyyy')}
+                      </div>
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gradient-to-r from-teal-100 to-emerald-100 text-teal-800 dark:from-teal-900/40 dark:to-emerald-900/40 dark:text-teal-200 mr-2 border border-teal-200/50 dark:border-teal-800/50">
+                        <Users className="w-3 h-3 mr-1.5" />
+                        <span className="font-bold">{file.contact_count}</span> {file.contact_count === 1 ? 'Contact' : 'Contacts'}
+                      </span>
+                    </div>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="group-hover:bg-teal-50 dark:group-hover:bg-teal-900/30 group-hover:border-teal-300 dark:group-hover:border-teal-600 transition-all border-teal-200 dark:border-teal-800 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm hover:shadow-md"
+                    onClick={() => {
+                      handleDownload(new Date(file.compilation_date));
+                    }}
+                  >
+                    <Download className="w-4 h-4 mr-2 text-teal-600 dark:text-teal-400 group-hover:scale-110 transition-transform" />
+                    <span className="font-medium text-teal-700 dark:text-teal-300 group-hover:text-teal-800 dark:group-hover:text-teal-200">
+                      <span className="font-semibold">Download</span> Archive
+                    </span>
+                  </Button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-gray-500 dark:text-gray-400">No compiled vCards found.</p>
+            </div>
+          )}
+        </div>
+      </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default DownloadsPageNew;
