@@ -1,4 +1,3 @@
-// @deno-types="https://esm.sh/v135/@supabase/supabase-js@2.58.0/mod.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.58.0';
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 

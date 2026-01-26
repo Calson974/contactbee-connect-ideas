@@ -7,38 +7,38 @@ const HowItWorksNew = () => {
       icon: UserPlus,
       title: "Submit Your Contact",
       description: "Fill out our simple form with your WhatsApp contact details. Takes less than 2 minutes!",
-      color: "from-teal to-blue-whatsapp",
+      color: "from-primary to-secondary",
       details: ["Select your use case, could be Personal or Proffessional.", "Fill in your information", "Submit your information"]
     },
     {
       icon: Download,
       title: "Download Contact Pool",
       description: "Get access to our daily-updated vCard file containing hundreds of active community members.",
-      color: "from-teal-dark to-teal",
+      color: "from-secondary to-primary",
       details: ["Daily updates at 9:00PM", "Verified contacts", "Easy import"]
     },
     {
       icon: Users,
       title: "Import to WhatsApp",
       description: "Simply import the vCard file to your phone's contacts. All contacts added automatically!",
-      color: "from-blue-whatsapp to-teal",
+      color: "from-primary to-accent",
       details: ["One-click import", "Auto-save contacts", "Instant sync"]
     },
     {
       icon: TrendingUp,
       title: "Watch Growth Happen",
       description: "Post your status and watch your views multiply as hundreds see your content organically.",
-      color: "from-green-light to-teal",
+      color: "from-accent to-primary",
       details: ["Exponential reach", "Real engagement", "Submiting your contact daily increases your chances of growing faster."]
     },
   ];
 
   return (
-    <section id="how-it-works" className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-b from-white via-teal/5 to-white dark:from-gray-950 dark:via-teal/10 dark:to-gray-950">
+    <section id="how-it-works" className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-b from-background via-primary/5 to-background">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-0 w-96 h-96 bg-teal/10 dark:bg-teal/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-blue-whatsapp/10 dark:bg-blue-whatsapp/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 left-0 w-96 h-96 bg-primary/10 dark:bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-accent/10 dark:bg-accent/5 rounded-full blur-3xl" />
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -51,21 +51,21 @@ const HowItWorksNew = () => {
           transition={{ duration: 0.6 }}
         >
           <motion.div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal/10 dark:bg-teal/20 border border-teal/20 dark:border-teal/30"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 dark:bg-primary/20 border border-primary/20 dark:border-primary/30"
             whileHover={{ scale: 1.05 }}
           >
-            <Sparkles className="w-4 h-4 text-teal dark:text-green-light" />
-            <span className="text-sm font-semibold text-teal dark:text-green-light">Simple & Effective</span>
+            <Sparkles className="w-4 h-4 text-primary" />
+            <span className="text-sm font-semibold text-primary">Simple & Effective</span>
           </motion.div>
 
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 dark:text-white">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-foreground">
             How It
-            <span className="text-teal dark:text-green-light">
+            <span className="text-primary">
               {" "}Works
             </span>
           </h2>
 
-          <p className="text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Four simple steps to transform your WhatsApp status views from dozens to thousands
           </p>
         </motion.div>
@@ -124,26 +124,26 @@ const HowItWorksNew = () => {
                   whileHover={{ x: 10 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  <div className="relative h-full bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-200/50 dark:border-gray-800/50 hover:border-teal/50 dark:hover:border-teal/30 transition-all duration-300 group">
+                  <div className="relative h-full bg-card/50 backdrop-blur-sm rounded-2xl p-6 border border-border/50 hover:border-primary/50 transition-all duration-300 group">
                     <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${step.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
                     
                     <div className="relative z-10">
                       {/* Title */}
-                      <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text transition-all">
+                      <h3 className="text-2xl lg:text-3xl font-bold text-foreground mb-3 group-hover:text-primary transition-all">
                         {step.title}
                       </h3>
 
                       {/* Description */}
-                      <p className="text-lg text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+                      <p className="text-lg text-muted-foreground mb-4 leading-relaxed">
                         {step.description}
                       </p>
 
                       {/* Details List */}
-                      <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800">
+                      <div className="mt-6 pt-6 border-t border-border">
                         <ul className="space-y-2">
                           {step.details.map((detail, detailIndex) => (
-                            <li key={detailIndex} className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                              <CheckCircle className="w-4 h-4 text-teal dark:text-green-light" />
+                            <li key={detailIndex} className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <CheckCircle className="w-4 h-4 text-primary" />
                               <span>{detail}</span>
                             </li>
                           ))}
@@ -170,7 +170,7 @@ const HowItWorksNew = () => {
         >
           <motion.a
             href="/downloads"
-            className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-teal hover:bg-teal-dark text-white font-bold text-lg transition-all duration-300 shadow-xl hover:shadow-2xl"
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-primary hover:bg-secondary text-primary-foreground font-bold text-lg transition-all duration-300 shadow-xl hover:shadow-2xl"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
           >

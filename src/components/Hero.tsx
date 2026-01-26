@@ -332,7 +332,7 @@ const Hero = () => {
                   </motion.h1>
 
                   {/* Subheading */}
-                  <motion.p className="text-sm sm:text-lg lg:text-2xl text-gray-200 max-w-2xl leading-relaxed" initial={{
+                  <motion.p className="text-sm sm:text-lg lg:text-2xl text-white/80 max-w-2xl leading-relaxed" initial={{
                   opacity: 0,
                   y: 20
                 }} animate={{
@@ -342,7 +342,7 @@ const Hero = () => {
                   delay: 0.5
                 }}>
                     Tap into a shared contact pool and watch your{' '}
-                    <span className="text-green-500">
+                    <span className="text-primary font-semibold">
                       WhatsApp audience scale automatically
                     </span>
                   </motion.p>

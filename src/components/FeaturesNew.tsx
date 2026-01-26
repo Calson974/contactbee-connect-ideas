@@ -7,19 +7,19 @@ const FeaturesNew = () => {
     {
       title: "Thriving Community",
       description: "Join a vibrant ecosystem of 1,000+ users who actively support each other's growth and success.",
-      gradient: "from-teal-dark to-teal",
+      gradient: "from-secondary to-primary",
       stats: "1K+ members",
     },
     {
       title: "Lightning Fast",
       description: "Get results in minutes, not months. Our automated system works 24/7 to amplify your presence.",
-      gradient: "from-teal-dark to-teal",
+      gradient: "from-secondary to-primary",
       stats: "24/7 active",
     },
     {
       title: "Simple & Intuitive",
       description: "Beautiful interface designed for everyone. No technical knowledge required to start growing today.",
-      gradient: "from-teal to-green-light",
+      gradient: "from-primary to-accent",
       stats: "No learning curve",
     },
   ];
@@ -34,12 +34,12 @@ const FeaturesNew = () => {
   ];
 
   return (
-    <section className="relative py-20 lg:py-28 overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900">
+    <section className="relative py-20 lg:py-28 overflow-hidden bg-gradient-to-br from-muted to-background">
       
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/2 w-[800px] h-[800px] -translate-x-1/2 -translate-y-1/2 bg-gradient-to-br from-teal-500/5 to-blue-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-teal-500/5 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-1/2 w-[800px] h-[800px] -translate-x-1/2 -translate-y-1/2 bg-gradient-to-br from-primary/5 to-accent/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl" />
       </div>
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -53,20 +53,20 @@ const FeaturesNew = () => {
           transition={{ duration: 0.6 }}
         >
           <motion.div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-500/10 dark:bg-teal-500/20 border border-teal-500/20 dark:border-teal-500/30"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 dark:bg-primary/20 border border-primary/20 dark:border-primary/30"
           >
-            <Sparkles className="w-4 h-4 text-teal-600 dark:text-teal-400" />
-            <span className="text-sm font-semibold text-teal-700 dark:text-teal-300">Why Choose Us</span>
+            <Sparkles className="w-4 h-4 text-primary" />
+            <span className="text-sm font-semibold text-primary">Why Choose Us</span>
           </motion.div>
 
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 dark:text-white">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-foreground">
             Everything You Need to
-            <span className="text-teal dark:text-teal">
+            <span className="text-primary">
               {" "}Grow on WhatsApp
             </span>
           </h2>
           
-          <p className="text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Everything you need to amplify your reach and build a massive, engaged audience
           </p>
         </motion.div>
@@ -84,11 +84,11 @@ const FeaturesNew = () => {
               whileHover={{ y: -8 }}
             >
               {/* Card Background */}
-              <div className="absolute inset-0 bg-white dark:bg-gray-800 rounded-3xl shadow-lg border border-gray-100 dark:border-gray-700 transition-all duration-300" />
+              <div className="absolute inset-0 bg-card rounded-3xl shadow-lg border border-border transition-all duration-300" />
               
               <div className="relative p-8 text-center h-full flex flex-col">
                 {/* Image Area */}
-                <div className="mb-6 rounded-2xl text-teal overflow-hidden bg-gray-50 dark:bg-gray-900/50 min-h-[180px] flex items-center justify-center p-4">
+                <div className="mb-6 rounded-2xl text-primary overflow-hidden bg-muted min-h-[180px] flex items-center justify-center p-4">
                   {index === 0 && (
                     <img
                       src="https://res.cloudinary.com/dmxik1gea/image/upload/v1767968983/SmartSelect_20260104_042652_Chrome_dnd522.png"
@@ -112,16 +112,16 @@ const FeaturesNew = () => {
                   )}
                 </div>
 
-                <h3 className="text-xl font-bold text-white dark:text-white mb-3">
+                <h3 className="text-xl font-bold text-foreground mb-3">
                   {feature.title}
                 </h3>
 
-                <p className="text-white dark:text-gray-400 text-sm leading-relaxed mb-6 flex-grow">
+                <p className="text-muted-foreground text-sm leading-relaxed mb-6 flex-grow">
                   {feature.description}
                 </p>
 
-                <div className="pt-4 border-t border-gray-100 dark:border-gray-700">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full bg-teal-50 dark:bg-teal-900/30 text-xs font-bold text-white dark:text-teal-300 uppercase tracking-wide">
+                <div className="pt-4 border-t border-border">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-xs font-bold text-primary uppercase tracking-wide">
                     {feature.stats}
                   </span>
                 </div>
@@ -139,12 +139,12 @@ const FeaturesNew = () => {
           transition={{ duration: 0.8 }}
         >
           {/* Main Card: Navy Blue Background */}
-          <div className="bg-[#44e94cec] rounded-[3rem] p-8 md:p-12 lg:p-16 relative overflow-hidden shadow-2xl shadow-teal-900/20 border border-white/10">
+          <div className="bg-primary rounded-[3rem] p-8 md:p-12 lg:p-16 relative overflow-hidden shadow-2xl shadow-primary/20 border border-white/10">
             
             {/* Animated Background Mesh */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-                <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-teal-500/20 rounded-full blur-[120px] animate-pulse" />
-                <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[120px]" />
+                <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-white/10 rounded-full blur-[120px] animate-pulse" />
+                <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-accent/20 rounded-full blur-[120px]" />
             </div>
 
             <div className="grid lg:grid-cols-12 gap-12 items-center relative z-20">
@@ -153,21 +153,20 @@ const FeaturesNew = () => {
               <div className="lg:col-span-5 space-y-8 text-center lg:text-left [&>*]:!text-white">
                 
                 <div className="inline-block">
-                  <span className="py-1 px-3 rounded-full bg-teal-500/10 border border-teal-500/30 !text-white text-xs font-bold tracking-widest uppercase">
-                    
+                  <span className="py-1 px-3 rounded-full bg-white/10 border border-white/30 text-white text-xs font-bold tracking-widest uppercase">
                   </span>
                 </div>
 
                 
                 <h3 className="text-4xl md:text-5xl font-bold leading-tight">
-                  <span className="text-[#000000]">Stop chasing views.</span> <br />
-                  <span className="text-[#000000]">
+                  <span className="text-primary-foreground">Stop chasing views.</span> <br />
+                  <span className="text-primary-foreground">
                     Let them come to you.
                   </span>
                 </h3>
 
-                {/* Body Text: Forced White Text */}
-                <p className="text-lg text-[#f7f5f5] leading-relaxed font-medium">
+                {/* Body Text */}
+                <p className="text-lg text-primary-foreground/90 leading-relaxed font-medium">
                   Did you know: Submiting your contact consistently everyday helps you grow faster with BoostWhats.
                 </p>
                 
@@ -178,7 +177,7 @@ const FeaturesNew = () => {
                         Get Started
                     </button>*/}
                     {/* Button 2: Glass Background, White Text */}
-                    <button className="px-8 py-4 bg-white/5 text-white border border-white/10 font-semibold rounded-2xl hover:bg-white/10 backdrop-blur-md transition-all">
+                    <button className="px-8 py-4 bg-white/10 text-primary-foreground border border-white/20 font-semibold rounded-2xl hover:bg-white/20 backdrop-blur-md transition-all">
                         Submit your contact today
                     </button>
                 </div>
@@ -199,7 +198,7 @@ const FeaturesNew = () => {
                     <img 
                         src="https://res.cloudinary.com/dmxik1gea/image/upload/v1768303871/20251012_165019_iuijxa.png" 
                         alt="Core App"
-                        className="w-full drop-shadow-[0_0_50px_rgba(20,184,166,0.4)]"
+                        className="w-full drop-shadow-[0_0_50px_rgba(var(--primary),0.4)]"
                     />
                 </div>
 
