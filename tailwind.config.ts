@@ -12,17 +12,11 @@ export default {
       heading: ['"Climate Crisis"', 'sans-serif'],
     },
     colors: {
-      'teal': '#26A532',
-      'teal-dark': '#1E8A29',
-      'green-light': '#26A532',
-      'blue-whatsapp': '#34B7F1',
-      'background': '#F0F2F5',
-      'text-primary': '#41525D',
-      'text-secondary': '#667781',
-      'border': '#E9EDEF',
-      'card': '#FFFFFF',
-      'card-dark': '#202C33',
-      'background-dark': '#111B21',
+      // Semantic colors from CSS variables
+      transparent: 'transparent',
+      current: 'currentColor',
+      white: 'hsl(0 0% 100%)',
+      black: 'hsl(0 0% 0%)',
       primary: {
         DEFAULT: "hsl(var(--primary))",
         foreground: "hsl(var(--primary-foreground))",
@@ -50,6 +44,30 @@ export default {
       card: {
         DEFAULT: "hsl(var(--card))",
         foreground: "hsl(var(--card-foreground))",
+      },
+      background: "hsl(var(--background))",
+      foreground: "hsl(var(--foreground))",
+      border: "hsl(var(--border))",
+      input: "hsl(var(--input))",
+      ring: "hsl(var(--ring))",
+      // Brand colors for direct use
+      brand: {
+        green: "hsl(var(--brand-green))",
+        "green-dark": "hsl(var(--brand-green-dark))",
+        "green-light": "hsl(var(--brand-green-light))",
+      },
+      // Gray scale
+      gray: {
+        50: "hsl(200 5% 96%)",
+        100: "hsl(200 5% 92%)",
+        200: "hsl(200 5% 88%)",
+        300: "hsl(200 6% 75%)",
+        400: "hsl(200 8% 60%)",
+        500: "hsl(200 10% 50%)",
+        600: "hsl(200 12% 40%)",
+        700: "hsl(200 15% 30%)",
+        800: "hsl(200 15% 20%)",
+        900: "hsl(200 15% 10%)",
       },
       sidebar: {
         DEFAULT: "hsl(var(--sidebar-background))",

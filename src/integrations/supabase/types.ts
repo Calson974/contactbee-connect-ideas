@@ -118,10 +118,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      count_todays_submissions: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
+      count_todays_submissions: { Args: never; Returns: number }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
