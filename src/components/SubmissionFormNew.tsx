@@ -1,4 +1,4 @@
-import { ChevronDown, Sparkles, Users, TrendingUp, Clock, CheckCircle } from "lucide-react";
+﻿import { ChevronDown, Sparkles, Users, TrendingUp, Clock, CheckCircle } from "lucide-react";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,6 +31,7 @@ const SubmissionFormNew = () => {
   const [address, setAddress] = useState("");
   const [notes, setNotes] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [showDoneCard, setShowDoneCard] = useState(false);
   const [countdown, setCountdown] = useState("");
   const countdownRef = useRef<NodeJS.Timeout>();
 
@@ -143,8 +144,8 @@ const SubmissionFormNew = () => {
 
       if (error) throw error;
 
-      // Set submission success state
-      setIsSubmitted(true);
+      // Show the done card
+      setShowDoneCard(true);
       
       // Reset form
       setName("");
@@ -159,11 +160,6 @@ const SubmissionFormNew = () => {
       setAddress("");
       setNotes("");
       setShowOptional(false);
-      
-      // Auto-hide success message after 8 seconds
-      setTimeout(() => {
-        setIsSubmitted(false);
-      }, 80000);
     } catch (error) {
       console.error("Error submitting entry:", error);
       toast.error("Failed to submit. Please try again.");
@@ -172,63 +168,56 @@ const SubmissionFormNew = () => {
     }
   };
 
+  // Done Card Component
+  const DoneCard = () => (
+    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/60 [backdrop-filter:none]">
+      <motion.div 
+        className="bg-[#ffffff] dark:bg-[#1a1a1a] rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl border border-gray-200 dark:border-gray-700 [backdrop-filter:none] [background-blend-mode:normal] [background-color:rgb(255,255,255)] dark:[background-color:rgb(26,26,26)]"
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        transition={{ duration: 0.3, type: 'spring', damping: 25 }}
+      >
+        <div className="text-center">
+          <div className="w-40 h-40 mx-auto -mt-10 -mb-6">
+            <DotLottieReact
+              src="https://lottie.host/b6ff1611-82ed-401c-9e35-dec5e7c34fc3/PXsxxuYKQx.lottie"
+              autoplay
+              loop={false}
+            />
+          </div>
+          
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            Successfully Submitted!
+          </h3>
+          
+          <p className="text-gray-700 dark:text-gray-200 mb-6">
+            Your contact information has been received and will be included in today's vCard file.
+          </p>
+          
+          <div className="flex items-center justify-center space-x-2 bg-teal-50 dark:bg-teal-900/50 text-teal-700 dark:text-teal-200 px-4 py-3 rounded-lg mb-6 border border-teal-100 dark:border-teal-700/50">
+            <Clock className="w-5 h-5" />
+            <span>Return at 9 PM to download the contact file</span>
+            {countdown && (
+              <span className="font-semibold ml-1">(in {countdown})</span>
+            )}
+          </div>
+          
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => setShowDoneCard(false)}
+            className="mt-2 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-100 border-gray-300 dark:border-gray-600"
+          >
+            Got it, thanks!
+          </Button>
+        </div>
+      </motion.div>
+    </div>
+  );
+
   return (
     <section id="submit-form" className="relative py-16 lg:py-24 overflow-hidden">
-{/* Success Modal */}
-      <AnimatePresence>
-        {isSubmitted && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4, type: 'spring', damping: 25 }}
-            className="fixed inset-0 flex items-center justify-center z-50 bg-black/60 [backdrop-filter:none]"
-          >
-            <motion.div 
-              className="bg-[#ffffff] dark:bg-[#1a1a1a] rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl border border-gray-200 dark:border-gray-700 [backdrop-filter:none] [background-blend-mode:normal] [background-color:rgb(255,255,255)] dark:[background-color:rgb(26,26,26)]"
-              initial={{ scale: 2, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.3, type: 'spring', damping: 25 }}
-            >
-              <div className="text-center">
-                <div className="w-40 h-40 mx-auto -mt-10 -mb-6">
-                  <DotLottieReact
-                    src="https://lottie.host/b6ff1611-82ed-401c-9e35-dec5e7c34fc3/PXsxxuYKQx.lottie"
-                    autoplay
-                    loop={false}
-                  />
-                </div>
-                
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                  Successfully Submitted!
-                </h3>
-                
-                <p className="text-gray-700 dark:text-gray-200 mb-6">
-                  Your contact information has been received and will be included in today's vCard file.
-                </p>
-                
-                <div className="flex items-center justify-center space-x-2 bg-teal-50 dark:bg-teal-900/50 text-teal-700 dark:text-teal-200 px-4 py-3 rounded-lg mb-6 border border-teal-100 dark:border-teal-700/50">
-                  <Clock className="w-5 h-5" />
-                  <span>Return at 9 PM to download the contact file</span>
-                  {countdown && (
-                    <span className="font-semibold ml-1">(in {countdown})</span>
-                  )}
-                </div>
-                
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setIsSubmitted(false)}
-                  className="mt-2 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-100 border-gray-300 dark:border-gray-600"
-                >
-                  Got it, thanks!
-                </Button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
       {/* Background Image */}
       <div className="absolute inset-0">
         <div 
@@ -291,21 +280,26 @@ const SubmissionFormNew = () => {
           )}
         </motion.div>
 
-        {/* Form Card */}
-        <motion.div
-          className="max-w-3xl mx-auto relative overflow-hidden rounded-3xl shadow-2xl bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200/50 dark:border-gray-800/50"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <div className="relative p-8 lg:p-12">
+        {/* Form Card or Done Card */}
+      <AnimatePresence mode="wait">
+        {showDoneCard ? (
+          <DoneCard />
+        ) : (
+          <motion.div
+            key="form"
+            className="max-w-3xl mx-auto relative overflow-hidden rounded-3xl shadow-2xl bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200/50 dark:border-gray-800/50"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+          >
+            <div className="relative p-8 lg:p-12">
 
-            {/* Plan Type Selector */}
-            <div className="relative mb-8 space-y-4">
-              <Label className="text-lg font-bold text-gray-900 dark:text-white">
-                Choose Your Use Case
-              </Label>
+              {/* Plan Type Selector */}
+              <div className="relative mb-8 space-y-4">
+                <Label className="text-lg font-bold text-gray-900 dark:text-white">
+                  Choose Your Use Case
+                </Label>
               <div className="grid sm:grid-cols-2 gap-4">
                 {[
                   { value: "free", title: "Personal", desc: "Name limited to 8 characters" },
@@ -504,6 +498,8 @@ const SubmissionFormNew = () => {
             </form>
           </div>
         </motion.div>
+        )}
+      </AnimatePresence>
       </div>
     </section>
   );

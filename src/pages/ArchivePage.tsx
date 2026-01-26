@@ -1,10 +1,10 @@
-import Layout from "@/components/Layout";
-import { VCardArchive } from "@/components/VCardArchive";
+﻿import Layout from "@/components/Layout";
+import { CompiledContactsList } from "@/components/CompiledContactsList";
 
 const ArchivePage = () => {
   return (
     <Layout>
-      <VCardArchive />
+      <CompiledContactsList />
     </Layout>
   );
 };

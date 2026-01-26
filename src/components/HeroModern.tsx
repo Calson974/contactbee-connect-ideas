@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -138,7 +138,7 @@ const HeroModern = () => {
         <meta name="description" content="Join 1,000+ users growing their WhatsApp audience" />
       </Helmet>
       
-      <section className="relative w-full min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 overflow-hidden">
+      <section className="relative w-full min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 overflow-hidden z-10">
         
         {/* Subtle background elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -189,7 +189,7 @@ const HeroModern = () => {
                 exit={{ rotateY: 90 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
                 style={{ transformStyle: "preserve-3d" }}
-                className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 lg:py-24"
+                className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 lg:py-24 pb-32 lg:pb-48"
               >
                 <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center max-w-7xl mx-auto">
                   
@@ -304,7 +304,7 @@ const HeroModern = () => {
                 exit={{ rotateY: 90 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
                 style={{ transformStyle: "preserve-3d" }}
-                className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 lg:py-20"
+                className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 lg:py-20 pb-32 lg:pb-48"
               >
                 <div className="max-w-2xl mx-auto">
                   {/* Glowing border wrapper */}

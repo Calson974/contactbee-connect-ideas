@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+﻿import { motion } from "framer-motion";
 import { Clock, Calendar, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -36,33 +36,33 @@ const StatsBannerNew = () => {
         whileHover={{ scale: 1.05 }}
         transition={{ type: "spring", stiffness: 400, damping: 10 }}
       >
-        {/* Glow effect */}
-        <div className="absolute inset-0 bg-white/20 rounded-xl sm:rounded-2xl blur-xl" />
-        
-        {/* Timer card */}
-        <div className="relative bg-white/10 backdrop-blur-md border border-white/30 rounded-xl sm:rounded-2xl p-3 sm:p-6 min-w-[70px] sm:min-w-[100px] shadow-2xl">
-          <div className="text-4xl sm:text-6xl font-bold text-white tabular-nums tracking-tight">
-            {String(value).padStart(2, '0')}
+        {/* Modern timer card with gradient border */}
+        <div className="relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-1 min-w-[80px] sm:min-w-[120px]">
+          <div className="bg-gray-950 rounded-2xl p-4 sm:p-6 border border-gray-800">
+            <div className="text-3xl sm:text-5xl font-black text-white tabular-nums tracking-tight font-mono">
+              {String(value).padStart(2, '0')}
+            </div>
           </div>
         </div>
       </motion.div>
       
-      <div className="mt-2 sm:mt-3 text-white/80 font-medium text-xs sm:text-sm uppercase tracking-widest">
+      <div className="mt-3 sm:mt-4 text-gray-400 font-medium text-xs sm:text-sm uppercase tracking-widest">
         {label}
       </div>
     </div>
   );
 
   return (
-    <section className="relative py-16 lg:py-24 overflow-hidden">
+    <div className="relative z-50 -mt-20 lg:-mt-20 px-4 sm:px-6 lg:px-8">
+      <section className="relative py-16 lg:py-24 overflow-hidden rounded-3xl lg:rounded-4xl shadow-2xl shadow-black/20">
       {/* Background image with overlay */}
       <div className="absolute inset-0">
-        <img 
-          src="https://res.cloudinary.com/dmxik1gea/image/upload/v1762084948/greenbackground_wzknn8.jpg" 
+        <img src="https://res.cloudinary.com/dmxik1gea/image/upload/v1767494069/23254650_arrow_13_ibummh.jpg" 
           alt="Background"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" />
+        <div className="absolute inset-0" />
       </div>
 
       {/* Subtle grid pattern */}
@@ -103,117 +103,129 @@ const StatsBannerNew = () => {
         >
           {/* Header badge */}
           <motion.div
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/15 backdrop-blur-md border border-white/25 mb-8 shadow-xl"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-teal/20 to-emerald/20 backdrop-blur-md border border-white/30 mb-8 shadow-xl"
             initial={{ scale: 0.9, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            whileHover={{ scale: 1.05, borderColor: 'rgba(255,255,255,0.4)' }}
+            whileHover={{ scale: 1.05, borderColor: 'rgba(34,197,94,0.4)' }}
           >
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
             >
-              <Zap className="w-5 h-5 text-white" fill="white" />
+              <Zap className="w-5 h-5 text-teal-light" fill="currentColor" />
             </motion.div>
             <span className="text-base font-semibold text-white tracking-wide">
-              Next Generation Countdown
+              Daily Contact Compilation
             </span>
           </motion.div>
           
           {/* Title */}
           <motion.h2
-            className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 tracking-tight"
+            className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 tracking-tight"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
           >
-            vCard Generation at{" "}
-            <span className="inline-flex items-center gap-2 bg-white/20 px-4 py-1 rounded-lg">
-              <Clock className="w-8 h-8" />
-              9:00 PM
+            Next vCard Drop in{" "}
+            <span className="inline-flex items-center gap-2 bg-gradient-to-r from-teal/30 to-emerald/30 px-6 py-2 rounded-2xl backdrop-blur-sm border border-white/20">
+              <Clock className="w-8 h-8 text-teal-light" />
+              <span className="font-mono font-bold">9:00 PM</span>
             </span>
           </motion.h2>
           
           <motion.p
-            className="text-white/80 text-lg md:text-xl mb-12 max-w-2xl mx-auto"
+            className="text-white/90 text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed font-light"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.4 }}
           >
-            Your next automated vCard will be ready soon
+            Join <span className="text-teal-light">1,000+ members</span> in our daily contact exchange. 
+            Your network grows while you sleep.
           </motion.p>
 
-          {/* Timer Display */}
+          {/* Stats Pills */}
           <motion.div
-            className="mb-14"
+            className="flex flex-wrap justify-center gap-3 mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.45 }}
+          >
+            {[
+              { label: "Active Users", value: "1,000+", color: "from-teal to-emerald" },
+              { label: "Daily Contacts", value: "500+", color: "from-blue-whatsapp to-teal" },
+              { label: "Success Rate", value: "98%", color: "from-emerald to-green-light" }
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                className="px-4 py-2 rounded-full bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-md border border-white/20"
+                whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.15)' }}
+                transition={{ duration: 0.2 }}
+              >
+                <span className={`text-transparent bg-gradient-to-r ${stat.color} bg-clip-text font-normal text-sm`}>
+                  {stat.value}
+                </span>
+                <span className="text-white/70 text-xs ml-2 font-normal">{stat.label}</span>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Modern Timer Display */}
+          <motion.div
+            className="mb-16"
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.5, duration: 0.6 }}
           >
-            <div className="flex items-center justify-center gap-2 sm:gap-4 md:gap-8 flex-wrap px-2">
-              <TimeUnit value={timeLeft.hours} label="Hours" />
-              
-              {/* Separator */}
-              <motion.div
-                className="text-4xl sm:text-6xl font-bold text-white/60 pb-4 sm:pb-8"
-                animate={{ opacity: [0.4, 1, 0.4] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              >
-                :
-              </motion.div>
-              
-              <TimeUnit value={timeLeft.minutes} label="Minutes" />
-              
-              {/* Separator */}
-              <motion.div
-                className="text-4xl sm:text-6xl font-bold text-white/60 pb-4 sm:pb-8"
-                animate={{ opacity: [0.4, 1, 0.4] }}
-                transition={{ duration: 1.5, repeat: Infinity, delay: 0.75 }}
-              >
-                :
-              </motion.div>
-              
-              <TimeUnit value={timeLeft.seconds} label="Seconds" />
+            <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 rounded-3xl p-6 sm:p-8 backdrop-blur-sm border border-gray-700/50">
+              <div className="flex items-center justify-center gap-2 sm:gap-6 md:gap-10 overflow-x-auto">
+                <TimeUnit value={timeLeft.hours} label="Hours" />
+                
+                {/* Modern Separator */}
+                <motion.div
+                  className="text-3xl sm:text-5xl font-black text-teal-light font-mono"
+                  animate={{ opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                >
+                  :
+                </motion.div>
+                
+                <TimeUnit value={timeLeft.minutes} label="Minutes" />
+                
+                {/* Modern Separator */}
+                <motion.div
+                  className="text-3xl sm:text-5xl font-black text-teal-light font-mono"
+                  animate={{ opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 1.5, repeat: Infinity, delay: 0.75 }}
+                >
+                  :
+                </motion.div>
+                
+                <TimeUnit value={timeLeft.seconds} label="Seconds" />
+              </div>
             </div>
 
-              {/* Enhanced Progress bar with animations */}
-              <div className="mt-10 max-w-2xl mx-auto px-4">
+              {/* Modern Progress Bar */}
+              <div className="mt-12 max-w-3xl mx-auto px-4">
                 <motion.div 
-                  className="flex justify-between items-center mb-2"
+                  className="flex justify-between items-center mb-4"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
                 >
-                  <div className="flex items-center gap-2">
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                      className="w-4 h-4"
-                    >
-                      <svg viewBox="0 0 24 24" className="w-full h-full">
-                        <motion.path
-                          d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          animate={{ 
-                            pathLength: [0.5, 1, 0.5],
-                            opacity: [0.6, 1, 0.6],
-                          }}
-                          transition={{ duration: 1.5, repeat: Infinity }}
-                        />
-                      </svg>
-                    </motion.div>
-                    <span className="text-sm font-semibold bg-gradient-to-r from-emerald-300 to-cyan-300 bg-clip-text text-transparent">
-                      Generating vCards
+                  <div className="flex items-center gap-3">
+                    <div className="w-3 h-3 bg-teal-light rounded-full animate-pulse" />
+                    <span className="text-sm font-bold text-white uppercase tracking-wider">
+                      Contacts compilation in progress
                     </span>
                   </div>
                   <motion.span 
-                    className="text-sm font-bold bg-gradient-to-r from-emerald-300 to-cyan-300 bg-clip-text text-transparent"
+                    className="text-lg font-black text-teal-light font-mono bg-gray-900 px-3 py-1 rounded-lg"
                     key={`percentage-${timeLeft.hours}-${timeLeft.minutes}-${timeLeft.seconds}`}
                     initial={{ scale: 1.2, opacity: 0.5 }}
                     animate={{ scale: 1, opacity: 1 }}
@@ -222,32 +234,32 @@ const StatsBannerNew = () => {
                     {Math.round((1 - (timeLeft.hours * 3600 + timeLeft.minutes * 60 + timeLeft.seconds) / (21 * 3600)) * 100)}%
                   </motion.span>
                 </motion.div>
-                <div className="relative h-3 bg-white/5 rounded-full overflow-hidden backdrop-blur-sm border border-white/10">
+                
+                {/* Modern progress track */}
+                <div className="relative h-4 bg-gray-800 rounded-full overflow-hidden border border-gray-700">
                   <motion.div 
-                    className="h-full rounded-full relative overflow-hidden"
+                    className="h-full relative overflow-hidden"
                     initial={{ width: 0 }}
                     animate={{
                       width: `${(1 - (timeLeft.hours * 3600 + timeLeft.minutes * 60 + timeLeft.seconds) / (21 * 3600)) * 100}%`,
-                      background: [
-                        'linear-gradient(90deg, #10b981, #3b82f6, #8b5cf6, #ec4899, #10b981)',
-                        'linear-gradient(90deg, #ec4899, #10b981, #3b82f6, #8b5cf6, #ec4899)',
-                      ]
                     }}
                     transition={{
-                      width: { duration: 0.8, ease: "easeOut" },
-                      background: { duration: 4, repeat: Infinity, ease: "linear" }
+                      width: { duration: 0.8, ease: "easeOut" }
+                    }}
+                    style={{
+                      background: 'linear-gradient(90deg, #14b8a6, #10b981, #34d399, #6ee7b7)'
                     }}
                   >
+                    {/* Animated shine effect */}
                     <motion.div 
                       className="absolute inset-0"
                       style={{
-                        background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent)',
-                        width: '50%',
+                        background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
+                        width: '100%',
                         height: '100%',
-                        transform: 'skewX(-20deg)'
                       }}
                       animate={{
-                        x: ['-100%', '200%']
+                        x: ['-100%', '100%']
                       }}
                       transition={{
                         x: {
@@ -257,10 +269,8 @@ const StatsBannerNew = () => {
                         }
                       }}
                     />
-                    <div className="absolute inset-0 bg-white/10" style={{
-                      backgroundImage: 'radial-gradient(circle at 10% 20%, rgba(255,255,255,0.2) 0%, transparent 20%)',
-                      mixBlendMode: 'overlay'
-                    }} />
+                    {/* Inner glow */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-teal-light/20 to-transparent" />
                   </motion.div>
                 </div>
               </div>
@@ -276,17 +286,20 @@ const StatsBannerNew = () => {
             >
               <motion.a
                 href="/downloads"
-                className="relative text-white/80 hover:text-white text-sm font-medium transition-colors duration-300 group border-b border-white/50 hover:border-white pb-1"
-                whileHover={{ scale: 1.03 }}
+                className="relative inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-teal/20 to-emerald/20 hover:from-teal/30 hover:to-emerald/30 text-teal-light hover:text-white font-medium text-sm rounded-full border border-teal/40 hover:border-teal/60 transition-all duration-300 group"
+                whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}
               >
-                Go to Downloads
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h10m0 0l-10 10m10-10v10" />
+                </svg>
+                <span className="relative z-10">Access Today's Contacts</span>
               </motion.a>
               
               <motion.a
                 href="#submit-form"
-                className="relative text-white/80 hover:text-white text-sm font-medium transition-colors duration-300 group border-b border-white/50 hover:border-white pb-1 cursor-pointer"
-                whileHover={{ scale: 1.03 }}
+                className="relative inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald/20 to-teal/20 hover:from-emerald/30 hover:to-teal/30 text-teal-light hover:text-white font-medium text-sm rounded-full border border-emerald/40 hover:border-emerald/60 transition-all duration-300 group cursor-pointer"
+                whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={(e) => {
                   e.preventDefault();
@@ -296,7 +309,10 @@ const StatsBannerNew = () => {
                   }
                 }}
               >
-                Submit Your Today's Contact if You Haven't Yet
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8l-8 8 8-8" />
+                </svg>
+                <span className="relative z-10">Submit Your Contact</span>
               </motion.a>
             </motion.div>
 
@@ -311,12 +327,10 @@ const StatsBannerNew = () => {
             transition={{ delay: 0.7 }}
           >
             <motion.a
-              href="https://chat.whatsapp.com/DHavwjz5l8z5UvM4haUNgf"
+              href=" https://chat.whatsapp.com/DHavwjz5I8z5UvM4haUNgf"
               target="_blank"
               rel="noopener noreferrer"
               className="relative overflow-hidden inline-flex items-center gap-3 bg-[#25D366] hover:bg-[#128C7E] text-white font-bold text-lg py-4 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl group"
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.98 }}
             >
               {/* Subtle shine effect on hover */}
               <span className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
@@ -352,6 +366,7 @@ const StatsBannerNew = () => {
         </motion.div>
       </div>
     </section>
+    </div>
   );
 };
 
