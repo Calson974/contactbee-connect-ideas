@@ -138,32 +138,32 @@ const HeroModern = () => {
         <meta name="description" content="Join 1,000+ users growing their WhatsApp audience" />
       </Helmet>
       
-      <section className="relative w-full min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 overflow-hidden z-10">
+      <section className="relative w-full min-h-screen bg-gradient-to-br from-background to-muted dark:from-gray-900 dark:to-gray-800 overflow-hidden z-10">
         
         {/* Subtle background elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <motion.div 
-            className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,_rgba(0,168,132,0.08)_0%,_transparent_50%)]"
+            className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,_hsl(var(--primary)/0.08)_0%,_transparent_50%)]"
             animate={{ opacity: [0.6, 0.8, 0.6] }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           />
           <motion.div 
-            className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_80%,_rgba(25,210,100,0.06)_0%,_transparent_50%)]"
+            className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_80%,_hsl(var(--accent)/0.06)_0%,_transparent_50%)]"
             animate={{ opacity: [0.5, 0.7, 0.5] }}
             transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
           />
           
           <div className="absolute inset-0 opacity-20 dark:opacity-10"
             style={{
-              backgroundImage: `linear-gradient(to right, rgba(0, 168, 132, 0.1) 1px, transparent 1px),
-                               linear-gradient(to bottom, rgba(0, 168, 132, 0.1) 1px, transparent 1px)`,
+              backgroundImage: `linear-gradient(to right, hsl(var(--primary) / 0.1) 1px, transparent 1px),
+                               linear-gradient(to bottom, hsl(var(--primary) / 0.1) 1px, transparent 1px)`,
               backgroundSize: '60px 60px',
               maskImage: 'radial-gradient(ellipse at center, black 30%, transparent 70%)',
             }}
           />
 
           <motion.div 
-            className="absolute top-20 left-10 w-64 h-64 bg-teal/10 rounded-full filter blur-3xl"
+            className="absolute top-20 left-10 w-64 h-64 bg-primary/10 rounded-full filter blur-3xl"
             animate={{ 
               y: [0, -30, 0], 
               x: [0, 20, 0],
@@ -171,7 +171,7 @@ const HeroModern = () => {
             transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
           />
           <motion.div 
-            className="absolute bottom-20 right-10 w-72 h-72 bg-green-light/10 rounded-full filter blur-3xl"
+            className="absolute bottom-20 right-10 w-72 h-72 bg-accent/10 rounded-full filter blur-3xl"
             animate={{ 
               y: [0, 30, 0], 
               x: [0, -20, 0],
@@ -203,9 +203,9 @@ const HeroModern = () => {
                       transition={{ duration: 0.5 }}
                       className="inline-flex"
                     >
-                      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal/10 dark:bg-teal/20 border border-teal/20 dark:border-teal/30">
-                        <Sparkles className="w-4 h-4 text-teal dark:text-green-light" />
-                        <span className="text-sm font-medium text-teal dark:text-green-light">
+                      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 dark:bg-primary/20 border border-primary/20 dark:border-primary/30">
+                        <Sparkles className="w-4 h-4 text-primary" />
+                        <span className="text-sm font-medium text-primary">
                           1,000+ Growing Their Reach
                         </span>
                       </div>
@@ -218,13 +218,13 @@ const HeroModern = () => {
                       transition={{ duration: 0.5, delay: 0.1 }}
                     >
                       <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight tracking-tight">
-                        <span className="block text-gray-900 dark:text-white">
+                        <span className="block text-foreground">
                           Transform Your
                         </span>
-                        <span className="block text-teal dark:text-green-light mt-1">
+                        <span className="block text-primary mt-1">
                           WhatsApp Status
                         </span>
-                        <span className="block text-gray-900 dark:text-white mt-1">
+                        <span className="block text-foreground mt-1">
                           Into a Powerhouse
                         </span>
                       </h1>
@@ -237,9 +237,9 @@ const HeroModern = () => {
                       transition={{ duration: 0.5, delay: 0.2 }}
                       className="space-y-5"
                     >
-                      <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-xl leading-relaxed">
-                        Join <strong className="text-teal dark:text-green-light">1,000+ users</strong> growing their audience by{' '}
-                        <strong className="text-teal dark:text-green-light">hundreds of contacts</strong> through our shared contact pool.
+                      <p className="text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed">
+                        Join <strong className="text-primary">1,000+ users</strong> growing their audience by{' '}
+                        <strong className="text-primary">hundreds of contacts</strong> through our shared contact pool.
                       </p>
                       
                       
@@ -255,7 +255,7 @@ const HeroModern = () => {
                       <Button 
                         size="lg" 
                         onClick={() => setShowForm(true)}
-                        className="bg-teal hover:bg-teal-dark text-white font-semibold text-base px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all"
+                        className="bg-primary hover:bg-secondary text-primary-foreground font-semibold text-base px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all"
                       > 
                         <Sparkles className="w-5 h-5 mr-2" />
                         Let's Grow
@@ -264,7 +264,7 @@ const HeroModern = () => {
                       <Button 
                         variant="outline" 
                         size="lg" 
-                        className="font-semibold text-base px-8 py-6 rounded-xl border-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all"
+                        className="font-semibold text-base px-8 py-6 rounded-xl border-2 hover:bg-muted transition-all"
                       >
                         <Play className="mr-2 w-5 h-5" />
                         How It Works
@@ -291,7 +291,7 @@ const HeroModern = () => {
                         />
                                               </div>
                       
-                      <div className="absolute -inset-8 bg-gradient-to-br from-teal/5 to-green-light/5 rounded-full blur-3xl -z-10" />
+                      <div className="absolute -inset-8 bg-gradient-to-br from-primary/5 to-accent/5 rounded-full blur-3xl -z-10" />
                     </div>
                   </motion.div>
                 </div>
@@ -315,7 +315,7 @@ const HeroModern = () => {
                     <Button
                       variant="ghost"
                       onClick={() => setShowForm(false)}
-                      className="mb-6 text-teal hover:bg-teal/5 dark:text-green-light dark:hover:bg-teal/10 -ml-2"
+                      className="mb-6 text-primary hover:bg-primary/5 -ml-2"
                     >
                       <ArrowLeft className="w-4 h-4 mr-2" />
                       Back to Hero
@@ -323,22 +323,22 @@ const HeroModern = () => {
 
                     {/* Form Header */}
                     <div className="mb-8">
-                      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal/10 dark:bg-teal/20 border border-teal/20 dark:border-teal/30 mb-4">
-                        <Sparkles className="w-4 h-4 text-teal dark:text-green-light" />
-                        <span className="text-sm font-medium text-teal dark:text-green-light">Join Today</span>
+                      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 dark:bg-primary/20 border border-primary/20 dark:border-primary/30 mb-4">
+                        <Sparkles className="w-4 h-4 text-primary" />
+                        <span className="text-sm font-medium text-primary">Join Today</span>
                       </div>
 
-                      <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
-                        Submit Your <span className="text-teal dark:text-green-light">Contact</span>
+                      <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
+                        Submit Your <span className="text-primary">Contact</span>
                       </h2>
-                      <p className="text-gray-600 dark:text-gray-300">
+                      <p className="text-muted-foreground">
                         Fill in your details to be compiled for download by yourself and others
                       </p>
                     </div>
 
                     {/* Plan Type Selector */}
                     <div className="mb-6">
-                      <Label className="text-sm font-medium text-gray-900 dark:text-white mb-3 block">
+                      <Label className="text-sm font-medium text-foreground mb-3 block">
                         Choose Your use case
                       </Label>
                       <div className="grid sm:grid-cols-2 gap-3">
@@ -352,12 +352,12 @@ const HeroModern = () => {
                             onClick={() => setPlanType(plan.value)}
                             className={`p-4 rounded-xl border-2 transition-all text-left ${
                               planType === plan.value
-                                ? 'border-teal bg-teal/5 dark:bg-teal/10'
-                                : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                                ? 'border-primary bg-primary/5 dark:bg-primary/10'
+                                : 'border-border hover:border-muted-foreground/30'
                             }`}
                           >
-                            <div className="font-semibold text-gray-900 dark:text-white text-sm">{plan.title}</div>
-                            <div className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">{plan.desc}</div>
+                            <div className="font-semibold text-foreground text-sm">{plan.title}</div>
+                            <div className="text-xs text-muted-foreground mt-0.5">{plan.desc}</div>
                           </button>
                         ))}
                       </div>
@@ -367,8 +367,8 @@ const HeroModern = () => {
                     <div className="space-y-5">
                       
                       <div>
-                        <Label htmlFor="name" className="text-sm font-medium text-gray-900 dark:text-white mb-2 block">
-                          Full Name <span className="text-red-500">*</span>
+                        <Label htmlFor="name" className="text-sm font-medium text-foreground mb-2 block">
+                          Full Name <span className="text-destructive">*</span>
                         </Label>
                         <Input
                           id="name"
@@ -380,15 +380,15 @@ const HeroModern = () => {
                           className="h-11 rounded-lg"
                         />
                         {planType === "free" && (
-                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1.5">
+                          <p className="text-xs text-muted-foreground mt-1.5">
                             {name.length}/8 characters used
                           </p>
                         )}
                       </div>
 
                       <div>
-                        <Label htmlFor="phone" className="text-sm font-medium text-gray-900 dark:text-white mb-2 block">
-                          WhatsApp Number <span className="text-red-500">*</span>
+                        <Label htmlFor="phone" className="text-sm font-medium text-foreground mb-2 block">
+                          WhatsApp Number <span className="text-destructive">*</span>
                         </Label>
                         <Input
                           id="phone"
@@ -402,8 +402,8 @@ const HeroModern = () => {
                       </div>
 
                       <div>
-                        <Label htmlFor="country" className="text-sm font-medium text-gray-900 dark:text-white mb-2 block">
-                          Country <span className="text-red-500">*</span>
+                        <Label htmlFor="country" className="text-sm font-medium text-foreground mb-2 block">
+                          Country <span className="text-destructive">*</span>
                         </Label>
                         <CountrySelect value={country} onChange={setCountry} required />
                       </div>
@@ -486,11 +486,11 @@ const HeroModern = () => {
                       <Button
                         onClick={handleSubmit}
                         disabled={isSubmitting}
-                        className="w-full h-12 bg-teal hover:bg-teal-dark text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all mt-6"
+                        className="w-full h-12 bg-primary hover:bg-secondary text-primary-foreground font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all mt-6"
                       >
                         {isSubmitting ? (
                           <span className="flex items-center justify-center gap-2">
-                            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
                             Submitting...
                           </span>
                         ) : (

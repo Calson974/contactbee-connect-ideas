@@ -103,7 +103,7 @@ const StatsBannerNew = () => {
         >
           {/* Header badge */}
           <motion.div
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-teal/20 to-emerald/20 backdrop-blur-md border border-white/30 mb-8 shadow-xl"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-primary/20 to-accent/20 backdrop-blur-md border border-white/30 mb-8 shadow-xl"
             initial={{ scale: 0.9, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
             viewport={{ once: true }}
@@ -114,7 +114,7 @@ const StatsBannerNew = () => {
               animate={{ rotate: 360 }}
               transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
             >
-              <Zap className="w-5 h-5 text-teal-light" fill="currentColor" />
+              <Zap className="w-5 h-5 text-primary" fill="currentColor" />
             </motion.div>
             <span className="text-base font-semibold text-white tracking-wide">
               Daily Contact Compilation
@@ -130,8 +130,8 @@ const StatsBannerNew = () => {
             transition={{ delay: 0.3 }}
           >
             Next vCard Drop in{" "}
-            <span className="inline-flex items-center gap-2 bg-gradient-to-r from-teal/30 to-emerald/30 px-6 py-2 rounded-2xl backdrop-blur-sm border border-white/20">
-              <Clock className="w-8 h-8 text-teal-light" />
+            <span className="inline-flex items-center gap-2 bg-gradient-to-r from-primary/30 to-accent/30 px-6 py-2 rounded-2xl backdrop-blur-sm border border-white/20">
+              <Clock className="w-8 h-8 text-primary" />
               <span className="font-mono font-bold">9:00 PM</span>
             </span>
           </motion.h2>
@@ -143,7 +143,7 @@ const StatsBannerNew = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.4 }}
           >
-            Join <span className="text-teal-light">1,000+ members</span> in our daily contact exchange. 
+            Join <span className="text-primary">1,000+ members</span> in our daily contact exchange. 
             Your network grows while you sleep.
           </motion.p>
 
@@ -156,9 +156,9 @@ const StatsBannerNew = () => {
             transition={{ delay: 0.45 }}
           >
             {[
-              { label: "Active Users", value: "1,000+", color: "from-teal to-emerald" },
-              { label: "Daily Contacts", value: "500+", color: "from-blue-whatsapp to-teal" },
-              { label: "Success Rate", value: "98%", color: "from-emerald to-green-light" }
+              { label: "Active Users", value: "1,000+", color: "from-primary to-accent" },
+              { label: "Daily Contacts", value: "500+", color: "from-accent to-primary" },
+              { label: "Success Rate", value: "98%", color: "from-secondary to-primary" }
             ].map((stat, index) => (
               <motion.div
                 key={index}
@@ -188,7 +188,7 @@ const StatsBannerNew = () => {
                 
                 {/* Modern Separator */}
                 <motion.div
-                  className="text-3xl sm:text-5xl font-black text-teal-light font-mono"
+                  className="text-3xl sm:text-5xl font-black text-primary font-mono"
                   animate={{ opacity: [0.5, 1, 0.5] }}
                   transition={{ duration: 1.5, repeat: Infinity }}
                 >
@@ -199,7 +199,7 @@ const StatsBannerNew = () => {
                 
                 {/* Modern Separator */}
                 <motion.div
-                  className="text-3xl sm:text-5xl font-black text-teal-light font-mono"
+                  className="text-3xl sm:text-5xl font-black text-primary font-mono"
                   animate={{ opacity: [0.5, 1, 0.5] }}
                   transition={{ duration: 1.5, repeat: Infinity, delay: 0.75 }}
                 >
@@ -218,14 +218,14 @@ const StatsBannerNew = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="w-3 h-3 bg-teal-light rounded-full animate-pulse" />
+                <div className="flex items-center gap-3">
+                    <div className="w-3 h-3 bg-primary rounded-full animate-pulse" />
                     <span className="text-sm font-bold text-white uppercase tracking-wider">
                       Contacts compilation in progress
                     </span>
                   </div>
                   <motion.span 
-                    className="text-lg font-black text-teal-light font-mono bg-gray-900 px-3 py-1 rounded-lg"
+                    className="text-lg font-black text-primary font-mono bg-gray-900 px-3 py-1 rounded-lg"
                     key={`percentage-${timeLeft.hours}-${timeLeft.minutes}-${timeLeft.seconds}`}
                     initial={{ scale: 1.2, opacity: 0.5 }}
                     animate={{ scale: 1, opacity: 1 }}
@@ -270,7 +270,7 @@ const StatsBannerNew = () => {
                       }}
                     />
                     {/* Inner glow */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-teal-light/20 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
                   </motion.div>
                 </div>
               </div>
@@ -286,7 +286,7 @@ const StatsBannerNew = () => {
             >
               <motion.a
                 href="/downloads"
-                className="relative inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-teal/20 to-emerald/20 hover:from-teal/30 hover:to-emerald/30 text-teal-light hover:text-white font-medium text-sm rounded-full border border-teal/40 hover:border-teal/60 transition-all duration-300 group"
+                className="relative inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary/20 to-accent/20 hover:from-primary/30 hover:to-accent/30 text-primary hover:text-white font-medium text-sm rounded-full border border-primary/40 hover:border-primary/60 transition-all duration-300 group"
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -298,7 +298,7 @@ const StatsBannerNew = () => {
               
               <motion.a
                 href="#submit-form"
-                className="relative inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald/20 to-teal/20 hover:from-emerald/30 hover:to-teal/30 text-teal-light hover:text-white font-medium text-sm rounded-full border border-emerald/40 hover:border-emerald/60 transition-all duration-300 group cursor-pointer"
+                className="relative inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-accent/20 to-primary/20 hover:from-accent/30 hover:to-primary/30 text-primary hover:text-white font-medium text-sm rounded-full border border-accent/40 hover:border-accent/60 transition-all duration-300 group cursor-pointer"
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={(e) => {

@@ -118,7 +118,7 @@ const Index = () => {
               transition={{ duration: 0.6 }}
             >
               <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 z-10" />
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 z-10" />
                 <img 
                   src="https://res.cloudinary.com/dmxik1gea/image/upload/w_1000/q_auto/f_auto/v1762084957/gain-1000_contacts_dmnb9i.jpg" 
                   alt="Grow your network by 1000+ contacts" 
@@ -127,11 +127,11 @@ const Index = () => {
               </div>
               {/* Floating Badge */}
               <motion.div
-                className="absolute -top-6 -right-6 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl p-6 shadow-2xl"
+                className="absolute -top-6 -right-6 bg-gradient-to-br from-primary to-secondary rounded-2xl p-6 shadow-2xl"
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 3, repeat: Infinity }}
               >
-                <div className="text-white text-center">
+                <div className="text-primary-foreground text-center">
                   <div className="text-3xl font-black">1000+</div>
                   <div className="text-sm font-semibold">New Contacts</div>
                 </div>
