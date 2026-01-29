@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from "@/components/ui/button";
 import { Play, ArrowLeft, ChevronDown } from "lucide-react";
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import './Hero.module.css';
 import { Helmet } from 'react-helmet-async';
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -13,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { CountrySelect } from "@/components/ui/country-select";
-
+import heroBackground from "@/assets/hero-background.jpg";
 // Form component for the flip side
 interface ContactFormProps {
   onBack: (e?: React.MouseEvent | React.TouchEvent) => void;
@@ -242,7 +240,7 @@ const Hero = () => {
       <section ref={containerRef} id="home" className="relative w-full h-screen flex items-center justify-center overflow-hidden" role="main" aria-label="Hero section with WhatsApp status growth information">
         {/* Background Image */}
         <div className="absolute inset-0 w-full h-full" style={{
-        backgroundImage: "url('https://res.cloudinary.com/dmxik1gea/image/upload/w_1000/q_auto/f_auto/v1762084948/greenbackground_wzknn8.jpg')",
+        backgroundImage: `url(${heroBackground})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'
