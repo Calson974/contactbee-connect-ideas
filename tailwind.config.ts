@@ -12,11 +12,13 @@ export default {
       heading: ['"Climate Crisis"', 'sans-serif'],
     },
     colors: {
-      // Semantic colors from CSS variables
+      // Base colors
       transparent: 'transparent',
       current: 'currentColor',
       white: 'hsl(0 0% 100%)',
       black: 'hsl(0 0% 0%)',
+      
+      // Semantic colors from CSS variables
       primary: {
         DEFAULT: "hsl(var(--primary))",
         foreground: "hsl(var(--primary-foreground))",
@@ -50,25 +52,37 @@ export default {
       border: "hsl(var(--border))",
       input: "hsl(var(--input))",
       ring: "hsl(var(--ring))",
-      // Brand colors for direct use
+      
+      // Brand colors - unified green palette
       brand: {
         green: "hsl(var(--brand-green))",
         "green-dark": "hsl(var(--brand-green-dark))",
         "green-light": "hsl(var(--brand-green-light))",
       },
+      
+      // Teal color (for backward compatibility - maps to primary)
+      teal: {
+        DEFAULT: "hsl(var(--primary))",
+        dark: "hsl(var(--secondary))",
+        light: "hsl(var(--accent))",
+      },
+      
       // Gray scale
       gray: {
-        50: "hsl(200 5% 96%)",
-        100: "hsl(200 5% 92%)",
-        200: "hsl(200 5% 88%)",
-        300: "hsl(200 6% 75%)",
-        400: "hsl(200 8% 60%)",
-        500: "hsl(200 10% 50%)",
-        600: "hsl(200 12% 40%)",
-        700: "hsl(200 15% 30%)",
-        800: "hsl(200 15% 20%)",
-        900: "hsl(200 15% 10%)",
+        50: "hsl(210 20% 98%)",
+        100: "hsl(210 17% 95%)",
+        200: "hsl(210 14% 89%)",
+        300: "hsl(210 12% 75%)",
+        400: "hsl(210 10% 58%)",
+        500: "hsl(210 8% 45%)",
+        600: "hsl(210 10% 35%)",
+        700: "hsl(210 12% 25%)",
+        800: "hsl(210 14% 16%)",
+        900: "hsl(210 18% 10%)",
+        950: "hsl(210 20% 6%)",
       },
+      
+      // Sidebar
       sidebar: {
         DEFAULT: "hsl(var(--sidebar-background))",
         foreground: "hsl(var(--sidebar-foreground))",
