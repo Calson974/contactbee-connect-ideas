@@ -10,6 +10,7 @@ import { Helmet } from 'react-helmet-async';
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { CountrySelect } from "@/components/ui/country-select";
+import heroBackground from "@/assets/hero-background.jpg";
 
 const ladyImage = 'https://res.cloudinary.com/dmxik1gea/image/upload/v1762512102/exited-lady-vectored_uyneb6.png';
 
@@ -138,7 +139,20 @@ const HeroModern = () => {
         <meta name="description" content="Join 1,000+ users growing their WhatsApp audience" />
       </Helmet>
       
-      <section className="relative w-full min-h-screen bg-gradient-to-br from-background to-muted dark:from-gray-900 dark:to-gray-800 overflow-hidden z-10">
+      <section className="relative w-full min-h-screen overflow-hidden z-10 bg-background">
+        {/* Branded background image */}
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `url(${heroBackground})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+          }}
+        />
+
+        {/* Readability overlay (keeps background visible, but ensures text contrast) */}
+        <div className="absolute inset-0 bg-gradient-to-br from-background/70 via-background/55 to-background/30" />
         
         {/* Subtle background elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
