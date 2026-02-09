@@ -37,7 +37,7 @@ const FAQSectionNew = () => {
   ];
 
   return (
-    <section className="relative py-16 lg:py-24 overflow-hidden bg-gradient-to-b from-background via-primary/5 to-background">
+    <section id="faq" className="relative py-16 lg:py-24 overflow-hidden bg-gradient-to-b from-background via-primary/5 to-background">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-0 w-96 h-96 bg-primary/10 dark:bg-primary/5 rounded-full blur-3xl" />

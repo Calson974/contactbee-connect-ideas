@@ -139,8 +139,8 @@ const HeroModern = () => {
         <meta name="description" content="Join 1,000+ users growing their WhatsApp audience" />
       </Helmet>
       
-      <section className="relative w-full min-h-screen overflow-hidden z-10 bg-background">
-        {/* Branded background image */}
+      <section id="home" className="relative w-full min-h-screen overflow-hidden z-10">
+        {/* Branded background image - fully visible, no overlay */}
         <div
           className="absolute inset-0"
           style={{
@@ -150,9 +150,6 @@ const HeroModern = () => {
             backgroundRepeat: 'no-repeat',
           }}
         />
-
-        {/* Readability overlay (keeps background visible, but ensures text contrast) */}
-        <div className="absolute inset-0 bg-gradient-to-br from-background/70 via-background/55 to-background/30" />
         
         {/* Subtle background elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -279,6 +276,9 @@ const HeroModern = () => {
                         variant="outline" 
                         size="lg" 
                         className="font-semibold text-base px-8 py-6 rounded-xl border-2 hover:bg-muted transition-all"
+                        onClick={() => {
+                          document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
+                        }}
                       >
                         <Play className="mr-2 w-5 h-5" />
                         How It Works

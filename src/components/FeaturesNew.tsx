@@ -34,7 +34,7 @@ const FeaturesNew = () => {
   ];
 
   return (
-    <section className="relative py-20 lg:py-28 overflow-hidden bg-gradient-to-br from-muted to-background">
+    <section id="features" className="relative py-20 lg:py-28 overflow-hidden bg-gradient-to-br from-muted to-background">
       
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">

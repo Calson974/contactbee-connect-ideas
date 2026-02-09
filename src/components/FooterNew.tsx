@@ -9,13 +9,11 @@ const FooterNew = () => {
       { name: "Features", href: "#features" },
       { name: "How It Works", href: "#how-it-works" },
       { name: "Downloads", href: "/downloads" },
-      { name: "Pricing", href: "#pricing" }
+      { name: "FAQ", href: "#faq" }
     ],
     company: [
-      { name: "About Us", href: "#about" },
-      { name: "Contact", href: "#contact" },
-      { name: "FAQ", href: "#faq" },
-      { name: "Support", href: "mailto:support@boostwhats.com" }
+      { name: "Submit Contact", href: "#submit-form" },
+      { name: "Support", href: "mailto:boostwhats@gmail.com" }
     ],
     legal: [
       { name: "Privacy Policy", href: "/legal/privacy" },
@@ -28,7 +26,7 @@ const FooterNew = () => {
   const socialLinks = [
     { icon: Facebook, href: "https://www.facebook.com/share/1C2fgbhR6H/?mibextid=LQQJ4d", label: "Facebook", color: "hover:bg-blue-600 hover:text-white" },
     { icon: Linkedin, href: "https://www.linkedin.com/company/boostwhats/", label: "LinkedIn", color: "hover:bg-blue-700 hover:text-white" },
-    { icon: Mail, href: "boostwhats@gmail.com", label: "Email", color: "hover:bg-red-500 hover:text-white" }
+    { icon: Mail, href: "mailto:boostwhats@gmail.com", label: "Email", color: "hover:bg-red-500 hover:text-white" }
   ];
 
   return (
