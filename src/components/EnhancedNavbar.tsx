@@ -14,8 +14,10 @@ const menuItems = [
 const EnhancedNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [activeItem, setActiveItem] = useState("#home");
   const navRef = useRef<HTMLElement>(null);
+  const lastScrollY = useRef(0);
   const { theme } = useTheme();
 
   // --- LOGIC PRESERVED EXACTLY AS IS ---
@@ -23,7 +25,16 @@ const EnhancedNavbar = () => {
     const shouldScrollToForm = sessionStorage.getItem('scrollToForm') === 'true';
     
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      const currentScrollY = window.scrollY;
+      setScrolled(currentScrollY > 20);
+      
+      // Hide navbar when scrolling down, show when scrolling up
+      if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+        setHidden(true);
+      } else {
+        setHidden(false);
+      }
+      lastScrollY.current = currentScrollY;
       
       const sections = menuItems.map(item => item.href);
       const scrollPosition = window.scrollY + 100;
@@ -103,8 +114,8 @@ const EnhancedNavbar = () => {
       <motion.nav
         ref={navRef}
         initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, type: "spring", stiffness: 80, damping: 20 }}
+        animate={{ y: hidden ? -100 : 0, opacity: hidden ? 0 : 1 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
         className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6 px-4 pointer-events-none"
       >
         <div 
