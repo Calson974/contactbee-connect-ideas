@@ -91,32 +91,9 @@ const StatsBannerNew = () => {
           }} />
         </div>
 
-        {/* Floating ambient orbs */}
-        {[...Array(4)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full blur-[80px]"
-            style={{
-              width: `${200 + i * 100}px`,
-              height: `${200 + i * 100}px`,
-              left: `${15 + i * 20}%`,
-              top: `${20 + i * 15}%`,
-              background: i % 2 === 0 
-                ? 'radial-gradient(circle, rgba(34,197,94,0.15) 0%, transparent 70%)'
-                : 'radial-gradient(circle, rgba(16,185,129,0.1) 0%, transparent 70%)',
-            }}
-            animate={{
-              x: [0, 30, -20, 0],
-              y: [0, -20, 30, 0],
-              scale: [1, 1.1, 0.95, 1],
-            }}
-            transition={{
-              duration: 8 + i * 2,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-        ))}
+        {/* Static ambient orbs */}
+        <div className="absolute rounded-full blur-[80px]" style={{ width: '200px', height: '200px', left: '15%', top: '20%', background: 'radial-gradient(circle, rgba(34,197,94,0.15) 0%, transparent 70%)' }} />
+        <div className="absolute rounded-full blur-[80px]" style={{ width: '400px', height: '400px', left: '55%', top: '50%', background: 'radial-gradient(circle, rgba(16,185,129,0.1) 0%, transparent 70%)' }} />
 
         <div className="container mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
           <motion.div
@@ -137,14 +114,10 @@ const StatsBannerNew = () => {
                 transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
                 whileHover={{ scale: 1.05, borderColor: 'rgba(255,255,255,0.4)' }}
               >
-                <motion.div
-                  className="relative"
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                >
+                <div className="relative">
                   <div className="absolute inset-0 bg-primary/50 rounded-full blur-md" />
                   <Zap className="w-6 h-6 text-primary relative z-10" fill="currentColor" />
-                </motion.div>
+                </div>
                 <span className="text-lg font-semibold text-white tracking-wide">
                   Daily Contact Compilation
                 </span>
@@ -231,25 +204,17 @@ const StatsBannerNew = () => {
                 <div className="relative flex items-center justify-center gap-4 sm:gap-8 lg:gap-12">
                   <TimeUnit value={timeLeft.hours} label="Hours" />
                   
-                  {/* Elegant separator */}
-                  <motion.div
-                    className="text-4xl sm:text-6xl lg:text-7xl font-thin text-primary/80 font-mono"
-                    animate={{ opacity: [0.3, 1, 0.3] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  >
+                  {/* Separator */}
+                  <div className="text-4xl sm:text-6xl lg:text-7xl font-thin text-primary/80 font-mono animate-pulse">
                     :
-                  </motion.div>
+                  </div>
                   
                   <TimeUnit value={timeLeft.minutes} label="Minutes" />
                   
-                  {/* Elegant separator */}
-                  <motion.div
-                    className="text-4xl sm:text-6xl lg:text-7xl font-thin text-primary/80 font-mono"
-                    animate={{ opacity: [0.3, 1, 0.3] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-                  >
+                  {/* Separator */}
+                  <div className="text-4xl sm:text-6xl lg:text-7xl font-thin text-primary/80 font-mono animate-pulse">
                     :
-                  </motion.div>
+                  </div>
                   
                   <TimeUnit value={timeLeft.seconds} label="Seconds" />
                 </div>
@@ -266,11 +231,7 @@ const StatsBannerNew = () => {
             >
               <div className="flex justify-between items-center mb-6 px-2">
                 <div className="flex items-center gap-4">
-                  <motion.div 
-                    className="w-3 h-3 rounded-full bg-primary"
-                    animate={{ scale: [1, 1.3, 1], opacity: [0.7, 1, 0.7] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
+                  <div className="w-3 h-3 rounded-full bg-primary animate-pulse" />
                   <span className="text-white/70 text-sm font-semibold uppercase tracking-widest">
                     Compilation in Progress
                   </span>
@@ -299,14 +260,9 @@ const StatsBannerNew = () => {
                     background: 'linear-gradient(90deg, #059669, #10b981, #34d399, #6ee7b7)',
                   }}
                 >
-                  {/* Animated shimmer */}
-                  <motion.div 
-                    className="absolute inset-0"
-                    style={{
-                      background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
-                    }}
-                    animate={{ x: ['-100%', '200%'] }}
-                    transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
+                  {/* Shimmer */}
+                  <div 
+                    className="absolute inset-0 shimmer"
                   />
                   {/* Inner glow */}
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent" />

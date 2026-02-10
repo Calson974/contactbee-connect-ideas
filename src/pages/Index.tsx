@@ -28,34 +28,10 @@ const Index = () => {
         {/* Sophisticated Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/5" />
         
-        {/* Animated Gradient Orbs */}
+        {/* Static Gradient Orbs */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <motion.div 
-            className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[100px]"
-            animate={{
-              x: [0, 30, -20, 0],
-              y: [0, -20, 30, 0],
-              scale: [1, 1.1, 0.95, 1],
-            }}
-            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div 
-            className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent/10 rounded-full blur-[100px]"
-            animate={{
-              x: [0, -30, 20, 0],
-              y: [0, 20, -30, 0],
-              scale: [1, 0.95, 1.1, 1],
-            }}
-            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div 
-            className="absolute top-1/2 left-1/3 w-[300px] h-[300px] bg-secondary/10 rounded-full blur-[100px]"
-            animate={{
-              x: [0, 20, -20, 0],
-              y: [0, 30, -30, 0],
-            }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          />
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[100px]" />
+          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent/10 rounded-full blur-[100px]" />
         </div>
 
         {/* Grid Pattern */}
@@ -77,19 +53,10 @@ const Index = () => {
               transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
             >
               {/* Premium Badge */}
-              <motion.div
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-primary/20 to-accent/20 backdrop-blur-md border border-primary/30 shadow-lg"
-                whileHover={{ scale: 1.05, y: -2 }}
-                transition={{ type: "spring", stiffness: 400 }}
-              >
-                <motion.div
-                  animate={{ rotate: [0, 360] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                >
-                  <Sparkles className="w-4 h-4 text-primary" />
-                </motion.div>
+              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-primary/20 to-accent/20 backdrop-blur-md border border-primary/30 shadow-lg">
+                <Sparkles className="w-4 h-4 text-primary" />
                 <span className="text-sm font-bold text-primary tracking-wide">Exponential Growth</span>
-              </motion.div>
+              </div>
 
               {/* Hero Text */}
               <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-foreground leading-[1.1]">
@@ -173,13 +140,7 @@ const Index = () => {
                     <span className="relative z-10 flex items-center gap-3">
                       <Download className="w-5 h-5" />
                       <span>Download Contact Lists</span>
-                      <motion.span 
-                        className="transition-transform duration-300 group-hover:translate-x-2"
-                        animate={{ x: [0, 4, 0] }} 
-                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                      >
-                        →
-                      </motion.span>
+                      <span className="transition-transform duration-300 group-hover:translate-x-2">→</span>
                     </span>
                   </Link>
                 </Button>
@@ -211,38 +172,21 @@ const Index = () => {
                 <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/40 to-transparent z-20" />
               </div>
               
-              {/* Floating Badge - Premium */}
-              <motion.div
-                className="absolute -top-6 -right-6 bg-gradient-to-br from-primary via-accent to-secondary rounded-2xl p-6 shadow-2xl border-2 border-white/20"
-                animate={{ 
-                  y: [0, -12, 0],
-                  rotate: [0, 2, -2, 0]
-                }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                whileHover={{ scale: 1.1, rotate: 0 }}
-              >
+              {/* Floating Badge - Static */}
+              <div className="absolute -top-6 -right-6 bg-gradient-to-br from-primary via-accent to-secondary rounded-2xl p-6 shadow-2xl border-2 border-white/20">
                 <div className="text-white text-center">
                   <div className="text-4xl font-black">1000+</div>
                   <div className="text-sm font-semibold opacity-90">New Contacts</div>
                 </div>
-                
-                {/* Shine effect */}
-                <div className="absolute inset-0 rounded-2xl overflow-hidden">
-                  <div className="absolute inset-0 -translate-x-full animate-[shimmer_3s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                </div>
-              </motion.div>
+              </div>
               
               {/* Secondary floating element */}
-              <motion.div
-                className="absolute -bottom-4 -left-4 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-xl px-4 py-3 shadow-xl border border-white/20"
-                animate={{ y: [0, 8, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-              >
+              <div className="absolute -bottom-4 -left-4 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-xl px-4 py-3 shadow-xl border border-white/20">
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse" />
+                  <div className="w-3 h-3 rounded-full bg-green-500" />
                   <span className="text-sm font-semibold text-foreground">Active Now</span>
                 </div>
-              </motion.div>
+              </div>
             </motion.div>
           </div>
         </div>
@@ -265,14 +209,12 @@ const Index = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <motion.div
+            <div
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30"
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
             >
               <Sparkles className="w-4 h-4 text-white" />
               <span className="text-sm font-semibold text-white">Start Today</span>
-            </motion.div>
+            </div>
 
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight">
               Ready to Boost Your Views?
@@ -310,13 +252,7 @@ const Index = () => {
                   <span className="relative z-10 flex items-center gap-3">
                     <Download className="h-6 w-6" />
                     Go to Downloads
-                    <motion.span 
-                      animate={{ x: [0, 5, 0] }} 
-                      transition={{ duration: 1.5, repeat: Infinity }}
-                      className="transition-transform duration-300 group-hover:translate-x-1.5"
-                    >
-                      →
-                    </motion.span>
+                    <span className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
                   </span>
                 </Link>
               </Button>

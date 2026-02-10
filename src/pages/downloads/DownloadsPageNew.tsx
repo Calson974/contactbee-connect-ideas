@@ -199,32 +199,9 @@ const DownloadsPageNew = () => {
     <div className="min-h-screen bg-gradient-to-br from-teal-50 via-blue-50 to-emerald-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-x-hidden">
       {/* Sophisticated ambient background */}
       <div className="fixed inset-0 -z-10">
-        {/* Gradient orbs */}
-        {[...Array(6)].map((_, i) => (
-          <motion.div 
-            key={i}
-            className="absolute rounded-full blur-[100px]"
-            style={{
-              width: `${300 + i * 100}px`,
-              height: `${300 + i * 100}px`,
-              top: `${10 + i * 15}%`,
-              left: `${5 + i * 12}%`,
-              background: i % 2 === 0 
-                ? 'radial-gradient(circle, rgba(34,197,94,0.08) 0%, transparent 70%)'
-                : 'radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 70%)',
-            }}
-            animate={{
-              x: [0, 50, -30, 0],
-              y: [0, -30, 50, 0],
-              scale: [1, 1.1, 0.95, 1],
-            }}
-            transition={{
-              duration: 15 + i * 3,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-        ))}
+        {/* Static gradient orbs */}
+        <div className="absolute rounded-full blur-[100px]" style={{ width: '400px', height: '400px', top: '10%', left: '5%', background: 'radial-gradient(circle, rgba(34,197,94,0.08) 0%, transparent 70%)' }} />
+        <div className="absolute rounded-full blur-[100px]" style={{ width: '500px', height: '500px', top: '40%', left: '50%', background: 'radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 70%)' }} />
         
         {/* Noise texture */}
         <div className="absolute inset-0 opacity-[0.015]">

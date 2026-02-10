@@ -37,13 +37,6 @@ const Layout = ({ children }: LayoutProps) => {
       const translateY = (1 - revealProgress) * 60;
       textElement.style.transform = `translateX(-50%) translateY(${translateY}px)`;
       
-      console.log({
-        scrollY,
-        distanceFromBottom,
-        revealProgress,
-        opacity: revealProgress * 0.4,
-        translateY
-      });
     };
     
     // Initial check
