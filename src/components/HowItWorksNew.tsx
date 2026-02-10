@@ -108,13 +108,9 @@ const HowItWorksNew = () => {
 
                   {/* Arrow for Desktop */}
                   {index < steps.length - 1 && (
-                    <motion.div
-                      className="hidden lg:block"
-                      animate={{ x: [0, 10, 0] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    >
+                    <div className="hidden lg:block">
                       <ArrowRight className="w-8 h-8 text-gray-400 dark:text-gray-600" />
-                    </motion.div>
+                    </div>
                   )}
                 </div>
 

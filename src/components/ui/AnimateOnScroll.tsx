@@ -18,11 +18,8 @@ export function AnimateOnScroll({
   const isInView = useInView(ref, { 
     once: true, 
     amount: 0.1,
-    margin: '0px 0px -50px 0px' // Adjust this value to trigger the animation earlier/later
+    margin: '0px 0px -50px 0px'
   });
-  
-  // Add a debug log to check if the element is in view
-  console.log('Element in view:', isInView);
 
   const variants: Variants = {
     hidden: { 

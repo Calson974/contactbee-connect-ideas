@@ -45,17 +45,9 @@ const FooterNew = () => {
         {/* Gradient Overlay: White fade for light mode, Dark fade for dark mode */}
         <div className="absolute inset-0 bg-gradient-to-t from-background via-muted/80 to-transparent dark:from-gray-950 dark:via-gray-900/90 dark:to-gray-900/80" />
         
-        {/* Animated Gradient Orbs */}
-        <motion.div 
-            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-            transition={{ duration: 8, repeat: Infinity }}
-            className="absolute -top-24 -left-24 w-96 h-96 bg-primary/20 dark:bg-primary/10 rounded-full blur-[100px]" 
-        />
-        <motion.div 
-            animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.4, 0.2] }}
-            transition={{ duration: 10, repeat: Infinity, delay: 1 }}
-            className="absolute top-1/2 right-0 w-[500px] h-[500px] bg-accent/20 dark:bg-accent/10 rounded-full blur-[120px]" 
-        />
+        {/* Static Gradient Orbs */}
+        <div className="absolute -top-24 -left-24 w-96 h-96 bg-primary/20 dark:bg-primary/10 rounded-full blur-[100px] opacity-40" />
+        <div className="absolute top-1/2 right-0 w-[500px] h-[500px] bg-accent/20 dark:bg-accent/10 rounded-full blur-[120px] opacity-30" />
       </div>
 
       <div className="relative z-10 container mx-auto px-6 lg:px-8">

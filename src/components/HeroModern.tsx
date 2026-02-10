@@ -434,16 +434,8 @@ const HeroModern = () => {
         
         {/* Subtle background elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <motion.div 
-            className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,_hsl(var(--primary)/0.08)_0%,_transparent_50%)]"
-            animate={{ opacity: [0.6, 0.8, 0.6] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div 
-            className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_80%,_hsl(var(--accent)/0.06)_0%,_transparent_50%)]"
-            animate={{ opacity: [0.5, 0.7, 0.5] }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,_hsl(var(--primary)/0.08)_0%,_transparent_50%)] opacity-70" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_80%,_hsl(var(--accent)/0.06)_0%,_transparent_50%)] opacity-60" />
           
           <div className="absolute inset-0 opacity-20 dark:opacity-10"
             style={{
@@ -454,22 +446,8 @@ const HeroModern = () => {
             }}
           />
 
-          <motion.div 
-            className="absolute top-20 left-10 w-64 h-64 bg-primary/10 rounded-full filter blur-3xl"
-            animate={{ 
-              y: [0, -30, 0], 
-              x: [0, 20, 0],
-            }}
-            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div 
-            className="absolute bottom-20 right-10 w-72 h-72 bg-accent/10 rounded-full filter blur-3xl"
-            animate={{ 
-              y: [0, 30, 0], 
-              x: [0, -20, 0],
-            }}
-            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          />
+          <div className="absolute top-20 left-10 w-64 h-64 bg-primary/10 rounded-full filter blur-3xl" />
+          <div className="absolute bottom-20 right-10 w-72 h-72 bg-accent/10 rounded-full filter blur-3xl" />
         </div>
 
         <div className="relative z-10" style={{ perspective: "1500px" }}>
