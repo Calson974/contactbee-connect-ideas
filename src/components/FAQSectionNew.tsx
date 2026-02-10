@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Plus, Minus, HelpCircle, Sparkles } from "lucide-react";
+import { Plus, Minus, HelpCircle, Zap } from "lucide-react";
 import { useState } from "react";
 
 const FAQSectionNew = () => {
@@ -163,15 +163,45 @@ const FAQSectionNew = () => {
             <p className="text-muted-foreground">
               Contact our support team - we're here to help!
             </p>
-            <div className="mt-12 text-center">
-              <a 
-                href="#" 
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary hover:bg-secondary text-primary-foreground font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+            <motion.div className="mt-12 text-center">
+              <motion.a
+                href="#submit-form"
+                className="group relative overflow-hidden inline-flex items-center gap-2 font-bold text-lg py-4 px-8 rounded-full transition-all duration-300 border-0"
+                style={{
+                  background: "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%)",
+                  boxShadow: "0 4px 6px -1px hsl(var(--primary) / 0.2), 0 10px 15px -3px hsl(var(--primary) / 0.3), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.1)"
+                }}
+                whileHover={{ 
+                  scale: 1.03, 
+                  y: -3,
+                  boxShadow: "0 20px 40px -10px hsl(var(--primary) / 0.4), 0 10px 20px -5px hsl(var(--primary) / 0.2)"
+                }}
+                whileTap={{ scale: 0.97, y: -1 }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  const element = document.getElementById('submit-form');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
               >
-                <Sparkles className="w-5 h-5" />
-                Still have questions? Contact us
-              </a>
-            </div>
+                {/* Inner glow layer */}
+                <div className="absolute inset-0 rounded-full bg-gradient-to-b from-white/20 via-transparent to-black/10" />
+                
+                {/* Animated gradient border */}
+                <div className="absolute inset-0 rounded-full p-[1.5px] bg-gradient-to-br from-white/40 via-transparent to-black/20">
+                  <div className="h-full w-full rounded-full bg-gradient-to-br from-primary to-secondary" />
+                </div>
+                
+                {/* Hover light sweep effect */}
+                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+                
+                <span className="relative z-10 flex items-center gap-2">
+                  <Zap className="w-5 h-5" />
+                  Still have questions? Contact us
+                </span>
+              </motion.a>
+            </motion.div>
           </div>
         </motion.div>
       </div>

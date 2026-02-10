@@ -1,4 +1,4 @@
-﻿import { ChevronDown, Sparkles, Users, TrendingUp, Clock, CheckCircle } from "lucide-react";
+﻿import { ChevronDown, Zap, Users, TrendingUp, Clock, CheckCircle, X } from "lucide-react";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { CountrySelect } from "@/components/ui/country-select";
@@ -34,6 +35,7 @@ const SubmissionFormNew = () => {
   const [showDoneCard, setShowDoneCard] = useState(false);
   const [countdown, setCountdown] = useState("");
   const countdownRef = useRef<NodeJS.Timeout>();
+  const scrollPositionRef = useRef<number>(0);
 
   // Preload Lottie animation when component mounts
   useEffect(() => {
@@ -122,6 +124,116 @@ const SubmissionFormNew = () => {
     };
   }, []);
 
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (showDoneCard) {
+      // Store current scroll position immediately and protect it
+      const scrollY = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      scrollPositionRef.current = scrollY; // Store in React ref
+      console.log('Modal opening, storing scroll position:', scrollY);
+      
+      // Store in multiple places immediately
+      const scrollPosition = scrollY.toString();
+      document.body.setAttribute('data-scroll-y', scrollPosition);
+      document.documentElement.setAttribute('data-scroll-y', scrollPosition);
+      sessionStorage.setItem('modal-scroll-position', scrollPosition);
+      localStorage.setItem('modal-scroll-position', scrollPosition);
+      
+      // Lock both html and body
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.scrollBehavior = 'auto';
+      
+      // Protect against any interference by re-storing the position
+      const protectPosition = setInterval(() => {
+        document.body.setAttribute('data-scroll-y', scrollPosition);
+        document.documentElement.setAttribute('data-scroll-y', scrollPosition);
+        sessionStorage.setItem('modal-scroll-position', scrollPosition);
+        localStorage.setItem('modal-scroll-position', scrollPosition);
+      }, 100);
+      
+      return () => {
+        clearInterval(protectPosition);
+      };
+    } else {
+      // Get scroll position from React ref first (most reliable)
+      let storedScrollY = scrollPositionRef.current.toString();
+      
+      // Fallback to other storage methods
+      if (storedScrollY === '0') {
+        storedScrollY = document.body.getAttribute('data-scroll-y') || 
+                        document.documentElement.getAttribute('data-scroll-y') || 
+                        sessionStorage.getItem('modal-scroll-position') || 
+                        localStorage.getItem('modal-scroll-position') || '0';
+      }
+      
+      console.log('Modal closing, restoring scroll position:', storedScrollY);
+      
+      // Restore both html and body
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+      document.body.style.scrollBehavior = '';
+      
+      // Clean up attributes
+      document.body.removeAttribute('data-scroll-y');
+      document.documentElement.removeAttribute('data-scroll-y');
+      sessionStorage.removeItem('modal-scroll-position');
+      localStorage.removeItem('modal-scroll-position');
+      
+      // Use the stored scroll position
+      const scrollPosition = parseInt(storedScrollY);
+      console.log('Setting scroll to:', scrollPosition);
+      
+      // Force scroll restoration with multiple methods
+      const restoreScroll = () => {
+        window.scrollTo(0, scrollPosition);
+        document.documentElement.scrollTop = scrollPosition;
+        document.body.scrollTop = scrollPosition;
+        console.log('Scroll restoration attempt:', scrollPosition);
+      };
+      
+      // Apply immediately and multiple times to override any interference
+      restoreScroll();
+      requestAnimationFrame(restoreScroll);
+      setTimeout(restoreScroll, 10);
+      setTimeout(restoreScroll, 50);
+      setTimeout(restoreScroll, 100);
+      setTimeout(restoreScroll, 200);
+    }
+
+    return () => {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+      document.body.style.scrollBehavior = '';
+      document.body.removeAttribute('data-scroll-y');
+      document.documentElement.removeAttribute('data-scroll-y');
+      sessionStorage.removeItem('modal-scroll-position');
+      localStorage.removeItem('modal-scroll-position');
+    };
+  }, [showDoneCard]);
+
+  useEffect(() => {
+    if (!showDoneCard) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setShowDoneCard(false);
+      }
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [showDoneCard]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -169,52 +281,126 @@ const SubmissionFormNew = () => {
   };
 
   // Done Card Component
-  const DoneCard = () => (
-    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/60 [backdrop-filter:none]">
-      <motion.div 
-        className="bg-[#ffffff] dark:bg-[#1a1a1a] rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl border border-gray-200 dark:border-gray-700 [backdrop-filter:none] [background-blend-mode:normal] [background-color:rgb(255,255,255)] dark:[background-color:rgb(26,26,26)]"
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
-        transition={{ duration: 0.3, type: 'spring', damping: 25 }}
+  const DoneCard = () => {
+    if (typeof document === "undefined") return null;
+
+    return createPortal(
+      <div
+        className="fixed inset-0 z-[1000] pointer-events-auto"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="success-title"
+        aria-describedby="success-description"
       >
-        <div className="text-center">
-          <div className="w-40 h-40 mx-auto -mt-10 -mb-6">
-            <DotLottieReact
-              src="https://lottie.host/b6ff1611-82ed-401c-9e35-dec5e7c34fc3/PXsxxuYKQx.lottie"
-              autoplay
-              loop={false}
-            />
-          </div>
-          
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            Successfully Submitted!
-          </h3>
-          
-          <p className="text-gray-700 dark:text-gray-200 mb-6">
-            Your contact information has been received and will be included in today's vCard file.
-          </p>
-          
-          <div className="flex items-center justify-center space-x-2 bg-primary/10 dark:bg-primary/20 text-primary px-4 py-3 rounded-lg mb-6 border border-primary/20 dark:border-primary/30">
-            <Clock className="w-5 h-5" />
-            <span>Return at 9 PM to download the contact file</span>
-            {countdown && (
-              <span className="font-semibold ml-1">(in {countdown})</span>
-            )}
-          </div>
-          
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => setShowDoneCard(false)}
-            className="mt-2 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-100 border-gray-300 dark:border-gray-600"
+        <div
+          className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70 backdrop-blur-md"
+          onMouseDown={() => setShowDoneCard(false)}
+        />
+
+        <div className="absolute inset-0 flex items-center justify-center p-4">
+          <motion.div
+            className="relative w-full max-w-md overflow-hidden rounded-3xl bg-white dark:bg-gray-900 shadow-2xl ring-1 ring-black/10 dark:ring-white/10"
+            initial={{ opacity: 0, y: 18, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 12, scale: 0.98 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            onMouseDown={(e) => e.stopPropagation()}
           >
-            Got it, thanks!
-          </Button>
+            <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-r from-primary/20 via-accent/15 to-primary/20" />
+
+            <div className="pointer-events-none absolute -inset-px rounded-3xl opacity-70 [mask-image:linear-gradient(to_bottom,black,transparent_85%)]">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/25 via-accent/20 to-primary/25" />
+            </div>
+
+            <button
+              type="button"
+              aria-label="Close"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('X button clicked');
+                setShowDoneCard(false);
+              }}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/70 text-gray-700 shadow-sm ring-1 ring-black/10 backdrop-blur hover:bg-white dark:bg-gray-900/60 dark:text-gray-200 dark:ring-white/10 z-10"
+            >
+              <X className="h-4 w-4" />
+            </button>
+
+            <div className="relative px-8 pb-8 pt-7">
+              <div className="mx-auto -mt-8 mb-2 w-40 h-40">
+                <DotLottieReact
+                  src="https://lottie.host/b6ff1611-82ed-401c-9e35-dec5e7c34fc3/PXsxxuYKQx.lottie"
+                  autoplay
+                  loop={false}
+                />
+              </div>
+
+              <div className="text-center">
+                <div className="mx-auto mb-3 inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1 text-emerald-700 ring-1 ring-emerald-500/20 dark:text-emerald-300 dark:ring-emerald-400/20">
+                  <CheckCircle className="h-4 w-4" />
+                  <span className="text-sm font-semibold">Submission received</span>
+                </div>
+
+                <h3 id="success-title" className="text-2xl font-black tracking-tight text-gray-900 dark:text-white">
+                  You’re all set
+                </h3>
+
+                <p id="success-description" className="mt-2 text-sm leading-relaxed text-gray-600 dark:text-gray-300">
+                  Your contact will be included in today’s vCard compilation.
+                </p>
+
+                <div className="mt-6 rounded-2xl border border-blue-200/60 bg-blue-50/80 px-4 py-4 text-left text-blue-800 shadow-sm dark:border-blue-400/20 dark:bg-blue-900/20 dark:text-blue-200">
+                  <div className="flex items-start gap-3">
+                    <div className="mt-0.5 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600/10 text-blue-700 dark:bg-blue-400/10 dark:text-blue-200">
+                      <Clock className="h-5 w-5" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="text-sm font-semibold">Download window</div>
+                      <div className="mt-0.5 text-sm opacity-90">
+                        Return at <span className="font-semibold">9:00 PM</span> to download the contact file.
+                        {countdown && (
+                          <span className="ml-1 font-semibold">(in {countdown})</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-7 grid gap-3">
+                  <Button 
+                    type="button" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setShowDoneCard(false);
+                    }} 
+                    className="h-12 rounded-xl font-bold"
+                  >
+                    Back to form
+                  </Button>
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setShowDoneCard(false);
+                    }} 
+                    className="h-12 rounded-xl"
+                  >
+                    Close
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
-      </motion.div>
-    </div>
-  );
+      </div>,
+      document.body
+    );
+  };
 
   return (
     <section id="submit-form" className="relative py-16 lg:py-24 overflow-hidden">
@@ -241,7 +427,10 @@ const SubmissionFormNew = () => {
         <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-accent/20 dark:bg-accent/10 rounded-full blur-3xl" />
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div
+        className={`container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 ${showDoneCard ? "pointer-events-none" : ""}`}
+        aria-hidden={showDoneCard}
+      >
         {/* Header */}
         <motion.div
           className="text-center mb-12 lg:mb-16 space-y-6"
@@ -280,11 +469,8 @@ const SubmissionFormNew = () => {
           )}
         </motion.div>
 
-        {/* Form Card or Done Card */}
+        {/* Form Card */}
       <AnimatePresence mode="wait">
-        {showDoneCard ? (
-          <DoneCard />
-        ) : (
           <motion.div
             key="form"
             className="max-w-3xl mx-auto relative overflow-hidden rounded-3xl shadow-2xl bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200/50 dark:border-gray-800/50"
@@ -476,20 +662,38 @@ const SubmissionFormNew = () => {
               </Collapsible>
 
               {/* Submit Button */}
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <motion.div 
+                whileHover={{ scale: 1.03, y: -2 }}
+                whileTap={{ scale: 0.97, y: -1 }}
+              >
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full h-14 bg-gradient-to-r from-primary to-accent hover:from-secondary hover:to-primary text-primary-foreground font-bold text-lg rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300"
+                  className="group relative overflow-hidden w-full h-14 font-bold text-lg rounded-xl border-0 transition-all duration-300"
+                  style={{
+                    background: "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%)",
+                    boxShadow: "0 4px 6px -1px hsl(var(--primary) / 0.2), 0 10px 15px -3px hsl(var(--primary) / 0.3), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.1)"
+                  }}
                 >
+                  {/* Inner glow layer */}
+                  <div className="absolute inset-0 rounded-xl bg-gradient-to-b from-white/20 via-transparent to-black/10" />
+                  
+                  {/* Animated gradient border */}
+                  <div className="absolute inset-0 rounded-xl p-[1.5px] bg-gradient-to-br from-white/40 via-transparent to-black/20">
+                    <div className="h-full w-full rounded-xl bg-gradient-to-br from-primary to-secondary" />
+                  </div>
+                  
+                  {/* Hover light sweep effect */}
+                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+                  
                   {isSubmitting ? (
-                    <span className="flex items-center gap-2">
+                    <span className="relative z-10 flex items-center gap-2">
                       <div className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
                       Submitting...
                     </span>
                   ) : (
-                    <span className="flex items-center gap-2">
-                      <Sparkles className="w-5 h-5" />
+                    <span className="relative z-10 flex items-center gap-2">
+                      <Zap className="w-5 h-5" />
                       Submit My Contact
                     </span>
                   )}
@@ -498,8 +702,13 @@ const SubmissionFormNew = () => {
             </form>
           </div>
         </motion.div>
-        )}
       </AnimatePresence>
+      
+      {/* Success Modal Overlay */}
+      <AnimatePresence>
+        {showDoneCard && <DoneCard />}
+      </AnimatePresence>
+      
       </div>
     </section>
   );

@@ -181,13 +181,32 @@ const FooterNew = () => {
                             placeholder="Enter your email"
                             className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all text-sm shadow-sm dark:shadow-none"
                         />
+                        <motion.div whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.97, y: -1 }}>
                         <Link 
                             to="/downloads" 
-                            className="group w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-primary-foreground font-medium shadow-lg hover:shadow-primary/25 transition-all duration-300 transform hover:-translate-y-0.5"
+                            className="group relative overflow-hidden w-full flex items-center justify-center gap-2 font-bold py-3 px-4 rounded-xl border-0 transition-all duration-300"
+                            style={{
+                              background: "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%)",
+                              boxShadow: "0 4px 6px -1px hsl(var(--primary) / 0.2), 0 10px 15px -3px hsl(var(--primary) / 0.3), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.1)"
+                            }}
                         >
-                            <span>Subscribe</span>
-                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            {/* Inner glow layer */}
+                            <div className="absolute inset-0 rounded-xl bg-gradient-to-b from-white/20 via-transparent to-black/10" />
+                            
+                            {/* Animated gradient border */}
+                            <div className="absolute inset-0 rounded-xl p-[1.5px] bg-gradient-to-br from-white/40 via-transparent to-black/20">
+                                <div className="h-full w-full rounded-xl bg-gradient-to-br from-primary to-secondary" />
+                            </div>
+                            
+                            {/* Hover light sweep effect */}
+                            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+                            
+                            <span className="relative z-10 flex items-center gap-2">
+                                <span>Subscribe</span>
+                                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1.5" />
+                            </span>
                         </Link>
+                    </motion.div>
                     </div>
                 </div>
             </motion.div>

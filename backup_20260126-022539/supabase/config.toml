@@ -1,0 +1,7 @@
+project_id = "vnocipjmbkluxmmocwmk"
+
+[functions.generate-vcards]
+verify_jwt = false
+
+[functions.compile-daily-vcards]
+verify_jwt = false

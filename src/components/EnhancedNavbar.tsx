@@ -184,25 +184,34 @@ const EnhancedNavbar = () => {
             {/* Right Side Actions */}
             <div className="flex items-center gap-3">
               <motion.div 
-                whileHover={{ scale: 1.05 }} 
-                whileTap={{ scale: 0.95 }} 
+                whileHover={{ scale: 1.03, y: -2 }}
+                whileTap={{ scale: 0.97, y: -1 }}
                 className="hidden md:block"
               >
                 <Button 
-                  className={cn(
-                    "relative group overflow-hidden rounded-full px-6 h-11 font-medium text-sm transition-all border-0",
-                    // Desktop Button: Blue Gradient
-                    "bg-gradient-to-r from-blue-600 to-indigo-600 text-white",
-                    "hover:shadow-[0_0_25px_-5px_rgba(59,130,246,0.5)]"
-                  )}
+                  className="group relative overflow-hidden rounded-full px-8 h-14 font-bold text-sm border-0 transition-all duration-300"
+                  style={{
+                    background: "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%)",
+                    boxShadow: "0 4px 6px -1px hsl(var(--primary) / 0.2), 0 10px 15px -3px hsl(var(--primary) / 0.3), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.1)"
+                  }}
                   onClick={(e) => handleNavClick(e, "#submit-form")}
                 >
-                  <span className="relative z-10 flex items-center">
+                  {/* Inner glow layer */}
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-b from-white/20 via-transparent to-black/10" />
+                  
+                  {/* Animated gradient border */}
+                  <div className="absolute inset-0 rounded-full p-[1.5px] bg-gradient-to-br from-white/40 via-transparent to-black/20">
+                    <div className="h-full w-full rounded-full bg-gradient-to-br from-primary to-secondary" />
+                  </div>
+                  
+                  {/* Hover light sweep effect */}
+                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+                  
+                  {/* Content */}
+                  <span className="relative z-10 flex items-center gap-2">
                     Submit Contact
-                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1.5" strokeWidth={2.5} />
                   </span>
-                  {/* Subtle Gradient Shine */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
                 </Button>
               </motion.div>
 

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Users, Zap, Smartphone, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import FeatureCard from './features/FeatureCard';
@@ -36,7 +36,7 @@ const features = [
 
 const FeaturesNew = () => {
   return (
-    <section id="features" className="relative py-24 lg:py-32 overflow-hidden bg-background">
+    <section id="features" className="relative pt-32 pb-24 lg:pt-40 lg:pb-32 overflow-hidden bg-background">
       {/* Subtle radial glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[600px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
 

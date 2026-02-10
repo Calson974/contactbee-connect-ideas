@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Download, Calendar as CalendarIcon, Users, Sparkles, TrendingUp, FileDown, Clock, CheckCircle, ChevronRight } from "lucide-react";
+import { Download, Calendar as CalendarIcon, Users, Zap, TrendingUp, FileDown, Clock, CheckCircle, ChevronRight, ArrowUp, Archive, Sparkles } from "lucide-react";
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { toast } from "sonner";
@@ -197,381 +197,416 @@ const DownloadsPageNew = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 via-blue-50 to-emerald-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-x-hidden">
-      {/* Animated background elements */}
+      {/* Sophisticated ambient background */}
       <div className="fixed inset-0 -z-10">
-        {[...Array(20)].map((_, i) => (
-          <div 
+        {/* Gradient orbs */}
+        {[...Array(6)].map((_, i) => (
+          <motion.div 
             key={i}
-            className="absolute rounded-full"
+            className="absolute rounded-full blur-[100px]"
             style={{
-              width: `${Math.random() * 400 + 100}px`,
-              height: `${Math.random() * 400 + 100}px`,
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              transform: `translate(-50%, -50%)`,
-              background: `radial-gradient(circle, ${
-                [
-                  'rgba(20, 184, 166, 0.1)',
-                  'rgba(6, 182, 212, 0.1)',
-                  'rgba(168, 85, 247, 0.1)',
-                  'rgba(236, 72, 153, 0.1)',
-                  'rgba(59, 130, 246, 0.1)'
-                ][i % 5]
-              }, transparent 70%)`,
-              filter: 'blur(40px)',
-              opacity: 0.6
+              width: `${300 + i * 100}px`,
+              height: `${300 + i * 100}px`,
+              top: `${10 + i * 15}%`,
+              left: `${5 + i * 12}%`,
+              background: i % 2 === 0 
+                ? 'radial-gradient(circle, rgba(34,197,94,0.08) 0%, transparent 70%)'
+                : 'radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 70%)',
+            }}
+            animate={{
+              x: [0, 50, -30, 0],
+              y: [0, -30, 50, 0],
+              scale: [1, 1.1, 0.95, 1],
+            }}
+            transition={{
+              duration: 15 + i * 3,
+              repeat: Infinity,
+              ease: "easeInOut",
             }}
           />
         ))}
+        
+        {/* Noise texture */}
+        <div className="absolute inset-0 opacity-[0.015]">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+          }} />
+        </div>
       </div>
       <Helmet>
         <title>Downloads - BoostWhats Contact Lists</title>
         <meta name="description" content="Download daily-updated WhatsApp contact lists to grow your status views exponentially" />
-        <style>{
-          `
-            @keyframes gradient-shift {
-              0% { background-position: 0% 50%; }
-              50% { background-position: 100% 50%; }
-              100% { background-position: 0% 50%; }
-            }
-            .animate-gradient-shift {
-              animation: gradient-shift 8s ease infinite;
-              background-size: 200% 200%;
-            }
-            .glow-on-hover {
-              transition: all 0.3s ease;
-            }
-            .glow-on-hover:hover {
-              box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
-              transform: translateY(-2px);
-            }
-          `
-        }</style>
+        <style>{`
+          @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+          .animate-gradient-shift {
+            animation: gradient-shift 10s ease infinite;
+            background-size: 200% 200%;
+          }
+        `}</style>
       </Helmet>
       
-      {/* Hero Section with Illustration */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-teal-600 via-blue-600 to-emerald-600 pt-20 pb-16 sm:pt-28 sm:pb-24">
-        {/* Animated gradient overlay */}
-        <div className="absolute inset-0 bg-[length:200%_200%] animate-gradient-shift" style={{
-          backgroundImage: 'linear-gradient(45deg, rgba(13, 148, 136, 0.9) 0%, rgba(59, 130, 246, 0.9) 50%, rgba(16, 185, 129, 0.9) 100%)',
-          opacity: 0.8,
-          mixBlendMode: 'multiply'
-        }}></div>
-        {/* Animated background elements */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10">
-          {[...Array(15)].map((_, i) => (
-            <div 
-              key={i}
-              className="absolute rounded-full bg-white"
-              style={{
-                width: `${Math.random() * 300 + 100}px`,
-                height: `${Math.random() * 300 + 100}px`,
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                transform: `translate(-50%, -50%)`,
-                filter: 'blur(40px)',
-                opacity: Math.random() * 0.2 + 0.1
-              }}
-            />
-          ))}
+      {/* Hero Section - Sophisticated Design */}
+      <div className="relative overflow-hidden pt-24 pb-20 lg:pt-32 lg:pb-28">
+        {/* Background with layered effects */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
         </div>
-        <div className="absolute inset-0 opacity-10">
+        
+        {/* Grid pattern */}
+        <div className="absolute inset-0 opacity-[0.03]">
           <div className="absolute inset-0" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+            backgroundImage: `linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px)`,
+            backgroundSize: '60px 60px',
           }} />
         </div>
         
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16">
+            {/* Text Content */}
             <div className="text-center lg:text-left max-w-2xl mx-auto lg:mx-0">
-              <motion.h1 
-                className="text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-100 sm:text-5xl md:text-6xl drop-shadow-lg"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+              {/* Badge */}
+              <motion.div
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary/10 backdrop-blur-md border border-primary/20 mb-8"
+                initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.5 }}
               >
-                Your <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-200 to-yellow-300">Contact</span> Library
-              </motion.h1>
-              <motion.p 
-                className="mt-4 text-lg text-blue-50 md:text-xl max-w-2xl leading-relaxed"
-                initial={{ opacity: 0, y: 20 }}
+                <Sparkles className="w-4 h-4 text-primary" />
+                <span className="text-sm font-semibold text-primary">Daily Updated Contact Library</span>
+              </motion.div>
+
+              <motion.h1 
+                className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight text-foreground mb-6"
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
               >
-                <span className="block mt-2">Access and download your daily <span className="font-semibold text-amber-200">contact</span> files.</span>
-              </motion.p>
+                Your <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Contact</span> Library
+              </motion.h1>
               
-              <motion.div 
-                className="mt-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+              <motion.p 
+                className="text-xl text-muted-foreground max-w-xl leading-relaxed mb-10"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                <Button 
-                  onClick={handleDownload}
-                  disabled={isDownloading}
-                  className="px-6 py-3 bg-gradient-to-r from-amber-400 to-yellow-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-amber-500/30 hover:from-amber-500 hover:to-yellow-600 relative overflow-hidden group"
+                Access and download your daily <span className="font-semibold text-primary">vCard files</span>. Build your network with verified contacts.
+              </motion.p>
+              
+              <motion.div 
+                className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+              >
+                <motion.div
+                  whileHover={{ scale: 1.03, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                  <span className="absolute inset-0 bg-white/20 w-0 group-hover:w-full transition-all duration-300 ease-in-out"></span>
-                  {isDownloading ? (
-                    <span className="relative flex items-center">
-                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      <span className="relative">Preparing...</span>
+                  <Button 
+                    onClick={handleDownload}
+                    disabled={isDownloading}
+                    className="group relative overflow-hidden px-8 py-6 h-auto bg-gradient-to-r from-primary to-accent text-primary-foreground font-bold text-lg rounded-full border-0 transition-all duration-300"
+                    style={{
+                      boxShadow: "0 4px 14px -2px hsl(var(--primary) / 0.3), 0 8px 20px -4px hsl(var(--primary) / 0.2), inset 0 1px 0 rgba(255,255,255,0.2)"
+                    }}
+                  >
+                    {/* Inner glow */}
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-b from-white/20 via-transparent to-black/10" />
+                    
+                    {/* Light sweep */}
+                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+                    
+                    <span className="relative z-10 flex items-center gap-2">
+                      {isDownloading ? (
+                        <>
+                          <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          <span>Preparing...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Download className="w-5 h-5" />
+                          <span>Download Latest vCard</span>
+                        </>
+                      )}
                     </span>
-                  ) : (
-                    <>
-                      <Download className="w-5 h-5 mr-2" />
-                      <span className="relative">Download Latest vCard</span>
-                    </>
-                  )}
-                </Button>
-                <Button 
-                  variant="outline" 
-                  className="px-6 py-3 bg-white/5 backdrop-blur-sm border-white/30 text-white hover:bg-white/20 hover:border-white/50 font-medium rounded-full group transition-all duration-300"
-                  onClick={() => {
-                    const element = document.getElementById('all-files');
-                    element?.scrollIntoView({ behavior: 'smooth' });
-                  }}
+                  </Button>
+                </motion.div>
+
+                <motion.div
+                  whileHover={{ scale: 1.03, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                  <span className="mr-1">View All Files</span>
-                  <ChevronRight className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" />
-                </Button>
+                  <Button 
+                    variant="outline"
+                    className="px-8 py-6 h-auto bg-white/50 dark:bg-white/5 backdrop-blur-sm border-2 border-border/50 hover:border-primary/50 text-foreground font-semibold rounded-full transition-all duration-300"
+                    onClick={() => {
+                      const element = document.getElementById('all-files');
+                      element?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    <span className="flex items-center gap-2">
+                      View All Files
+                      <ChevronRight className="w-5 h-5" />
+                    </span>
+                  </Button>
+                </motion.div>
               </motion.div>
             </div>
             
+            {/* Illustration */}
             <motion.div 
-              className="mt-10 lg:mt-0 w-full max-w-md mx-auto lg:mx-0 relative"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              className="w-full max-w-lg mx-auto lg:mx-0 relative"
+              initial={{ opacity: 0, scale: 0.9, x: 20 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
             >
-              <div className="absolute -inset-4 bg-gradient-to-r from-blue-400 to-teal-400 rounded-3xl opacity-20 blur-3xl -z-10"></div>
+              {/* Glow effect */}
+              <div className="absolute -inset-8 bg-gradient-to-r from-primary/20 to-accent/20 rounded-[3rem] blur-3xl -z-10" />
+              
               <div className="relative">
                 <img 
                   src={ladyHoldingTablet} 
                   alt="Woman holding a tablet with contact information" 
-                  className="w-full h-auto drop-shadow-2xl transform transition-transform duration-500 hover:scale-105"
+                  className="w-full h-auto drop-shadow-2xl"
                 />
-                <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-amber-400 to-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
-                <div className="absolute -top-6 -left-6 w-32 h-32 bg-gradient-to-br from-blue-400 to-teal-400 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"></div>
-                <div className="absolute -bottom-8 left-1/4 w-24 h-24 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"></div>
               </div>
             </motion.div>
           </div>
         </div>
       </div>
 
-      {/* Stats Section */}
-      <div className="relative py-12 sm:py-16 -mt-10 z-10 px-4 sm:px-6 max-w-7xl mx-auto">
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-1/4 -left-10 w-72 h-72 bg-purple-300/20 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
-          <div className="absolute top-1/2 -right-10 w-72 h-72 bg-teal-300/20 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"></div>
-          <div className="absolute -bottom-20 left-1/3 w-72 h-72 bg-blue-300/20 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"></div>
-        </div>
-        {/* Decorative elements */}
-        <div className="absolute -top-10 left-1/4 w-32 h-32 bg-purple-400/20 rounded-full filter blur-3xl -z-10"></div>
-        <div className="absolute bottom-10 right-1/4 w-40 h-40 bg-cyan-400/20 rounded-full filter blur-3xl -z-10"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 px-4 sm:px-0">
-            {/* Today's Contacts */}
-            <motion.div 
-              className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden border border-white/20 dark:border-gray-700/50 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:shadow-teal-100/50 dark:hover:shadow-teal-900/20"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.1 }}
-            >
-              <div className="h-1.5 bg-gradient-to-r from-teal-400 to-blue-500"></div>
-              <div className="p-6">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0 bg-gradient-to-br from-teal-500 to-emerald-500 rounded-xl p-3 shadow-md">
-                    <Users className="h-6 w-6 text-white" />
-                  </div>
-                  <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Today's Contacts</p>
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">{todayCount}</p>
-                    <p className="text-xs text-teal-600 dark:text-teal-400 font-medium mt-1">
-                      +{Math.floor(todayCount * 0.15)} from yesterday
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Weekly Growth */}
-            <motion.div 
-              className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden border border-white/20 dark:border-gray-700/50 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:shadow-emerald-100/50 dark:hover:shadow-emerald-900/20"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.2 }}
-            >
-              <div className="h-1.5 bg-gradient-to-r from-emerald-400 to-teal-500"></div>
-              <div className="p-6">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0 bg-gradient-to-br from-emerald-500 to-green-500 rounded-xl p-3 shadow-md">
-                    <TrendingUp className="h-6 w-6 text-white" />
-                  </div>
-                  <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Weekly Growth</p>
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">+{Math.floor(todayCount * 1.2)}</p>
-                    <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium mt-1">
-                      {Math.floor(todayCount * 0.3)}% from last week
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Total Downloads */}
-            <motion.div 
-              className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden border border-white/20 dark:border-gray-700/50 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:shadow-blue-100/50 dark:hover:shadow-blue-900/20"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.3 }}
-            >
-              <div className="h-1.5 bg-gradient-to-r from-blue-400 to-cyan-500"></div>
-              <div className="p-6">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-xl p-3 shadow-md">
-                    <Download className="h-6 w-6 text-white" />
-                  </div>
-                  <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Downloads</p>
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">{Math.floor(todayCount * 12.3)}</p>
-                    <p className="text-xs text-blue-600 dark:text-blue-400 font-medium mt-1">
-                      {Math.floor(todayCount * 0.8)} this month
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </div>
-
-      {/* Calendar Section */}
-      <div className="relative py-12 sm:py-16 bg-gradient-to-b from-white to-blue-50 dark:from-gray-900 dark:to-gray-800 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-teal-200/30 dark:bg-teal-900/20 rounded-full filter blur-3xl"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-200/30 dark:bg-blue-900/20 rounded-full filter blur-3xl"></div>
-        {/* Decorative elements */}
-        <div className="absolute top-20 right-10 w-48 h-48 bg-teal-400/10 rounded-full filter blur-3xl -z-10"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 relative">
-            <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              <div className="relative">
-                <div className="absolute -inset-4 bg-gradient-to-r from-teal-400 to-blue-500 rounded-full opacity-20 blur-xl"></div>
+      {/* Stats Section - Premium Cards */}
+      <div className="relative -mt-8 z-10 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { 
+                icon: Users, 
+                label: "Today's Contacts", 
+                value: todayCount.toString(), 
+                subtext: `+${Math.floor(todayCount * 0.15)} from yesterday`,
+                gradient: "from-primary to-accent",
+                bgGradient: "from-primary/5 to-accent/5"
+              },
+              { 
+                icon: TrendingUp, 
+                label: "Weekly Growth", 
+                value: `+${Math.floor(todayCount * 1.2)}`, 
+                subtext: `${Math.floor(todayCount * 0.3)}% from last week`,
+                gradient: "from-accent to-secondary",
+                bgGradient: "from-accent/5 to-secondary/5"
+              },
+              { 
+                icon: FileDown, 
+                label: "Total Downloads", 
+                value: `${Math.floor(todayCount * 12.3)}`, 
+                subtext: `${Math.floor(todayCount * 0.8)} this month`,
+                gradient: "from-secondary to-primary",
+                bgGradient: "from-secondary/5 to-primary/5"
+              },
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                className={`group relative overflow-hidden rounded-3xl bg-gradient-to-br ${stat.bgGradient} backdrop-blur-xl border border-white/20 dark:border-white/10 p-8 shadow-lg hover:shadow-xl transition-all duration-500`}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 + index * 0.1 }}
+                whileHover={{ y: -6, scale: 1.02 }}
+              >
+                {/* Hover glow */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
                 
-              </div>
-            </div>
-            <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl">
-              <span className="block">Select a Date to <span className="bg-clip-text text-transparent bg-gradient-to-r from-teal-500 to-blue-500">Download</span></span>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-blue-400 to-emerald-400">
-                Your Contact Archive
-              </span>
-            </h2>
-            <p className="mt-4 max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-300 sm:mt-4 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm px-6 py-3 rounded-full inline-block border border-gray-100 dark:border-gray-700">
-              <span className="text-teal-500 dark:text-teal-400 font-medium">✨ Pro Tip:</span> Choose any date to download the vCard file with all contacts from that day
-            </p>
+                <div className="relative flex items-start gap-5">
+                  <div className={`flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br ${stat.gradient} flex items-center justify-center shadow-lg`}>
+                    <stat.icon className="w-7 h-7 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground mb-1">{stat.label}</p>
+                    <p className={`text-4xl font-black text-transparent bg-gradient-to-r ${stat.gradient} bg-clip-text`}>
+                      {stat.value}
+                    </p>
+                    <p className="text-xs text-primary/70 font-medium mt-2">
+                      {stat.subtext}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Calendar Section - Sophisticated Design */}
+      <div className="relative py-24 lg:py-32 overflow-hidden">
+        {/* Background effects */}
+        <div className="absolute inset-0">
+          <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px]" />
+          <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[100px]" />
+        </div>
+        
+        <div className="relative max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
+          {/* Section Header */}
+          <div className="text-center mb-16">
+            <motion.div
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent/10 backdrop-blur-md border border-accent/20 mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <CalendarIcon className="w-4 h-4 text-accent" />
+              <span className="text-sm font-semibold text-accent">Select Any Date</span>
+            </motion.div>
+
+            <motion.h2 
+              className="text-4xl sm:text-5xl lg:text-6xl font-black text-foreground mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+            >
+              Download Your <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Contact Archive</span>
+            </motion.h2>
+            
+            <motion.p 
+              className="text-xl text-muted-foreground max-w-2xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              Choose any date to download the vCard file with all contacts from that day
+            </motion.p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+            {/* Calendar */}
             <motion.div 
-              className="lg:col-span-2"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
+              className="lg:col-span-3"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
             >
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700">
-                <div className="p-6 sm:p-8">
-                  <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                      {format(date, 'MMMM yyyy')}
-                    </h3>
-                    <div className="text-sm text-teal-600 dark:text-teal-400 font-medium">
-                      <Clock className="inline-block w-4 h-4 mr-1 -mt-0.5" />
-                      Updated daily at 9:00 AM UTC
-                    </div>
+              <div className="relative rounded-[2rem] bg-white/80 dark:bg-gray-900/80 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl overflow-hidden">
+                {/* Header */}
+                <div className="px-8 py-6 border-b border-border/50 flex items-center justify-between">
+                  <h3 className="text-2xl font-bold text-foreground">
+                    {format(date, 'MMMM yyyy')}
+                  </h3>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Clock className="w-4 h-4" />
+                    <span>Updated daily at 9:00 AM UTC</span>
                   </div>
-                  
-                  <div className="flex justify-center">
-                    <Calendar
-                      mode="single"
-                      selected={date}
-                      onSelect={(newDate) => newDate && setDate(newDate)}
-                      className="rounded-xl border-0 shadow-inner bg-gray-50 dark:bg-gray-700/30 p-4 w-full"
-                      classNames={{
-                        day_today: "bg-teal-100 text-teal-900 font-bold dark:bg-teal-900/30 dark:text-teal-300",
-                        day_selected: "bg-gradient-to-br from-teal-500 to-emerald-500 text-white font-bold hover:bg-teal-600 hover:text-white focus:bg-teal-600 focus:text-white",
-                        day_disabled: "text-gray-300 dark:text-gray-600 cursor-not-allowed",
-                        head_cell: "text-gray-500 dark:text-gray-400 font-medium text-sm uppercase tracking-wider flex-1 text-center",
-                        day: "h-10 w-10 p-0 font-medium aria-selected:opacity-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors duration-200 flex-1"
-                      }}
-                      disabled={(date) => {
-                        const today = new Date();
-                        today.setHours(0, 0, 0, 0);
-                        return date > today || date < new Date(2023, 0, 1);
-                      }}
-                    />
-                  </div>
+                </div>
+                
+                {/* Calendar */}
+                <div className="p-8">
+                  <Calendar
+                    mode="single"
+                    selected={date}
+                    onSelect={(newDate) => newDate && setDate(newDate)}
+                    className="rounded-none border-0 w-full"
+                    classNames={{
+                      month: "w-full",
+                      caption: "hidden",
+                      table: "w-full border-collapse",
+                      head_row: "flex justify-between mb-4",
+                      head_cell: "text-muted-foreground font-medium text-sm w-12 h-12 flex items-center justify-center",
+                      row: "flex justify-between mb-2",
+                      cell: "w-12 h-12 p-0 relative",
+                      day: "w-12 h-12 p-0 font-medium text-foreground hover:bg-primary/10 rounded-xl transition-all duration-200 flex items-center justify-center",
+                      day_today: "bg-primary/10 text-primary font-bold",
+                      day_selected: "bg-gradient-to-br from-primary to-accent text-white font-bold hover:from-primary/90 hover:to-accent/90 shadow-lg",
+                      day_disabled: "text-muted-foreground/30 cursor-not-allowed",
+                    }}
+                    disabled={(date) => {
+                      const today = new Date();
+                      today.setHours(0, 0, 0, 0);
+                      return date > today || date < new Date(2023, 0, 1);
+                    }}
+                  />
                 </div>
               </div>
             </motion.div>
 
+            {/* Download Card */}
             <motion.div
-              className="lg:col-span-1"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
+              className="lg:col-span-2"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <div className="h-full bg-gradient-to-br from-teal-600 to-emerald-600 rounded-2xl shadow-xl overflow-hidden border border-teal-500/20 flex flex-col">
-                <div className="p-6 sm:p-8 flex-1 flex flex-col">
-                  <div className="flex items-center justify-center h-16 w-16 rounded-2xl bg-white/10 backdrop-blur-sm mb-6 mx-auto">
-                    <FileDown className="h-8 w-8 text-white" />
+              <div className="h-full rounded-[2rem] bg-gradient-to-br from-primary to-accent p-[2px] shadow-2xl">
+                <div className="h-full rounded-[calc(2rem-2px)] bg-gradient-to-br from-primary/95 to-accent/95 backdrop-blur-xl p-8 flex flex-col">
+                  {/* Icon */}
+                  <div className="w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center mb-6 mx-auto">
+                    <FileDown className="w-10 h-10 text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold text-white text-center mb-3">
-                    {format(date, 'MMMM d, yyyy')}
-                  </h3>
                   
-                  <div className="mt-4 mb-6 p-4 bg-white/10 rounded-xl backdrop-blur-sm">
-                    <div className="flex items-center text-teal-100/90 mb-2">
-                      <Users className="h-5 w-5 mr-2 flex-shrink-0" />
-                      <span className="font-medium">Contacts Available:</span>
-                      <span className="ml-auto font-bold text-white">
+                  {/* Date */}
+                  <h3 className="text-3xl font-bold text-white text-center mb-2">
+                    {format(date, 'MMMM d')}
+                  </h3>
+                  <p className="text-white/70 text-center mb-8">
+                    {format(date, 'yyyy')}
+                  </p>
+                  
+                  {/* Stats */}
+                  <div className="space-y-4 mb-8">
+                    <div className="flex items-center justify-between p-4 bg-white/10 rounded-xl backdrop-blur-sm">
+                      <div className="flex items-center gap-3 text-white/80">
+                        <Users className="w-5 h-5" />
+                        <span>Contacts</span>
+                      </div>
+                      <span className="font-bold text-white text-xl">
                         {compiledFiles.find(f => f.compilation_date === format(date, 'yyyy-MM-dd'))?.contact_count || 'N/A'}
                       </span>
                     </div>
-                    <div className="flex items-center text-teal-100/80 text-sm">
-                      <Clock className="h-4 w-4 mr-2 flex-shrink-0" />
+                    <div className="flex items-center gap-3 text-white/60 text-sm">
+                      <Clock className="w-4 h-4" />
                       <span>Updated at 9:00 AM UTC</span>
                     </div>
                   </div>
                   
-                  <div className="mt-auto pt-4">
-                    <Button
-                      onClick={() => handleDownload()}
-                      disabled={isDownloading}
-                      size="lg"
-                      className="w-full flex items-center justify-center px-6 py-4 bg-white text-teal-700 hover:bg-teal-50 font-semibold rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg"
+                  {/* Download Button */}
+                  <div className="mt-auto">
+                    <motion.div
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.98 }}
                     >
-                      {isDownloading ? (
-                        <>
-                          <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-teal-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                          Preparing...
-                        </>
-                      ) : (
-                        <>
-                          <Download className="w-5 h-5 mr-2" />
-                          Download vCard
-                        </>
-                      )}
-                    </Button>
+                      <Button
+                        onClick={() => handleDownload()}
+                        disabled={isDownloading}
+                        className="w-full h-14 bg-white text-primary hover:bg-white/90 font-bold text-lg rounded-xl transition-all duration-300 shadow-lg"
+                      >
+                        {isDownloading ? (
+                          <span className="flex items-center gap-2">
+                            <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Preparing...
+                          </span>
+                        ) : (
+                          <span className="flex items-center gap-2">
+                            <Download className="w-5 h-5" />
+                            Download vCard
+                          </span>
+                        )}
+                      </Button>
+                    </motion.div>
                     
-                    <p className="mt-3 text-center text-xs text-teal-100/70">
+                    <p className="mt-4 text-center text-xs text-white/60">
                       .VCF file compatible with all major contact apps
                     </p>
                   </div>
@@ -582,117 +617,145 @@ const DownloadsPageNew = () => {
         </div>
       </div>
 
-      {/* File Archive Section */}
-      <div className="relative py-16 bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800" id="all-files">
-        {/* Decorative elements */}
-        <div className="absolute top-1/4 left-10 w-64 h-64 bg-purple-400/10 rounded-full filter blur-3xl -z-10"></div>
-        <div className="absolute bottom-1/4 right-10 w-56 h-56 bg-cyan-400/10 rounded-full filter blur-3xl -z-10"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* File Archive Section - Modern List Design */}
+      <div className="relative py-24 bg-gradient-to-b from-transparent via-muted/30 to-transparent" id="all-files">
+        <div className="max-w-5xl mx-auto px-6 sm:px-8 lg:px-12">
+          {/* Section Header */}
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl">
-              <span className="block">Your Complete</span>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-emerald-500">
-                vCard Archive
-              </span>
-            </h2>
-            <p className="mt-3 max-w-2xl mx-auto text-lg text-gray-500 dark:text-gray-400">
+            <motion.div
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-secondary/10 backdrop-blur-md border border-secondary/20 mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <Archive className="w-4 h-4 text-secondary" />
+              <span className="text-sm font-semibold text-secondary">Complete History</span>
+            </motion.div>
+
+            <motion.h2 
+              className="text-4xl sm:text-5xl font-black text-foreground mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+            >
+              Your vCard <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Archive</span>
+            </motion.h2>
+            
+            <motion.p 
+              className="text-lg text-muted-foreground max-w-2xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
               Access and download all your previously compiled contact lists
-            </p>
+            </motion.p>
           </div>
 
+          {/* File List */}
           <motion.div 
-            className="bg-white dark:bg-gray-800/50 backdrop-blur-sm rounded-3xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700/50"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            className="rounded-[2rem] bg-white/80 dark:bg-gray-900/80 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl overflow-hidden"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
           >
-            <div className="px-6 py-5 border-b border-gray-100 dark:border-gray-700/50 flex flex-col sm:flex-row justify-between items-center bg-gradient-to-r from-blue-50 to-teal-50 dark:from-gray-800/50 dark:to-gray-900/50">
-              <div className="flex items-center">
-                <div className="mr-3 p-2 rounded-lg bg-gradient-to-br from-teal-500 to-emerald-500 shadow-md">
-                  <FileDown className="h-5 w-5 text-white" />
+            {/* List Header */}
+            <div className="px-8 py-6 border-b border-border/50 flex items-center justify-between bg-gradient-to-r from-muted/50 to-transparent">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg">
+                  <Archive className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-lg font-bold bg-gradient-to-r from-teal-600 to-blue-600 dark:from-teal-400 dark:to-blue-400 bg-clip-text text-transparent">
-                  All vCard Archives
-                </h3>
+                <div>
+                  <h3 className="text-xl font-bold text-foreground">All vCard Archives</h3>
+                  <p className="text-sm text-muted-foreground">Download any previous day's contacts</p>
+                </div>
               </div>
-              <div className="mt-2 sm:mt-0 text-sm bg-gradient-to-r from-teal-500 to-emerald-500 text-white px-4 py-1.5 rounded-full font-semibold shadow-sm">
-                {compiledFiles.length} {compiledFiles.length === 1 ? 'File' : 'Files'} Available
+              <div className="px-4 py-2 rounded-full bg-gradient-to-r from-primary to-accent text-white text-sm font-bold shadow-md">
+                {compiledFiles.length} {compiledFiles.length === 1 ? 'File' : 'Files'}
               </div>
             </div>
             
-            <div className="divide-y divide-gray-100 dark:divide-gray-700/50 max-h-[600px] overflow-y-auto">
+            {/* File Items */}
+            <div className="max-h-[500px] overflow-y-auto">
               {compiledFiles.length > 0 ? (
                 <AnimatePresence>
                   {compiledFiles.map((file, index) => (
                     <motion.div
                       key={file.id}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.2, delay: index * 0.03 }}
-                      className="group relative p-5 hover:bg-gradient-to-r from-blue-50/50 to-teal-50/50 dark:from-gray-800/50 dark:to-gray-700/30 transition-all duration-200 border-l-4 border-transparent hover:border-teal-400 hover:shadow-sm"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 20 }}
+                      transition={{ duration: 0.3, delay: index * 0.03 }}
+                      className="group relative px-8 py-5 border-b border-border/30 hover:bg-gradient-to-r hover:from-primary/5 hover:to-accent/5 transition-all duration-300"
                     >
-                      {/* Decorative accent */}
-                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-teal-400 to-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                        <div className="flex items-start sm:items-center gap-4 flex-1 min-w-0">
-                          <div className={`p-2.5 rounded-xl shadow-md flex-shrink-0 ${
-                          index % 3 === 0 ? 'bg-gradient-to-br from-blue-500 to-cyan-500' : 
-                          index % 3 === 1 ? 'bg-gradient-to-br from-purple-500 to-pink-500' : 
-                          'bg-gradient-to-br from-teal-500 to-emerald-500'
-                        }`}>
-                          <FileDown className="w-5 h-5 text-white" />
-                        </div>
-                          <div className="min-w-0">
-                            <h4 className="text-base font-semibold text-gray-900 dark:text-white truncate">
+                      <div className="flex items-center justify-between gap-4">
+                        <div className="flex items-center gap-4 flex-1 min-w-0">
+                          {/* File Icon */}
+                          <div className={`flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center shadow-md ${
+                            index % 3 === 0 ? 'bg-gradient-to-br from-blue-500 to-cyan-500' : 
+                            index % 3 === 1 ? 'bg-gradient-to-br from-purple-500 to-pink-500' : 
+                            'bg-gradient-to-br from-primary to-accent'
+                          }`}>
+                            <FileDown className="w-7 h-7 text-white" />
+                          </div>
+                          
+                          {/* File Info */}
+                          <div className="min-w-0 flex-1">
+                            <h4 className="text-lg font-bold text-foreground truncate">
                               {format(new Date(file.compilation_date), 'EEEE, MMMM d, yyyy')}
                             </h4>
-                            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1">
-                              <span className="inline-flex items-center text-sm text-gray-500 dark:text-gray-400">
-                                <Users className="w-3.5 h-3.5 mr-1.5" />
+                            <div className="flex flex-wrap items-center gap-x-6 gap-y-1 mt-1.5">
+                              <span className="inline-flex items-center text-sm text-muted-foreground">
+                                <Users className="w-4 h-4 mr-2" />
                                 {file.contact_count} contacts
                               </span>
-                              <span className="inline-flex items-center text-sm text-gray-500 dark:text-gray-400">
-                                <Clock className="w-3.5 h-3.5 mr-1.5" />
+                              <span className="inline-flex items-center text-sm text-muted-foreground">
+                                <Clock className="w-4 h-4 mr-2" />
                                 {format(new Date(file.created_at), 'h:mm a')}
                               </span>
                             </div>
                           </div>
                         </div>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="mt-3 sm:mt-0 w-full sm:w-auto justify-center sm:justify-start group relative overflow-hidden"
-                          onClick={() => handleDownload(new Date(file.compilation_date))}
+                        
+                        {/* Download Button */}
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
                         >
-                          <span className="relative z-10 flex items-center">
-                            <Download className="w-4 h-4 mr-2 text-teal-600 dark:text-teal-400 group-hover:text-white transition-colors" />
-                            <span className="text-teal-700 dark:text-teal-300 group-hover:text-white transition-colors">
-                              Download
+                          <Button
+                            variant="outline"
+                            className="group/btn relative overflow-hidden px-6 py-5 h-auto rounded-xl border-2 border-primary/30 hover:border-primary bg-white/50 dark:bg-white/5 hover:bg-primary transition-all duration-300"
+                            onClick={() => handleDownload(new Date(file.compilation_date))}
+                          >
+                            <span className="relative z-10 flex items-center gap-2 text-primary group-hover/btn:text-white transition-colors">
+                              <Download className="w-4 h-4" />
+                              <span className="font-semibold">Download</span>
                             </span>
-                          </span>
-                          <span className="absolute inset-0 w-0 bg-gradient-to-r from-teal-500 to-emerald-500 transition-all duration-300 ease-in-out group-hover:w-full group-hover:opacity-100 opacity-0"></span>
-                        </Button>
+                          </Button>
+                        </motion.div>
                       </div>
                     </motion.div>
                   ))}
                 </AnimatePresence>
               ) : (
-                <div className="text-center py-12 px-6">
-                  <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-teal-100 dark:bg-teal-900/30 mb-4">
-                    <FileDown className="h-8 w-8 text-teal-600 dark:text-teal-400" />
+                <div className="text-center py-16 px-6">
+                  <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-2xl bg-primary/10 mb-6">
+                    <Archive className="h-10 w-10 text-primary" />
                   </div>
-                  <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-1">No vCards found</h3>
-                  <p className="text-gray-500 dark:text-gray-400">
+                  <h3 className="text-xl font-bold text-foreground mb-2">No vCards found</h3>
+                  <p className="text-muted-foreground">
                     Your compiled vCard files will appear here once available.
                   </p>
                 </div>
               )}
             </div>
             
+            {/* Footer */}
             {compiledFiles.length > 0 && (
-              <div className="px-6 py-4 border-t border-gray-100 dark:border-gray-700/50 text-center bg-gray-50 dark:bg-gray-800/30">
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+              <div className="px-8 py-5 border-t border-border/50 bg-muted/30 text-center">
+                <p className="text-sm text-muted-foreground">
                   Files are generated daily at 9:00 AM UTC • Last updated {format(new Date(), 'MMM d, yyyy')}
                 </p>
               </div>
@@ -701,50 +764,82 @@ const DownloadsPageNew = () => {
         </div>
       </div>
 
-      {/* CTA Section */}
-      <div className="relative py-16 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-teal-500/5 via-blue-400/5 to-purple-500/5 dark:from-teal-900/10 dark:via-blue-900/10 dark:to-purple-900/10">
-          <div className="absolute inset-0 bg-[radial-gradient(#06b6d480_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+      {/* CTA Section - Premium Design */}
+      <div className="relative py-24 overflow-hidden">
+        {/* Background */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/5" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_50%,rgba(34,197,94,0.05),transparent)]" />
         </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative bg-gradient-to-r from-teal-600 via-blue-600 to-emerald-600 rounded-3xl shadow-2xl overflow-hidden transform transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
-            {/* Animated gradient overlay */}
-            <div className="absolute inset-0 bg-[length:200%_200%] animate-gradient-shift" style={{
-              backgroundImage: 'linear-gradient(45deg, rgba(13,148,136,0.8) 0%, rgba(59,130,246,0.8) 50%, rgba(16,185,129,0.8) 100%)',
-              opacity: 0.7,
-              mixBlendMode: 'overlay'
-            }}></div>
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute inset-0" style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-              }} />
-            </div>
-            
-            <div className="relative max-w-4xl mx-auto py-12 px-6 sm:py-16 sm:px-12 lg:px-8 text-center">
-              <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
-                <span className="block bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100">Need More Contacts?</span>
-                <span className="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-teal-200 to-emerald-200">Check back daily for updates</span>
-              </h2>
-              <p className="mt-4 text-lg text-teal-100/90 max-w-2xl mx-auto">
-                We compile fresh contacts every day at 9:00 AM UTC. Bookmark this page for easy access to your growing network.
-              </p>
-              <div className="mt-8">
-                <Button
-                  size="lg"
-                  className="px-8 py-3 border-0 text-base font-medium rounded-full text-white bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 md:py-4 md:text-lg md:px-10 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20 relative overflow-hidden group"
-                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        
+        <div className="relative max-w-5xl mx-auto px-6 sm:px-8 lg:px-12">
+          <motion.div 
+            className="relative rounded-[2.5rem] bg-gradient-to-r from-primary via-accent to-secondary p-[2px] shadow-2xl"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="relative rounded-[calc(2.5rem-2px)] bg-gradient-to-br from-primary/95 via-accent/95 to-secondary/95 backdrop-blur-xl px-12 py-16 text-center overflow-hidden">
+              {/* Inner glow */}
+              <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-black/10" />
+              
+              {/* Grid pattern */}
+              <div className="absolute inset-0 opacity-[0.05]">
+                <div className="absolute inset-0" style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                }} />
+              </div>
+              
+              <div className="relative z-10">
+                <motion.h2 
+                  className="text-4xl sm:text-5xl font-black text-white mb-4"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 }}
                 >
-                  <span className="relative z-10 flex items-center">
-                    <svg className="w-5 h-5 mr-2 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-                    </svg>
-                    Back to Top
-                  </span>
-                  <span className="absolute inset-0 w-0 bg-white/20 transition-all duration-300 ease-in-out group-hover:w-full"></span>
-                </Button>
+                  Need More Contacts?
+                </motion.h2>
+                <motion.p 
+                  className="text-xl text-white/80 max-w-2xl mx-auto mb-10"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3 }}
+                >
+                  We compile fresh contacts every day at 9:00 AM UTC. Bookmark this page for easy access.
+                </motion.p>
+                
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4 }}
+                >
+                  <motion.div
+                    whileHover={{ scale: 1.05, y: -3 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="inline-block"
+                  >
+                    <Button
+                      size="lg"
+                      className="group relative overflow-hidden px-10 py-7 h-auto bg-white text-primary hover:bg-white/90 font-bold text-lg rounded-full border-0 transition-all duration-300 shadow-xl"
+                      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                    >
+                      {/* Light sweep */}
+                      <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+                      
+                      <span className="relative z-10 flex items-center gap-3">
+                        <ArrowUp className="w-5 h-5" />
+                        Back to Top
+                      </span>
+                    </Button>
+                  </motion.div>
+                </motion.div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>

@@ -181,6 +181,9 @@ const SubmissionForm = () => {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.4, type: 'spring', damping: 25 }}
             className="fixed inset-0 flex items-center justify-center z-50 bg-black/30 backdrop-blur-sm"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="success-title"
           >
             <motion.div 
               className="bg-white dark:bg-gray-900 rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl border border-gray-200 dark:border-gray-800"
@@ -206,7 +209,7 @@ const SubmissionForm = () => {
                   <CheckCircle className="w-12 h-12 text-green-600 dark:text-green-400" />
                 </motion.div>
                 
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                <h3 id="success-title" className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                   Successfully Submitted!
                 </h3>
                 

@@ -169,18 +169,44 @@ const HowItWorksNew = () => {
           transition={{ duration: 0.6 }}
         >
           <motion.a
-            href="/downloads"
-            className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-primary hover:bg-secondary text-primary-foreground font-bold text-lg transition-all duration-300 shadow-xl hover:shadow-2xl"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
+            href="#submit-form"
+            className="group relative overflow-hidden inline-flex items-center gap-3 font-bold text-lg py-5 px-10 rounded-full transition-all duration-300 border-0"
+            style={{
+              background: "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%)",
+              boxShadow: "0 4px 6px -1px hsl(var(--primary) / 0.2), 0 10px 15px -3px hsl(var(--primary) / 0.3), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.1)"
+            }}
+            whileHover={{ 
+              scale: 1.03, 
+              y: -3,
+              boxShadow: "0 20px 40px -10px hsl(var(--primary) / 0.4), 0 10px 20px -5px hsl(var(--primary) / 0.2)"
+            }}
+            whileTap={{ scale: 0.97, y: -1 }}
+            onClick={(e) => {
+              e.preventDefault();
+              const element = document.getElementById('submit-form');
+              if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
           >
-            Get Started Now
-            <motion.span
-              animate={{ x: [0, 5, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            >
+            {/* Inner glow layer */}
+            <div className="absolute inset-0 rounded-full bg-gradient-to-b from-white/20 via-transparent to-black/10" />
+            
+            {/* Animated gradient border */}
+            <div className="absolute inset-0 rounded-full p-[1.5px] bg-gradient-to-br from-white/40 via-transparent to-black/20">
+              <div className="h-full w-full rounded-full bg-gradient-to-br from-primary to-secondary" />
+            </div>
+            
+            {/* Hover light sweep effect */}
+            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+            
+            <span className="relative z-10 font-bold tracking-wide">
+              Get Started Now
+            </span>
+            
+            <span className="relative z-10 transition-transform duration-300 group-hover:translate-x-1.5">
               →
-            </motion.span>
+            </span>
           </motion.a>
         </motion.div>
       </div>

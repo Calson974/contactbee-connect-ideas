@@ -1,15 +1,17 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import { Button } from './ui/button';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Play, Sparkles, TrendingUp, Users, Zap, ArrowLeft, ChevronDown } from "lucide-react";
+import { Play, TrendingUp, Users, Zap, ArrowLeft, ChevronDown, X, CheckCircle, Clock, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { CountrySelect } from "@/components/ui/country-select";
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import { createPortal } from 'react-dom';
 import heroBackground from "@/assets/hero-background.jpg";
 
 const ladyImage = 'https://res.cloudinary.com/dmxik1gea/image/upload/v1762512102/exited-lady-vectored_uyneb6.png';
@@ -31,8 +33,165 @@ const HeroModern = () => {
   const [customFieldValue, setCustomFieldValue] = useState("");
   const [address, setAddress] = useState("");
   const [notes, setNotes] = useState("");
+  const [showDoneCard, setShowDoneCard] = useState(false);
+  const [countdown, setCountdown] = useState("");
+  const scrollPositionRef = useRef<number>(0);
+
+  // Set up countdown to 9 PM
+  useEffect(() => {
+    const updateCountdown = () => {
+      const now = new Date();
+      const target = new Date();
+      target.setHours(21, 0, 0, 0); // 9 PM
+      
+      if (now > target) {
+        // If it's past 9 PM, set target to 9 PM tomorrow
+        target.setDate(target.getDate() + 1);
+      }
+      
+      const diff = target.getTime() - now.getTime();
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      
+      setCountdown(`${hours}h ${minutes}m`);
+    };
+    
+    // Update immediately and then every minute
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 60000);
+    
+    return () => clearInterval(interval);
+  }, []);
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (showDoneCard) {
+      // Store current scroll position immediately and protect it
+      const scrollY = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      scrollPositionRef.current = scrollY; // Store in React ref
+      
+      // Store in multiple places immediately
+      const scrollPosition = scrollY.toString();
+      document.body.setAttribute('data-scroll-y', scrollPosition);
+      document.documentElement.setAttribute('data-scroll-y', scrollPosition);
+      sessionStorage.setItem('modal-scroll-position', scrollPosition);
+      localStorage.setItem('modal-scroll-position', scrollPosition);
+      
+      // Lock both html and body
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.scrollBehavior = 'auto';
+      
+      // Protect against any interference by re-storing the position
+      const protectPosition = setInterval(() => {
+        document.body.setAttribute('data-scroll-y', scrollPosition);
+        document.documentElement.setAttribute('data-scroll-y', scrollPosition);
+        sessionStorage.setItem('modal-scroll-position', scrollPosition);
+        localStorage.setItem('modal-scroll-position', scrollPosition);
+      }, 100);
+      
+      return () => {
+        clearInterval(protectPosition);
+      };
+    } else {
+      // Get scroll position from React ref first (most reliable)
+      let storedScrollY = scrollPositionRef.current.toString();
+      
+      // Fallback to other storage methods
+      if (storedScrollY === '0') {
+        storedScrollY = document.body.getAttribute('data-scroll-y') || 
+                        document.documentElement.getAttribute('data-scroll-y') || 
+                        sessionStorage.getItem('modal-scroll-position') || 
+                        localStorage.getItem('modal-scroll-position') || '0';
+      }
+      
+      // Restore both html and body
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+      document.body.style.scrollBehavior = '';
+      
+      // Clean up attributes
+      document.body.removeAttribute('data-scroll-y');
+      document.documentElement.removeAttribute('data-scroll-y');
+      sessionStorage.removeItem('modal-scroll-position');
+      localStorage.removeItem('modal-scroll-position');
+      
+      // Use the stored scroll position
+      const scrollPosition = parseInt(storedScrollY);
+      
+      // Force scroll restoration with multiple methods
+      const restoreScroll = () => {
+        window.scrollTo(0, scrollPosition);
+        document.documentElement.scrollTop = scrollPosition;
+        document.body.scrollTop = scrollPosition;
+      };
+      
+      // Apply immediately and multiple times to override any interference
+      restoreScroll();
+      requestAnimationFrame(restoreScroll);
+      setTimeout(restoreScroll, 10);
+      setTimeout(restoreScroll, 50);
+      setTimeout(restoreScroll, 100);
+      setTimeout(restoreScroll, 200);
+    }
+
+    return () => {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+      document.body.style.scrollBehavior = '';
+      document.body.removeAttribute('data-scroll-y');
+      document.documentElement.removeAttribute('data-scroll-y');
+      sessionStorage.removeItem('modal-scroll-position');
+      localStorage.removeItem('modal-scroll-position');
+    };
+  }, [showDoneCard]);
+
+  useEffect(() => {
+    if (!showDoneCard) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setShowDoneCard(false);
+      }
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [showDoneCard]);
 
   const handleSubmit = async () => {
+    // Validate required fields
+    if (!name.trim()) {
+      toast.error("Please enter your name");
+      return;
+    }
+    
+    if (!phone.trim()) {
+      toast.error("Please enter your WhatsApp number");
+      return;
+    }
+    
+    if (!country.trim()) {
+      toast.error("Please select your country");
+      return;
+    }
+
+    // Validate phone format (basic check for international format)
+    const phoneRegex = /^\+?[1-9]\d{1,14}$/;
+    if (!phoneRegex.test(phone.replace(/\s/g, ''))) {
+      toast.error("Please enter a valid phone number (e.g., +237 6xx xx xx xx)");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -53,7 +212,8 @@ const HeroModern = () => {
 
       if (error) throw error;
 
-      toast.success("🎉 Entry submitted successfully! Your contact will be included in today's vCard file.");
+      // Show the premium success modal instead of toast
+      setShowDoneCard(true);
 
       setName("");
       setPhone("");
@@ -70,10 +230,131 @@ const HeroModern = () => {
       setShowForm(false);
     } catch (error) {
       console.error("Error submitting entry:", error);
-      toast.error("Failed to submit entry. Please try again.");
+      toast.error(`Failed to submit entry: ${error.message || 'Please try again.'}`);
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  // Done Card Component
+  const DoneCard = () => {
+    if (typeof document === "undefined") return null;
+
+    return createPortal(
+      <div
+        className="fixed inset-0 z-[1000] pointer-events-auto"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="success-title"
+        aria-describedby="success-description"
+      >
+        <div
+          className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70 backdrop-blur-md"
+          onMouseDown={() => setShowDoneCard(false)}
+        />
+
+        <div className="absolute inset-0 flex items-center justify-center p-4">
+          <motion.div
+            className="relative w-full max-w-md overflow-hidden rounded-3xl bg-white dark:bg-gray-900 shadow-2xl ring-1 ring-black/10 dark:ring-white/10"
+            initial={{ opacity: 0, y: 18, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 12, scale: 0.98 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            onMouseDown={(e) => e.stopPropagation()}
+          >
+            <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-r from-primary/20 via-accent/15 to-primary/20" />
+
+            <div className="pointer-events-none absolute -inset-px rounded-3xl opacity-70 [mask-image:linear-gradient(to_bottom,black,transparent_85%)]">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/25 via-accent/20 to-primary/25" />
+            </div>
+
+            <button
+              type="button"
+              aria-label="Close"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setShowDoneCard(false);
+              }}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/70 text-gray-700 shadow-sm ring-1 ring-black/10 backdrop-blur hover:bg-white dark:bg-gray-900/60 dark:text-gray-200 dark:ring-white/10 z-10"
+            >
+              <X className="h-4 w-4" />
+            </button>
+
+            <div className="relative px-8 pb-8 pt-7">
+              <div className="mx-auto -mt-8 mb-2 w-40 h-40">
+                <DotLottieReact
+                  src="https://lottie.host/b6ff1611-82ed-401c-9e35-dec5e7c34fc3/PXsxxuYKQx.lottie"
+                  autoplay
+                  loop={false}
+                />
+              </div>
+
+              <div className="text-center">
+                <div className="mx-auto mb-3 inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1 text-emerald-700 ring-1 ring-emerald-500/20 dark:text-emerald-300 dark:ring-emerald-400/20">
+                  <CheckCircle className="h-4 w-4" />
+                  <span className="text-sm font-semibold">Submission received</span>
+                </div>
+
+                <h3 id="success-title" className="text-2xl font-black tracking-tight text-gray-900 dark:text-white">
+                  You're all set
+                </h3>
+
+                <p id="success-description" className="mt-2 text-sm leading-relaxed text-gray-600 dark:text-gray-300">
+                  Your contact will be included in today's vCard compilation.
+                </p>
+
+                <div className="mt-6 rounded-2xl border border-blue-200/60 bg-blue-50/80 px-4 py-4 text-left text-blue-800 shadow-sm dark:border-blue-400/20 dark:bg-blue-900/20 dark:text-blue-200">
+                  <div className="flex items-start gap-3">
+                    <div className="mt-0.5 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600/10 text-blue-700 dark:bg-blue-400/10 dark:text-blue-200">
+                      <Clock className="h-5 w-5" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="text-sm font-semibold">Download window</div>
+                      <div className="mt-0.5 text-sm opacity-90">
+                        Return at <span className="font-semibold">9:00 PM</span> to download the contact file.
+                        {countdown && (
+                          <span className="ml-1 font-semibold">(in {countdown})</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-7 grid gap-3">
+                  <Button 
+                    type="button" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setShowDoneCard(false);
+                    }} 
+                    className="h-12 rounded-xl font-bold"
+                  >
+                    Back to form
+                  </Button>
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setShowDoneCard(false);
+                    }} 
+                    className="h-12 rounded-xl"
+                  >
+                    Close
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>,
+      document.body
+    );
   };
 
   return (
@@ -200,7 +481,7 @@ const HeroModern = () => {
                 exit={{ rotateY: 90 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
                 style={{ transformStyle: "preserve-3d" }}
-                className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 lg:py-24 pb-32 lg:pb-48"
+                className="container mx-auto px-4 sm:px-6 lg:px-8 pt-32 md:pt-36 lg:pt-40 pb-32 lg:pb-48"
               >
                 <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center max-w-7xl mx-auto">
                   
@@ -214,8 +495,8 @@ const HeroModern = () => {
                       transition={{ duration: 0.5 }}
                       className="inline-flex"
                     >
-                      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 dark:bg-primary/20 border border-primary/20 dark:border-primary/30">
-                        <Sparkles className="w-4 h-4 text-primary" />
+                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 dark:bg-primary/20 border border-primary/20 dark:border-primary/30">
+                        <Zap className="w-4 h-4 text-primary" />
                         <span className="text-sm font-medium text-primary">
                           1,000+ Growing Their Reach
                         </span>
@@ -229,13 +510,13 @@ const HeroModern = () => {
                       transition={{ duration: 0.5, delay: 0.1 }}
                     >
                       <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight tracking-tight">
-                        <span className="block text-foreground">
+                        <span className="block text-white">
                           Transform Your
                         </span>
                         <span className="block text-primary mt-1">
                           WhatsApp Status
                         </span>
-                        <span className="block text-foreground mt-1">
+                        <span className="block text-white mt-1">
                           Into a Powerhouse
                         </span>
                       </h1>
@@ -256,33 +537,86 @@ const HeroModern = () => {
                       
                     </motion.div>
 
-                    {/* CTA Buttons */}
+                    {/* CTA Buttons - Premium Design */}
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 0.4 }}
-                      className="flex flex-col sm:flex-row gap-4 pt-2"
+                      className="flex gap-3 pt-6 flex-nowrap"
                     >
-                      <Button 
-                        size="lg" 
+                      {/* Primary CTA - Premium 3D Button */}
+                      <motion.button
+                        whileHover={{ 
+                          scale: 1.03, 
+                          y: -3,
+                          boxShadow: "0 20px 40px -10px hsl(var(--primary) / 0.4), 0 10px 20px -5px hsl(var(--primary) / 0.2)"
+                        }}
+                        whileTap={{ scale: 0.97, y: -1 }}
                         onClick={() => setShowForm(true)}
-                        className="bg-primary hover:bg-secondary text-primary-foreground font-semibold text-base px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all"
-                      > 
-                        <Sparkles className="w-5 h-5 mr-2" />
-                        Let's Grow
-                      </Button>
+                        className="group relative overflow-hidden rounded-2xl px-8 py-4 font-bold text-base text-white transition-all duration-300 flex-shrink-0"
+                        style={{
+                          background: "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%)",
+                          boxShadow: "0 4px 6px -1px hsl(var(--primary) / 0.2), 0 10px 15px -3px hsl(var(--primary) / 0.3), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.1)"
+                        }}
+                      >
+                        {/* Inner glow layer */}
+                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/20 via-transparent to-black/10" />
+                        
+                        {/* Animated gradient border */}
+                        <div className="absolute inset-0 rounded-2xl p-[1.5px] bg-gradient-to-br from-white/40 via-transparent to-black/20">
+                          <div className="h-full w-full rounded-2xl bg-gradient-to-br from-primary to-secondary" />
+                        </div>
+                        
+                        {/* Hover light sweep effect */}
+                        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+                        
+                        {/* Content */}
+                        <span className="relative z-10 flex items-center gap-2">
+                          <span className="tracking-wide text-sm whitespace-nowrap">Start Growing</span>
+                          <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1.5" strokeWidth={2.5} />
+                        </span>
+                      </motion.button>
 
-                      <Button 
-                        variant="outline" 
-                        size="lg" 
-                        className="font-semibold text-base px-8 py-6 rounded-xl border-2 hover:bg-muted transition-all"
+                      {/* Secondary CTA - Glassmorphism Premium */}
+                      <motion.button
+                        whileHover={{ 
+                          scale: 1.03, 
+                          y: -3,
+                          backgroundColor: "rgba(255, 255, 255, 0.15)"
+                        }}
+                        whileTap={{ scale: 0.97, y: -1 }}
                         onClick={() => {
                           document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
                         }}
+                        className="group relative overflow-hidden rounded-2xl px-8 py-4 font-semibold text-base transition-all duration-300 border-2 backdrop-blur-md flex-shrink-0"
+                        style={{
+                          borderColor: "hsla(var(--primary), 0.25)",
+                          background: "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)",
+                          boxShadow: "0 4px 6px -1px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.1)"
+                        }}
                       >
-                        <Play className="mr-2 w-5 h-5" />
-                        How It Works
-                      </Button>
+                        {/* Inner gradient glow on hover */}
+                        <div 
+                          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                          style={{
+                            background: "radial-gradient(ellipse at center, hsla(var(--primary), 0.15) 0%, transparent 70%)"
+                          }}
+                        />
+                        
+                        {/* Border glow effect */}
+                        <div 
+                          className="absolute -inset-[1px] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm"
+                          style={{
+                            background: "linear-gradient(135deg, hsla(var(--primary), 0.5), hsla(var(--secondary), 0.5))"
+                          }}
+                        />
+                        
+                        {/* Content */}
+                        <span className="relative z-10 flex items-center gap-2">
+                          <Play className="w-4 h-4 transition-all duration-300 group-hover:scale-110" fill="currentColor" strokeWidth={0} />
+                          <span className="tracking-wide text-sm whitespace-nowrap">How It Works</span>
+                        </span>
+                      </motion.button>
                     </motion.div>
                   </div>
 
@@ -318,7 +652,7 @@ const HeroModern = () => {
                 exit={{ rotateY: 90 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
                 style={{ transformStyle: "preserve-3d" }}
-                className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 lg:py-20 pb-32 lg:pb-48"
+                className="container mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-28 lg:pt-32 pb-32 lg:pb-48"
               >
                 <div className="max-w-2xl mx-auto">
                   {/* Glowing border wrapper */}
@@ -337,8 +671,8 @@ const HeroModern = () => {
 
                     {/* Form Header */}
                     <div className="mb-8">
-                      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 dark:bg-primary/20 border border-primary/20 dark:border-primary/30 mb-4">
-                        <Sparkles className="w-4 h-4 text-primary" />
+                      <div className="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-primary/10 dark:bg-primary/20 border border-primary/20 dark:border-primary/30 mb-4">
+                        <Zap className="w-4 h-4 text-primary" />
                         <span className="text-sm font-medium text-primary">Join Today</span>
                       </div>
 
@@ -358,7 +692,7 @@ const HeroModern = () => {
                       <div className="grid sm:grid-cols-2 gap-3">
                         {[
                           { value: "free", title: "Personal Use", desc: "Name limited to 8 characters" },
-                          { value: "proffessional", title: "Proffessional Use", desc: "Full name & all features" }
+                          { value: "professional", title: "Professional Use", desc: "Full name & all features" }
                         ].map((plan) => (
                           <button
                             key={plan.value}
@@ -497,23 +831,43 @@ const HeroModern = () => {
                       </Collapsible>
 
                       {/* Submit Button */}
-                      <Button
-                        onClick={handleSubmit}
-                        disabled={isSubmitting}
-                        className="w-full h-12 bg-primary hover:bg-secondary text-primary-foreground font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all mt-6"
+                      <motion.div 
+                        whileHover={{ scale: 1.03, y: -2 }}
+                        whileTap={{ scale: 0.97, y: -1 }}
                       >
-                        {isSubmitting ? (
-                          <span className="flex items-center justify-center gap-2">
-                            <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                            Submitting...
-                          </span>
-                        ) : (
-                          <span className="flex items-center justify-center gap-2">
-                            <Sparkles className="w-5 h-5" />
-                            Submit My Contact
-                          </span>
-                        )}
-                      </Button>
+                        <Button
+                          onClick={handleSubmit}
+                          disabled={isSubmitting}
+                          className="group relative overflow-hidden w-full h-12 font-bold text-lg rounded-xl border-0 transition-all duration-300 mt-6"
+                          style={{
+                            background: "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%)",
+                            boxShadow: "0 4px 6px -1px hsl(var(--primary) / 0.2), 0 10px 15px -3px hsl(var(--primary) / 0.3), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.1)"
+                          }}
+                        >
+                          {/* Inner glow layer */}
+                          <div className="absolute inset-0 rounded-xl bg-gradient-to-b from-white/20 via-transparent to-black/10" />
+                          
+                          {/* Animated gradient border */}
+                          <div className="absolute inset-0 rounded-xl p-[1.5px] bg-gradient-to-br from-white/40 via-transparent to-black/20">
+                            <div className="h-full w-full rounded-xl bg-gradient-to-br from-primary to-secondary" />
+                          </div>
+                          
+                          {/* Hover light sweep effect */}
+                          <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+                          
+                          {isSubmitting ? (
+                            <span className="relative z-10 flex items-center justify-center gap-2">
+                              <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                              Submitting...
+                            </span>
+                          ) : (
+                            <span className="relative z-10 flex items-center justify-center gap-2">
+                              <Zap className="w-5 h-5" />
+                              Submit My Contact
+                            </span>
+                          )}
+                        </Button>
+                      </motion.div>
                     </div>
                   </div>
                   </div>
@@ -523,6 +877,11 @@ const HeroModern = () => {
           </AnimatePresence>
         </div>
       </section>
+      
+      {/* Success Modal Overlay */}
+      <AnimatePresence>
+        {showDoneCard && <DoneCard />}
+      </AnimatePresence>
     </>
   );
 };
