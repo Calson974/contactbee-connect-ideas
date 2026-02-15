@@ -520,7 +520,7 @@ const HeroModern = () => {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 0.4 }}
-                      className="flex gap-3 pt-6 flex-nowrap"
+                      className="flex gap-2 sm:gap-3 pt-6 flex-nowrap overflow-visible"
                     >
                       {/* Primary CTA - Premium 3D Button */}
                       <motion.button
@@ -531,7 +531,7 @@ const HeroModern = () => {
                         }}
                         whileTap={{ scale: 0.97, y: -1 }}
                         onClick={() => setShowForm(true)}
-                        className="group relative overflow-hidden rounded-2xl px-8 py-4 font-bold text-base text-white transition-all duration-300 flex-shrink-0"
+                        className="group relative overflow-hidden rounded-2xl px-6 sm:px-8 py-3 sm:py-4 font-bold text-sm sm:text-base text-white transition-all duration-300 flex-shrink-0"
                         style={{
                           background: "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%)",
                           boxShadow: "0 4px 6px -1px hsl(var(--primary) / 0.2), 0 10px 15px -3px hsl(var(--primary) / 0.3), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.1)"
@@ -549,9 +549,9 @@ const HeroModern = () => {
                         <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-white/30 to-transparent" />
                         
                         {/* Content */}
-                        <span className="relative z-10 flex items-center gap-2">
-                          <span className="tracking-wide text-sm whitespace-nowrap">Start Growing</span>
-                          <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1.5" strokeWidth={2.5} />
+                        <span className="relative z-10 flex items-center gap-1.5 sm:gap-2">
+                          <span className="tracking-wide text-xs sm:text-sm whitespace-nowrap">Start Growing</span>
+                          <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-300 group-hover:translate-x-1.5" strokeWidth={2.5} />
                         </span>
                       </motion.button>
 
@@ -566,18 +566,18 @@ const HeroModern = () => {
                         onClick={() => {
                           document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
                         }}
-                        className="group relative overflow-hidden rounded-2xl px-8 py-4 font-semibold text-base transition-all duration-300 border-2 backdrop-blur-md flex-shrink-0"
+                        className="group relative overflow-hidden rounded-2xl px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base transition-all duration-300 border-2 backdrop-blur-md flex-shrink-0"
                         style={{
-                          borderColor: "hsla(var(--primary), 0.25)",
-                          background: "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)",
-                          boxShadow: "0 4px 6px -1px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.1)"
+                          borderColor: "hsla(var(--primary), 0.4)",
+                          background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%)",
+                          boxShadow: "0 4px 6px -1px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)"
                         }}
                       >
                         {/* Inner gradient glow on hover */}
                         <div 
                           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                           style={{
-                            background: "radial-gradient(ellipse at center, hsla(var(--primary), 0.15) 0%, transparent 70%)"
+                            background: "radial-gradient(ellipse at center, hsla(var(--primary), 0.25) 0%, transparent 70%)"
                           }}
                         />
                         
@@ -585,14 +585,14 @@ const HeroModern = () => {
                         <div 
                           className="absolute -inset-[1px] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm"
                           style={{
-                            background: "linear-gradient(135deg, hsla(var(--primary), 0.5), hsla(var(--secondary), 0.5))"
+                            background: "linear-gradient(135deg, hsla(var(--primary), 0.6), hsla(var(--secondary), 0.6))"
                           }}
                         />
                         
                         {/* Content */}
-                        <span className="relative z-10 flex items-center gap-2">
-                          <Play className="w-4 h-4 transition-all duration-300 group-hover:scale-110" fill="currentColor" strokeWidth={0} />
-                          <span className="tracking-wide text-sm whitespace-nowrap">How It Works</span>
+                        <span className="relative z-10 flex items-center gap-1.5 sm:gap-2">
+                          <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-all duration-300 group-hover:scale-110" fill="currentColor" strokeWidth={0} />
+                          <span className="tracking-wide text-xs sm:text-sm whitespace-nowrap">How It Works</span>
                         </span>
                       </motion.button>
                     </motion.div>

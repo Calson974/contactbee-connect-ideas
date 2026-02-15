@@ -102,11 +102,10 @@ const DownloadsPageNew = () => {
   const handleDownload = async (downloadDate?: Date | string | React.MouseEvent<HTMLButtonElement>) => {
     // Handle event object if passed by onClick
     if (downloadDate && typeof downloadDate !== 'string' && !(downloadDate instanceof Date)) {
-      downloadDate = new Date();
+      downloadDate = undefined; // Will use latest compiled file
     }
     setIsDownloading(true);
     try {
-      // Handle both Date objects and string dates from the compiled files list
       let targetDate: Date;
       
       if (downloadDate instanceof Date) {
@@ -115,8 +114,41 @@ const DownloadsPageNew = () => {
         // If it's a date string from the compiled files list
         targetDate = new Date(downloadDate);
       } else {
-        // Fallback to the selected date in the calendar
-        targetDate = date;
+        // Get the latest compiled file (not today's file unless it's already compiled)
+        const latestFile = compiledFiles.length > 0 
+          ? compiledFiles.reduce((latest, current) => 
+              new Date(current.compilation_date) > new Date(latest.compilation_date) ? current : latest
+            )
+          : null;
+        
+        if (!latestFile) {
+          throw new Error('No compiled files available for download');
+        }
+        
+        // Don't allow downloading today's file unless it's after 9 AM (compilation time)
+        const today = new Date().toISOString().split('T')[0];
+        if (latestFile.compilation_date === today) {
+          const now = new Date();
+          const compilationTime = new Date();
+          compilationTime.setHours(9, 0, 0, 0); // 9:00 AM
+          
+          if (now < compilationTime) {
+            // If today's file isn't ready, get the previous day's file
+            const previousFiles = compiledFiles.filter(f => f.compilation_date !== today);
+            if (previousFiles.length > 0) {
+              const previousLatest = previousFiles.reduce((latest, current) => 
+                new Date(current.compilation_date) > new Date(latest.compilation_date) ? current : latest
+              );
+              targetDate = new Date(previousLatest.compilation_date);
+            } else {
+              throw new Error("Today's file will be available at 9:00 AM. No previous files available.");
+            }
+          } else {
+            targetDate = new Date(latestFile.compilation_date);
+          }
+        } else {
+          targetDate = new Date(latestFile.compilation_date);
+        }
       }
 
       // Ensure the date is valid
@@ -227,7 +259,7 @@ const DownloadsPageNew = () => {
       </Helmet>
       
       {/* Hero Section - Sophisticated Design */}
-      <div className="relative overflow-hidden pt-24 pb-20 lg:pt-32 lg:pb-28">
+      <div className="relative overflow-hidden pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-40 lg:pb-28">
         {/* Background with layered effects */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10" />
@@ -242,23 +274,23 @@ const DownloadsPageNew = () => {
           }} />
         </div>
         
-        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16">
             {/* Text Content */}
-            <div className="text-center lg:text-left max-w-2xl mx-auto lg:mx-0">
+            <div className="text-center lg:text-left max-w-xl mx-auto lg:mx-0 w-full lg:w-auto overflow-visible">
               {/* Badge */}
               <motion.div
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary/10 backdrop-blur-md border border-primary/20 mb-8"
+                className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-primary/10 backdrop-blur-md border border-primary/20 mb-6 sm:mb-8"
                 initial={{ opacity: 0, y: 20, scale: 0.9 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.5 }}
               >
-                <Sparkles className="w-4 h-4 text-primary" />
-                <span className="text-sm font-semibold text-primary">Daily Updated Contact Library</span>
+                <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-primary" />
+                <span className="text-xs sm:text-sm font-semibold text-primary">Daily Updated Contact Library</span>
               </motion.div>
 
               <motion.h1 
-                className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight text-foreground mb-6"
+                className="text-3xl sm:text-4xl lg:text-6xl xl:text-7xl font-black tracking-tight text-foreground mb-4 sm:mb-6"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
@@ -267,7 +299,7 @@ const DownloadsPageNew = () => {
               </motion.h1>
               
               <motion.p 
-                className="text-xl text-muted-foreground max-w-xl leading-relaxed mb-10"
+                className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-lg leading-relaxed mb-8 sm:mb-10 px-2 lg:px-0"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
@@ -276,7 +308,7 @@ const DownloadsPageNew = () => {
               </motion.p>
               
               <motion.div 
-                className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+                className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start w-full min-w-0"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
@@ -284,11 +316,12 @@ const DownloadsPageNew = () => {
                 <motion.div
                   whileHover={{ scale: 1.03, y: -2 }}
                   whileTap={{ scale: 0.98 }}
+                  className="w-full sm:w-auto flex-shrink-0"
                 >
                   <Button 
                     onClick={handleDownload}
                     disabled={isDownloading}
-                    className="group relative overflow-hidden px-8 py-6 h-auto bg-gradient-to-r from-primary to-accent text-primary-foreground font-bold text-lg rounded-full border-0 transition-all duration-300"
+                    className="group relative overflow-hidden w-full sm:w-auto px-4 sm:px-6 py-3 sm:py-4 h-auto bg-gradient-to-r from-primary to-accent text-primary-foreground font-bold text-sm sm:text-base rounded-full border-0 transition-all duration-300 whitespace-nowrap"
                     style={{
                       boxShadow: "0 4px 14px -2px hsl(var(--primary) / 0.3), 0 8px 20px -4px hsl(var(--primary) / 0.2), inset 0 1px 0 rgba(255,255,255,0.2)"
                     }}
@@ -299,19 +332,19 @@ const DownloadsPageNew = () => {
                     {/* Light sweep */}
                     <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out bg-gradient-to-r from-transparent via-white/30 to-transparent" />
                     
-                    <span className="relative z-10 flex items-center gap-2">
+                    <span className="relative z-10 flex items-center gap-1.5 sm:gap-2 justify-center">
                       {isDownloading ? (
                         <>
-                          <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <svg className="animate-spin h-3.5 w-3.5 sm:h-4 sm:w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                           </svg>
-                          <span>Preparing...</span>
+                          <span className="text-xs sm:text-sm">Preparing...</span>
                         </>
                       ) : (
                         <>
-                          <Download className="w-5 h-5" />
-                          <span>Download Latest vCard</span>
+                          <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                          <span className="text-xs sm:text-sm">Download Latest vCard</span>
                         </>
                       )}
                     </span>
@@ -321,18 +354,19 @@ const DownloadsPageNew = () => {
                 <motion.div
                   whileHover={{ scale: 1.03, y: -2 }}
                   whileTap={{ scale: 0.98 }}
+                  className="w-full sm:w-auto flex-shrink-0"
                 >
                   <Button 
                     variant="outline"
-                    className="px-8 py-6 h-auto bg-white/50 dark:bg-white/5 backdrop-blur-sm border-2 border-border/50 hover:border-primary/50 text-foreground font-semibold rounded-full transition-all duration-300"
+                    className="w-full sm:w-auto px-4 sm:px-6 py-3 sm:py-4 h-auto bg-white/50 dark:bg-white/5 backdrop-blur-sm border-2 border-border/50 hover:border-primary/50 text-foreground font-semibold rounded-full transition-all duration-300 whitespace-nowrap"
                     onClick={() => {
                       const element = document.getElementById('all-files');
                       element?.scrollIntoView({ behavior: 'smooth' });
                     }}
                   >
-                    <span className="flex items-center gap-2">
-                      View All Files
-                      <ChevronRight className="w-5 h-5" />
+                    <span className="flex items-center gap-1.5 sm:gap-2 justify-center">
+                      <span className="text-xs sm:text-sm">View All Files</span>
+                      <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     </span>
                   </Button>
                 </motion.div>
@@ -369,24 +403,24 @@ const DownloadsPageNew = () => {
               { 
                 icon: Users, 
                 label: "Today's Contacts", 
-                value: todayCount.toString(), 
-                subtext: `+${Math.floor(todayCount * 0.15)} from yesterday`,
+                value: compiledFiles.find(f => f.compilation_date === new Date().toISOString().split('T')[0])?.contact_count?.toString() || '0', 
+                subtext: `Compiled at 9:00 AM`,
                 gradient: "from-primary to-accent",
                 bgGradient: "from-primary/5 to-accent/5"
               },
               { 
                 icon: TrendingUp, 
-                label: "Weekly Growth", 
-                value: `+${Math.floor(todayCount * 1.2)}`, 
-                subtext: `${Math.floor(todayCount * 0.3)}% from last week`,
+                label: "Total Files", 
+                value: compiledFiles.length.toString(),
+                subtext: "Available downloads",
                 gradient: "from-accent to-secondary",
                 bgGradient: "from-accent/5 to-secondary/5"
               },
               { 
                 icon: FileDown, 
-                label: "Total Downloads", 
-                value: `${Math.floor(todayCount * 12.3)}`, 
-                subtext: `${Math.floor(todayCount * 0.8)} this month`,
+                label: "Total Contacts", 
+                value: compiledFiles.reduce((sum, f) => sum + (f.contact_count || 0), 0).toLocaleString(),
+                subtext: "All time",
                 gradient: "from-secondary to-primary",
                 bgGradient: "from-secondary/5 to-primary/5"
               },
@@ -493,14 +527,20 @@ const DownloadsPageNew = () => {
                     onSelect={(newDate) => newDate && setDate(newDate)}
                     className="rounded-none border-0 w-full"
                     classNames={{
-                      month: "w-full",
-                      caption: "hidden",
+                      month: "w-full space-y-4",
+                      caption: "flex flex-col sm:flex-row justify-between items-center gap-2 mb-4",
+                      caption_label: "text-base sm:text-lg font-semibold text-foreground",
+                      caption_dropdowns: "flex gap-2",
+                      nav: "flex gap-2",
+                      nav_button: "h-8 w-8 p-0 rounded-lg hover:bg-primary/10 transition-colors",
+                      nav_button_previous: "rotate-0",
+                      nav_button_next: "rotate-0",
                       table: "w-full border-collapse",
-                      head_row: "flex justify-between mb-4",
-                      head_cell: "text-muted-foreground font-medium text-sm w-12 h-12 flex items-center justify-center",
-                      row: "flex justify-between mb-2",
-                      cell: "w-12 h-12 p-0 relative",
-                      day: "w-12 h-12 p-0 font-medium text-foreground hover:bg-primary/10 rounded-xl transition-all duration-200 flex items-center justify-center",
+                      head_row: "grid grid-cols-7 gap-1 mb-2 sm:flex sm:justify-between sm:mb-4",
+                      head_cell: "text-muted-foreground font-medium text-xs sm:text-sm w-full h-8 sm:h-12 sm:w-12 flex items-center justify-center",
+                      row: "grid grid-cols-7 gap-1 mb-1 sm:flex sm:justify-between sm:mb-2",
+                      cell: "w-full h-8 sm:w-12 sm:h-12 p-0 relative",
+                      day: "w-full h-8 sm:w-12 sm:h-12 p-0 text-xs sm:text-sm font-medium text-foreground hover:bg-primary/10 rounded-lg sm:rounded-xl transition-all duration-200 flex items-center justify-center",
                       day_today: "bg-primary/10 text-primary font-bold",
                       day_selected: "bg-gradient-to-br from-primary to-accent text-white font-bold hover:from-primary/90 hover:to-accent/90 shadow-lg",
                       day_disabled: "text-muted-foreground/30 cursor-not-allowed",
@@ -508,7 +548,7 @@ const DownloadsPageNew = () => {
                     disabled={(date) => {
                       const today = new Date();
                       today.setHours(0, 0, 0, 0);
-                      return date > today || date < new Date(2023, 0, 1);
+                      return date > today || date < new Date(2024, 0, 1);
                     }}
                   />
                 </div>
@@ -595,22 +635,22 @@ const DownloadsPageNew = () => {
       </div>
 
       {/* File Archive Section - Modern List Design */}
-      <div className="relative py-24 bg-gradient-to-b from-transparent via-muted/30 to-transparent" id="all-files">
-        <div className="max-w-5xl mx-auto px-6 sm:px-8 lg:px-12">
+      <div className="relative py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-transparent via-muted/30 to-transparent" id="all-files">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-12">
           {/* Section Header */}
-          <div className="text-center mb-12">
+          <div className="text-center mb-8 sm:mb-12">
             <motion.div
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-secondary/10 backdrop-blur-md border border-secondary/20 mb-6"
+              className="inline-flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full bg-secondary/10 backdrop-blur-md border border-secondary/20 mb-4 sm:mb-6"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <Archive className="w-4 h-4 text-secondary" />
-              <span className="text-sm font-semibold text-secondary">Complete History</span>
+              <Archive className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-secondary" />
+              <span className="text-xs sm:text-sm font-semibold text-secondary">Complete History</span>
             </motion.div>
 
             <motion.h2 
-              className="text-4xl sm:text-5xl font-black text-foreground mb-4"
+              className="text-3xl sm:text-4xl lg:text-5xl font-black text-foreground mb-3 sm:mb-4"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -620,7 +660,7 @@ const DownloadsPageNew = () => {
             </motion.h2>
             
             <motion.p 
-              className="text-lg text-muted-foreground max-w-2xl mx-auto"
+              className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -639,90 +679,98 @@ const DownloadsPageNew = () => {
             transition={{ duration: 0.6 }}
           >
             {/* List Header */}
-            <div className="px-8 py-6 border-b border-border/50 flex items-center justify-between bg-gradient-to-r from-muted/50 to-transparent">
+            <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 border-b border-border/50 flex items-center justify-between bg-gradient-to-r from-muted/50 to-transparent">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg">
-                  <Archive className="w-6 h-6 text-white" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg">
+                  <Archive className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-foreground">All vCard Archives</h3>
-                  <p className="text-sm text-muted-foreground">Download any previous day's contacts</p>
+                  <h3 className="text-lg sm:text-xl font-bold text-foreground">All vCard Archives</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground">Download any previous day's contacts</p>
                 </div>
               </div>
-              <div className="px-4 py-2 rounded-full bg-gradient-to-r from-primary to-accent text-white text-sm font-bold shadow-md">
+              <div className="px-2 py-1 sm:px-3 sm:py-1.5 rounded-full bg-gradient-to-r from-primary to-accent text-white text-xs font-bold shadow-md min-w-[3rem] text-center">
                 {compiledFiles.length} {compiledFiles.length === 1 ? 'File' : 'Files'}
               </div>
             </div>
             
             {/* File Items */}
-            <div className="max-h-[500px] overflow-y-auto">
+            <div className="overflow-x-auto overflow-y-auto max-h-[400px] sm:max-h-[500px]">
               {compiledFiles.length > 0 ? (
-                <AnimatePresence>
-                  {compiledFiles.map((file, index) => (
-                    <motion.div
-                      key={file.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 20 }}
-                      transition={{ duration: 0.3, delay: index * 0.03 }}
-                      className="group relative px-8 py-5 border-b border-border/30 hover:bg-gradient-to-r hover:from-primary/5 hover:to-accent/5 transition-all duration-300"
-                    >
-                      <div className="flex items-center justify-between gap-4">
-                        <div className="flex items-center gap-4 flex-1 min-w-0">
-                          {/* File Icon */}
-                          <div className={`flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center shadow-md ${
-                            index % 3 === 0 ? 'bg-gradient-to-br from-blue-500 to-cyan-500' : 
-                            index % 3 === 1 ? 'bg-gradient-to-br from-purple-500 to-pink-500' : 
-                            'bg-gradient-to-br from-primary to-accent'
-                          }`}>
-                            <FileDown className="w-7 h-7 text-white" />
-                          </div>
-                          
-                          {/* File Info */}
-                          <div className="min-w-0 flex-1">
-                            <h4 className="text-lg font-bold text-foreground truncate">
-                              {format(new Date(file.compilation_date), 'EEEE, MMMM d, yyyy')}
-                            </h4>
-                            <div className="flex flex-wrap items-center gap-x-6 gap-y-1 mt-1.5">
-                              <span className="inline-flex items-center text-sm text-muted-foreground">
-                                <Users className="w-4 h-4 mr-2" />
-                                {file.contact_count} contacts
-                              </span>
-                              <span className="inline-flex items-center text-sm text-muted-foreground">
-                                <Clock className="w-4 h-4 mr-2" />
-                                {format(new Date(file.created_at), 'h:mm a')}
-                              </span>
+                <div className="min-w-[600px]">
+                  <AnimatePresence>
+                    {compiledFiles.map((file, index) => (
+                      <motion.div
+                        key={file.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 20 }}
+                        transition={{ duration: 0.3, delay: index * 0.03 }}
+                        className="group relative px-4 sm:px-6 lg:px-8 py-3 sm:py-5 border-b border-border/30 hover:bg-gradient-to-r hover:from-primary/5 hover:to-accent/5 transition-all duration-300"
+                      >
+                        <div className="flex items-center justify-between gap-4">
+                          <div className="flex items-center gap-4 flex-1 min-w-0">
+                            {/* File Icon */}
+                            <div 
+                              className="flex-shrink-0 w-10 h-10 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center shadow-md"
+                              style={{
+                                background: index % 3 === 0 
+                                  ? 'linear-gradient(to bottom right, #3b82f6, #06b6d4)' 
+                                  : index % 3 === 1 
+                                  ? 'linear-gradient(to bottom right, #a855f7, #ec4899)' 
+                                  : 'linear-gradient(to bottom right, #10b981, #14b8a6)'
+                              }}
+                            >
+                              <FileDown className="w-5 h-5 sm:w-7 sm:h-7 text-white" />
+                            </div>
+                            
+                            {/* File Info */}
+                            <div className="min-w-0 flex-1">
+                              <h4 className="text-sm sm:text-lg font-bold text-foreground truncate">
+                                {format(new Date(file.compilation_date), 'EEEE, MMMM d, yyyy')}
+                              </h4>
+                              <div className="flex flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-1 mt-1">
+                                <span className="inline-flex items-center text-xs sm:text-sm text-muted-foreground">
+                                  <Users className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
+                                  {file.contact_count} contacts
+                                </span>
+                                <span className="inline-flex items-center text-xs sm:text-sm text-muted-foreground">
+                                  <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
+                                  {format(new Date(file.created_at), 'h:mm a')}
+                                </span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        
-                        {/* Download Button */}
-                        <motion.div
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          <Button
-                            variant="outline"
-                            className="group/btn relative overflow-hidden px-6 py-5 h-auto rounded-xl border-2 border-primary/30 hover:border-primary bg-white/50 dark:bg-white/5 hover:bg-primary transition-all duration-300"
-                            onClick={() => handleDownload(new Date(file.compilation_date))}
+                          
+                          {/* Download Button */}
+                          <motion.div
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="flex-shrink-0"
                           >
-                            <span className="relative z-10 flex items-center gap-2 text-primary group-hover/btn:text-white transition-colors">
-                              <Download className="w-4 h-4" />
-                              <span className="font-semibold">Download</span>
-                            </span>
-                          </Button>
-                        </motion.div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
+                            <Button
+                              variant="outline"
+                              className="group/btn relative overflow-hidden px-4 py-2.5 sm:px-6 sm:py-5 h-auto rounded-xl border-2 border-primary/30 hover:border-primary bg-white/50 dark:bg-white/5 hover:bg-primary transition-all duration-300"
+                              onClick={() => handleDownload(new Date(file.compilation_date))}
+                            >
+                              <span className="relative z-10 flex items-center gap-1.5 sm:gap-2 text-primary group-hover/btn:text-white transition-colors text-sm sm:text-base">
+                                <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                                <span className="font-semibold">Download</span>
+                              </span>
+                            </Button>
+                          </motion.div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                </div>
               ) : (
-                <div className="text-center py-16 px-6">
-                  <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-2xl bg-primary/10 mb-6">
-                    <Archive className="h-10 w-10 text-primary" />
+                <div className="text-center py-12 sm:py-16 px-4 sm:px-6">
+                  <div className="mx-auto flex items-center justify-center h-16 w-16 sm:h-20 sm:w-20 rounded-2xl bg-primary/10 mb-4 sm:mb-6">
+                    <Archive className="h-8 w-8 sm:h-10 sm:w-10 text-primary" />
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-2">No vCards found</h3>
-                  <p className="text-muted-foreground">
+                  <h3 className="text-lg sm:text-xl font-bold text-foreground mb-2">No vCards found</h3>
+                  <p className="text-sm text-muted-foreground">
                     Your compiled vCard files will appear here once available.
                   </p>
                 </div>
@@ -731,8 +779,8 @@ const DownloadsPageNew = () => {
             
             {/* Footer */}
             {compiledFiles.length > 0 && (
-              <div className="px-8 py-5 border-t border-border/50 bg-muted/30 text-center">
-                <p className="text-sm text-muted-foreground">
+              <div className="px-4 sm:px-6 lg:px-8 py-3 sm:py-5 border-t border-border/50 bg-muted/30 text-center">
+                <p className="text-xs sm:text-sm text-muted-foreground">
                   Files are generated daily at 9:00 AM UTC • Last updated {format(new Date(), 'MMM d, yyyy')}
                 </p>
               </div>

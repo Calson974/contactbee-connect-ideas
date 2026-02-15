@@ -107,11 +107,9 @@ const HowItWorksNew = () => {
                   </motion.div>
 
                   {/* Arrow for Desktop */}
-                  {index < steps.length - 1 && (
-                    <div className="hidden lg:block">
-                      <ArrowRight className="w-8 h-8 text-gray-400 dark:text-gray-600" />
-                    </div>
-                  )}
+                  <div className="hidden lg:block">
+                    <ArrowRight className="w-8 h-8 text-gray-400 dark:text-gray-600" />
+                  </div>
                 </div>
 
                 {/* Content Card */}
