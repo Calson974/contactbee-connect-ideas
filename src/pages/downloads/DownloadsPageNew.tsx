@@ -403,7 +403,7 @@ const DownloadsPageNew = () => {
               { 
                 icon: Users, 
                 label: "Today's Contacts", 
-                value: compiledFiles.find(f => f.compilation_date === new Date().toISOString().split('T')[0])?.contact_count?.toString() || '0', 
+                value: todayCount.toString(), 
                 subtext: `Compiled at 9:00 AM`,
                 gradient: "from-primary to-accent",
                 bgGradient: "from-primary/5 to-accent/5"
@@ -602,7 +602,7 @@ const DownloadsPageNew = () => {
                       whileTap={{ scale: 0.98 }}
                     >
                       <Button
-                        onClick={() => handleDownload()}
+                        onClick={() => handleDownload(date)}
                         disabled={isDownloading}
                         className="w-full h-14 bg-white text-primary hover:bg-white/90 font-bold text-lg rounded-xl transition-all duration-300 shadow-lg"
                       >
