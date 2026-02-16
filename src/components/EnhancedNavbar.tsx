@@ -36,7 +36,10 @@ const EnhancedNavbar = () => {
       }
       lastScrollY.current = currentScrollY;
       
-      const sections = menuItems.map(item => item.href);
+      const sections = menuItems
+        .map(item => item.href)
+        .filter(href => href.startsWith('#'));
+      
       const scrollPosition = window.scrollY + 100;
       
       for (const section of sections) {

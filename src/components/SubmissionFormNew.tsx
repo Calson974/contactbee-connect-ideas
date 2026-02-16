@@ -130,7 +130,6 @@ const SubmissionFormNew = () => {
       // Store current scroll position immediately and protect it
       const scrollY = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
       scrollPositionRef.current = scrollY; // Store in React ref
-      console.log('Modal opening, storing scroll position:', scrollY);
       
       // Store in multiple places immediately
       const scrollPosition = scrollY.toString();
@@ -170,8 +169,6 @@ const SubmissionFormNew = () => {
                         localStorage.getItem('modal-scroll-position') || '0';
       }
       
-      console.log('Modal closing, restoring scroll position:', storedScrollY);
-      
       // Restore both html and body
       document.documentElement.style.overflow = '';
       document.body.style.overflow = '';
@@ -188,14 +185,12 @@ const SubmissionFormNew = () => {
       
       // Use the stored scroll position
       const scrollPosition = parseInt(storedScrollY);
-      console.log('Setting scroll to:', scrollPosition);
       
       // Force scroll restoration with multiple methods
       const restoreScroll = () => {
         window.scrollTo(0, scrollPosition);
         document.documentElement.scrollTop = scrollPosition;
         document.body.scrollTop = scrollPosition;
-        console.log('Scroll restoration attempt:', scrollPosition);
       };
       
       // Apply immediately and multiple times to override any interference
@@ -318,7 +313,6 @@ const SubmissionFormNew = () => {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log('X button clicked');
                 setShowDoneCard(false);
               }}
               onMouseDown={(e) => {

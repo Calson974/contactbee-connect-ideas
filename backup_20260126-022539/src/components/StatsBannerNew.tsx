@@ -29,7 +29,7 @@ const StatsBannerNew = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const TimeUnit = ({ value, label }) => (
+  const TimeUnit = ({ value, label }: { value: number; label: string }) => (
     <div className="flex flex-col items-center">
       <motion.div
         className="relative"
