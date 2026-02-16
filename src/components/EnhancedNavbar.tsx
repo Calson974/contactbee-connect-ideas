@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowRight, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
+import { useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const menuItems = [
@@ -19,6 +20,26 @@ const EnhancedNavbar = () => {
   const navRef = useRef<HTMLElement>(null);
   const lastScrollY = useRef(0);
   const { theme } = useTheme();
+  const location = useLocation();
+
+  // Set active item based on current route
+  useEffect(() => {
+    const path = location.pathname;
+    const hash = location.hash;
+    
+    // Check if current path matches a menu item
+    const matchedRoute = menuItems.find(item => 
+      item.href.startsWith('/') && path.startsWith(item.href)
+    );
+    
+    if (matchedRoute) {
+      setActiveItem(matchedRoute.href);
+    } else if (path === '/' && hash) {
+      setActiveItem(hash);
+    } else if (path === '/') {
+      setActiveItem("#home");
+    }
+  }, [location.pathname, location.hash]);
 
   // --- LOGIC PRESERVED EXACTLY AS IS ---
   useEffect(() => {
@@ -36,19 +57,22 @@ const EnhancedNavbar = () => {
       }
       lastScrollY.current = currentScrollY;
       
-      const sections = menuItems
-        .map(item => item.href)
-        .filter(href => href.startsWith('#'));
-      
-      const scrollPosition = window.scrollY + 100;
-      
-      for (const section of sections) {
-        const element = document.querySelector(section);
-        if (element) {
-          const { offsetTop, offsetHeight } = element as HTMLElement;
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveItem(section);
-            break;
+      // Only track hash sections when on home page
+      if (window.location.pathname === '/') {
+        const sections = menuItems
+          .map(item => item.href)
+          .filter(href => href.startsWith('#'));
+        
+        const scrollPosition = window.scrollY + 100;
+        
+        for (const section of sections) {
+          const element = document.querySelector(section);
+          if (element) {
+            const { offsetTop, offsetHeight } = element as HTMLElement;
+            if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+              setActiveItem(section);
+              break;
+            }
           }
         }
       }

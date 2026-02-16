@@ -133,6 +133,16 @@ const FooterNew = () => {
                                 <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all group-hover:w-full"></span>
                             </span>
                           </a>
+                        ) : link.href.startsWith('#') ? (
+                          <a
+                            href={`/${link.href}`}
+                            className="group flex items-center text-muted-foreground hover:text-primary transition-colors text-sm font-medium"
+                          >
+                            <span className="relative">
+                                {link.name}
+                                <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all group-hover:w-full"></span>
+                            </span>
+                          </a>
                         ) : (
                           <Link
                             to={link.href}
