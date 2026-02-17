@@ -1,9 +1,110 @@
 import { motion } from "framer-motion";
-import { Plus, Minus, HelpCircle, Zap } from "lucide-react";
+import { Plus, Minus, HelpCircle, Zap, User, Phone, Mail, AlertTriangle, MessageSquare } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const FAQSectionNew = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [activeTab, setActiveTab] = useState<'question' | 'report'>('question');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Question form state
+  const [questionName, setQuestionName] = useState('');
+  const [questionContact, setQuestionContact] = useState('');
+  const [questionText, setQuestionText] = useState('');
+
+  // Report form state
+  const [reportName, setReportName] = useState('');
+  const [reportContact, setReportContact] = useState('');
+  const [reportedName, setReportedName] = useState('');
+  const [reportedContact, setReportedContact] = useState('');
+  const [reportReason, setReportReason] = useState('');
+
+  const handleQuestionSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!questionName.trim() || !questionContact.trim() || !questionText.trim()) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('https://formspree.io/f/mgolyzra', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          type: 'question',
+          name: questionName,
+          contact: questionContact,
+          question: questionText,
+          subject: 'New Question from FAQ Section'
+        })
+      });
+
+      if (response.ok) {
+        toast.success("Your question has been submitted successfully!");
+        setQuestionName('');
+        setQuestionContact('');
+        setQuestionText('');
+      } else {
+        throw new Error('Failed to submit question');
+      }
+    } catch (error) {
+      toast.error("Failed to submit question. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleReportSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!reportName.trim() || !reportContact.trim() || !reportedContact.trim() || !reportReason.trim()) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('https://formspree.io/f/mgolyzra', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          type: 'report',
+          reporterName: reportName,
+          reporterContact: reportContact,
+          reportedName: reportedName,
+          reportedContact: reportedContact,
+          reason: reportReason,
+          subject: 'Contact Report - FAQ Section'
+        })
+      });
+
+      if (response.ok) {
+        toast.success("Report submitted successfully. We will review and take appropriate action.");
+        setReportName('');
+        setReportContact('');
+        setReportedName('');
+        setReportedContact('');
+        setReportReason('');
+      } else {
+        throw new Error('Failed to submit report');
+      }
+    } catch (error) {
+      toast.error("Failed to submit report. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const faqs = [
     {
@@ -148,7 +249,7 @@ const FAQSectionNew = () => {
           ))}
         </div>
 
-        {/* Bottom CTA */}
+        {/* Bottom CTA - Tabbed Form */}
         <motion.div
           className="text-center mt-12 lg:mt-16"
           initial={{ opacity: 0, y: 20 }}
@@ -156,52 +257,201 @@ const FAQSectionNew = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <div className="inline-flex flex-col items-center gap-4 px-8 py-6 bg-primary/10 dark:bg-primary/20 rounded-2xl border border-primary/20 dark:border-primary/30">
+          <div className="inline-flex flex-col items-center gap-6 px-8 py-8 bg-primary/10 dark:bg-primary/20 rounded-2xl border border-primary/20 dark:border-primary/30 max-w-2xl w-full">
             <div className="text-xl font-bold text-foreground">
-              Still have questions?
+              Need help or want to report an issue?
             </div>
-            <p className="text-muted-foreground">
-              Contact our support team - we're here to help!
+            <p className="text-muted-foreground text-center">
+              Contact our support team or report inappropriate behavior
             </p>
-            <motion.div className="mt-12 text-center">
-              <motion.a
-                href="#submit-form"
-                className="group relative overflow-hidden inline-flex items-center gap-2 font-bold text-lg py-4 px-8 rounded-full transition-all duration-300 border-0"
-                style={{
-                  background: "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%)",
-                  boxShadow: "0 4px 6px -1px hsl(var(--primary) / 0.2), 0 10px 15px -3px hsl(var(--primary) / 0.3), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.1)"
-                }}
-                whileHover={{ 
-                  scale: 1.03, 
-                  y: -3,
-                  boxShadow: "0 20px 40px -10px hsl(var(--primary) / 0.4), 0 10px 20px -5px hsl(var(--primary) / 0.2)"
-                }}
-                whileTap={{ scale: 0.97, y: -1 }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  const element = document.getElementById('submit-form');
-                  if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
-                  }
-                }}
+
+            {/* Tab Navigation */}
+            <div className="flex gap-2 bg-background/50 rounded-xl p-1 border border-border/50">
+              <button
+                onClick={() => setActiveTab('question')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
+                  activeTab === 'question'
+                    ? 'bg-primary text-primary-foreground shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
               >
-                {/* Inner glow layer */}
-                <div className="absolute inset-0 rounded-full bg-gradient-to-b from-white/20 via-transparent to-black/10" />
-                
-                {/* Animated gradient border */}
-                <div className="absolute inset-0 rounded-full p-[1.5px] bg-gradient-to-br from-white/40 via-transparent to-black/20">
-                  <div className="h-full w-full rounded-full bg-gradient-to-br from-primary to-secondary" />
-                </div>
-                
-                {/* Hover light sweep effect */}
-                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-                
-                <span className="relative z-10 flex items-center gap-2">
-                  <Zap className="w-5 h-5" />
-                  Still have questions? Contact us
-                </span>
-              </motion.a>
-            </motion.div>
+                <MessageSquare className="w-4 h-4" />
+                Ask a Question
+              </button>
+              <button
+                onClick={() => setActiveTab('report')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
+                  activeTab === 'report'
+                    ? 'bg-primary text-primary-foreground shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                <AlertTriangle className="w-4 h-4" />
+                Report a Problem
+              </button>
+            </div>
+
+            {/* Forms */}
+            <div className="w-full max-w-md">
+              {activeTab === 'question' ? (
+                <form onSubmit={handleQuestionSubmit} className="space-y-4">
+                  <div className="text-left">
+                    <label className="block text-sm font-medium text-foreground mb-1">
+                      Your Name
+                    </label>
+                    <input
+                      type="text"
+                      value={questionName}
+                      onChange={(e) => setQuestionName(e.target.value)}
+                      className="w-full px-3 py-2 rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all text-sm"
+                      placeholder="Enter your name"
+                      required
+                    />
+                  </div>
+
+                  <div className="text-left">
+                    <label className="block text-sm font-medium text-foreground mb-1">
+                      Phone Number or Email
+                    </label>
+                    <input
+                      type="text"
+                      value={questionContact}
+                      onChange={(e) => setQuestionContact(e.target.value)}
+                      className="w-full px-3 py-2 rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all text-sm"
+                      placeholder="Your contact information"
+                      required
+                    />
+                  </div>
+
+                  <div className="text-left">
+                    <label className="block text-sm font-medium text-foreground mb-1">
+                      Your Question
+                    </label>
+                    <textarea
+                      value={questionText}
+                      onChange={(e) => setQuestionText(e.target.value)}
+                      rows={4}
+                      className="w-full px-3 py-2 rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all text-sm resize-none"
+                      placeholder="What would you like to know?"
+                      required
+                    />
+                  </div>
+
+                  <motion.button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full relative overflow-hidden inline-flex items-center justify-center gap-2 font-bold py-3 px-6 rounded-full transition-all duration-300 border-0"
+                    style={{
+                      background: "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%)",
+                      boxShadow: "0 4px 6px -1px hsl(var(--primary) / 0.2), 0 10px 15px -3px hsl(var(--primary) / 0.3), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.1)"
+                    }}
+                    whileHover={{ 
+                      scale: 1.03, 
+                      y: -2,
+                      boxShadow: "0 20px 40px -10px hsl(var(--primary) / 0.4), 0 10px 20px -5px hsl(var(--primary) / 0.2)"
+                    }}
+                    whileTap={{ scale: 0.97, y: -1 }}
+                  >
+                    <span className="relative z-10 flex items-center gap-2">
+                      <MessageSquare className="w-4 h-4" />
+                      {isSubmitting ? 'Submitting...' : 'Submit Question'}
+                    </span>
+                  </motion.button>
+                </form>
+              ) : (
+                <form onSubmit={handleReportSubmit} className="space-y-4">
+                  <div className="text-left">
+                    <label className="block text-sm font-medium text-foreground mb-1">
+                      Your Name
+                    </label>
+                    <input
+                      type="text"
+                      value={reportName}
+                      onChange={(e) => setReportName(e.target.value)}
+                      className="w-full px-3 py-2 rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all text-sm"
+                      placeholder="Enter your name"
+                      required
+                    />
+                  </div>
+
+                  <div className="text-left">
+                    <label className="block text-sm font-medium text-foreground mb-1">
+                      Your Phone Number or Email
+                    </label>
+                    <input
+                      type="text"
+                      value={reportContact}
+                      onChange={(e) => setReportContact(e.target.value)}
+                      className="w-full px-3 py-2 rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all text-sm"
+                      placeholder="Your contact information"
+                      required
+                    />
+                  </div>
+
+                  <div className="text-left">
+                    <label className="block text-sm font-medium text-foreground mb-1">
+                      Person to Report (Name - Optional)
+                    </label>
+                    <input
+                      type="text"
+                      value={reportedName}
+                      onChange={(e) => setReportedName(e.target.value)}
+                      className="w-full px-3 py-2 rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all text-sm"
+                      placeholder="Name of person being reported"
+                    />
+                  </div>
+
+                  <div className="text-left">
+                    <label className="block text-sm font-medium text-foreground mb-1">
+                      Person's Phone Number *
+                    </label>
+                    <input
+                      type="text"
+                      value={reportedContact}
+                      onChange={(e) => setReportedContact(e.target.value)}
+                      className="w-full px-3 py-2 rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all text-sm"
+                      placeholder="Phone number of person being reported"
+                      required
+                    />
+                  </div>
+
+                  <div className="text-left">
+                    <label className="block text-sm font-medium text-foreground mb-1">
+                      Reason for Report *
+                    </label>
+                    <textarea
+                      value={reportReason}
+                      onChange={(e) => setReportReason(e.target.value)}
+                      rows={4}
+                      className="w-full px-3 py-2 rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all text-sm resize-none"
+                      placeholder="Describe the issue or offense committed"
+                      required
+                    />
+                  </div>
+
+                  <motion.button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full relative overflow-hidden inline-flex items-center justify-center gap-2 font-bold py-3 px-6 rounded-full transition-all duration-300 border-0"
+                    style={{
+                      background: "linear-gradient(135deg, hsl(var(--destructive)) 0%, hsl(var(--destructive) / 0.8) 100%)",
+                      boxShadow: "0 4px 6px -1px hsl(var(--destructive) / 0.2), 0 10px 15px -3px hsl(var(--destructive) / 0.3), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.1)"
+                    }}
+                    whileHover={{ 
+                      scale: 1.03, 
+                      y: -2,
+                      boxShadow: "0 20px 40px -10px hsl(var(--destructive) / 0.4), 0 10px 20px -5px hsl(var(--destructive) / 0.2)"
+                    }}
+                    whileTap={{ scale: 0.97, y: -1 }}
+                  >
+                    <span className="relative z-10 flex items-center gap-2">
+                      <AlertTriangle className="w-4 h-4" />
+                      {isSubmitting ? 'Submitting...' : 'Submit Report'}
+                    </span>
+                  </motion.button>
+                </form>
+              )}
+            </div>
           </div>
         </motion.div>
       </div>

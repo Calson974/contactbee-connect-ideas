@@ -47,7 +47,7 @@ const BenefitsBanner = () => {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => {
-                  document.getElementById('submission-form')?.scrollIntoView({ behavior: 'smooth' });
+                  document.getElementById('submit-form')?.scrollIntoView({ behavior: 'smooth' });
                 }}
               >
                 Submit your contact

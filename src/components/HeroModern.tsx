@@ -3,6 +3,7 @@ import { Button } from './ui/button';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Play, TrendingUp, Users, Zap, ArrowLeft, ChevronDown, X, CheckCircle, Clock, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from 'framer-motion';
@@ -24,6 +25,7 @@ const HeroModern = () => {
   const [country, setCountry] = useState("");
   const [showOptional, setShowOptional] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hasAcceptedTerms, setHasAcceptedTerms] = useState(false);
 
   const [company, setCompany] = useState("");
   const [email, setEmail] = useState("");
@@ -36,6 +38,19 @@ const HeroModern = () => {
   const [showDoneCard, setShowDoneCard] = useState(false);
   const [countdown, setCountdown] = useState("");
   const scrollPositionRef = useRef<number>(0);
+
+  // Load terms acceptance from localStorage on mount
+  useEffect(() => {
+    const savedTermsAcceptance = localStorage.getItem('termsAccepted');
+    if (savedTermsAcceptance === 'true') {
+      setHasAcceptedTerms(true);
+    }
+  }, []);
+
+  // Save terms acceptance to localStorage when it changes
+  useEffect(() => {
+    localStorage.setItem('termsAccepted', hasAcceptedTerms.toString());
+  }, [hasAcceptedTerms]);
 
   // Set up countdown to 9 PM
   useEffect(() => {
@@ -169,6 +184,12 @@ const HeroModern = () => {
   }, [showDoneCard]);
 
   const handleSubmit = async () => {
+    // Check if user has accepted terms
+    if (!hasAcceptedTerms) {
+      toast.error("Please accept the Terms of Service to continue.");
+      return;
+    }
+    
     // Validate required fields
     if (!name.trim()) {
       toast.error("Please enter your name");
@@ -807,6 +828,52 @@ const HeroModern = () => {
                           </div>
                         </CollapsibleContent>
                       </Collapsible>
+
+                      {/* Terms and Conditions Checkbox */}
+                      <div className="space-y-3 p-4 bg-card/30 backdrop-blur-sm rounded-xl border border-border/50">
+                        <div className="flex items-start space-x-3">
+                          <Checkbox
+                            id="terms-hero"
+                            checked={hasAcceptedTerms}
+                            onCheckedChange={(checked) => setHasAcceptedTerms(checked as boolean)}
+                            className="mt-1 border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                          />
+                          <div className="flex-1">
+                            <Label 
+                              htmlFor="terms-hero" 
+                              className="text-sm leading-relaxed cursor-pointer hover:text-primary transition-colors"
+                            >
+                              I have read and agree to the{" "}
+                              <a 
+                                href="/legal/terms" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-primary hover:underline font-medium"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                Terms of Service
+                              </a>{" "}
+                              and{" "}
+                              <a 
+                                href="/legal/privacy" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-primary hover:underline font-medium"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                Privacy Policy
+                              </a>
+                              . I understand that my contact information will be shared with other users.
+                            </Label>
+                            {hasAcceptedTerms && (
+                              <p className="text-xs text-muted-foreground mt-2 flex items-center gap-1">
+                                <CheckCircle className="w-3 h-3 text-green-500" />
+                                Your preference has been saved for future submissions
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
 
                       {/* Submit Button */}
                       <motion.div 
