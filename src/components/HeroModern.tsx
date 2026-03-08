@@ -11,6 +11,7 @@ import { Helmet } from 'react-helmet-async';
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { CountrySelect } from "@/components/ui/country-select";
+import { COUNTRY_DIAL_CODES } from "@/lib/country-dial-codes";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { createPortal } from 'react-dom';
 import heroBackground from "@/assets/hero-background.jpg";
