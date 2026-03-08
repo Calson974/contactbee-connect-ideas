@@ -560,15 +560,15 @@ const HeroModern = () => {
                         }}
                       >
                         {/* Inner glow layer */}
-                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/20 via-transparent to-black/10" />
+                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/20 via-transparent to-black/10 pointer-events-none" />
                         
                         {/* Animated gradient border */}
-                        <div className="absolute inset-0 rounded-2xl p-[1.5px] bg-gradient-to-br from-white/40 via-transparent to-black/20">
+                        <div className="absolute inset-0 rounded-2xl p-[1.5px] bg-gradient-to-br from-white/40 via-transparent to-black/20 pointer-events-none">
                           <div className="h-full w-full rounded-2xl bg-gradient-to-br from-primary to-secondary" />
                         </div>
                         
                         {/* Hover light sweep effect */}
-                        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+                        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
                         
                         {/* Content */}
                         <span className="relative z-10 flex items-center gap-1.5 sm:gap-2">
@@ -597,7 +597,7 @@ const HeroModern = () => {
                       >
                         {/* Inner gradient glow on hover */}
                         <div 
-                          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                           style={{
                             background: "radial-gradient(ellipse at center, hsla(var(--primary), 0.25) 0%, transparent 70%)"
                           }}
@@ -605,7 +605,7 @@ const HeroModern = () => {
                         
                         {/* Border glow effect */}
                         <div 
-                          className="absolute -inset-[1px] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm"
+                          className="absolute -inset-[1px] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm pointer-events-none"
                           style={{
                             background: "linear-gradient(135deg, hsla(var(--primary), 0.6), hsla(var(--secondary), 0.6))"
                           }}
