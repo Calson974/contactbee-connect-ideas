@@ -255,8 +255,9 @@ const HeroModern = () => {
       setShowDoneCard(true);
 
       setName("");
-      setPhone("");
-      setCountry("");
+      // Don't clear country - keep it from localStorage for convenience
+      const dialCode = COUNTRY_DIAL_CODES[country];
+      setPhone(dialCode ? dialCode + ' ' : "");
       setCompany("");
       setEmail("");
       setJobTitle("");
