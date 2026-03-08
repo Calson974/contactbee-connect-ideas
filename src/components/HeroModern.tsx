@@ -735,6 +735,22 @@ const HeroModern = () => {
                       </div>
 
                       <div>
+                        <Label htmlFor="country" className="text-sm font-medium text-foreground mb-2 block">
+                          Country <span className="text-destructive">*</span>
+                        </Label>
+                        <CountrySelect value={country} onChange={(val) => {
+                          setCountry(val);
+                          const dialCode = COUNTRY_DIAL_CODES[val];
+                          if (dialCode) {
+                            const currentDialCode = Object.values(COUNTRY_DIAL_CODES).find(code => phone.startsWith(code));
+                            if (!phone || phone === currentDialCode || phone === '') {
+                              setPhone(dialCode);
+                            }
+                          }
+                        }} required />
+                      </div>
+
+                      <div>
                         <Label htmlFor="phone" className="text-sm font-medium text-foreground mb-2 block">
                           WhatsApp Number <span className="text-destructive">*</span>
                         </Label>
@@ -744,16 +760,9 @@ const HeroModern = () => {
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
                           required
-                          placeholder="+237 6xx xx xx xx"
+                          placeholder={country ? `${COUNTRY_DIAL_CODES[country] || ''} xxx xx xx xx` : "+237 6xx xx xx xx"}
                           className="h-11 rounded-lg"
                         />
-                      </div>
-
-                      <div>
-                        <Label htmlFor="country" className="text-sm font-medium text-foreground mb-2 block">
-                          Country <span className="text-destructive">*</span>
-                        </Label>
-                        <CountrySelect value={country} onChange={setCountry} required />
                       </div>
 
                       {/* Optional Fields */}
