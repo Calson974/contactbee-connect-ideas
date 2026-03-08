@@ -486,7 +486,7 @@ const HeroModern = () => {
                 <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center max-w-7xl mx-auto">
                   
                   {/* Left Content */}
-                  <div className="space-y-8 lg:pr-8">
+                  <div className="space-y-8 lg:pr-8 relative z-20">
                     
                     {/* Badge */}
                     <motion.div
