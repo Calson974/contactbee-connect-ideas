@@ -66,17 +66,20 @@ const EnhancedNavbar = () => {
           .filter(href => href.startsWith('#'));
         
         const scrollPosition = window.scrollY + 100;
-        
+        let matchedSection = "";
+
         for (const section of sections) {
           const element = document.querySelector(section);
           if (element) {
             const { offsetTop, offsetHeight } = element as HTMLElement;
             if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-              setActiveItem(section);
+              matchedSection = section;
               break;
             }
           }
         }
+
+        setActiveItem(matchedSection);
       }
     };
 
