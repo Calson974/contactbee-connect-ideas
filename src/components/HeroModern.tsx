@@ -256,7 +256,7 @@ const HeroModern = () => {
 
       setName("");
       setPhone("");
-      setCountry("");
+      // Don't clear country - keep it from localStorage for convenience
       setCompany("");
       setEmail("");
       setJobTitle("");
