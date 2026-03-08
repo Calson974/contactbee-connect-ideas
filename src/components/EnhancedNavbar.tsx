@@ -16,7 +16,7 @@ const EnhancedNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
-  const [activeItem, setActiveItem] = useState("#home");
+  const [activeItem, setActiveItem] = useState("");
   const navRef = useRef<HTMLElement>(null);
   const lastScrollY = useRef(0);
   const { theme } = useTheme();
@@ -35,9 +35,11 @@ const EnhancedNavbar = () => {
     if (matchedRoute) {
       setActiveItem(matchedRoute.href);
     } else if (path === '/' && hash) {
-      setActiveItem(hash);
-    } else if (path === '/') {
-      setActiveItem("#home");
+      // Only highlight if the hash matches a menu item
+      const matchedHash = menuItems.find(item => item.href === hash);
+      setActiveItem(matchedHash ? hash : "");
+    } else {
+      setActiveItem("");
     }
   }, [location.pathname, location.hash]);
 
