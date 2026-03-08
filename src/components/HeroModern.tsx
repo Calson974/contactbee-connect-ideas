@@ -560,15 +560,15 @@ const HeroModern = () => {
                         }}
                       >
                         {/* Inner glow layer */}
-                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/20 via-transparent to-black/10" />
+                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/20 via-transparent to-black/10 pointer-events-none" />
                         
                         {/* Animated gradient border */}
-                        <div className="absolute inset-0 rounded-2xl p-[1.5px] bg-gradient-to-br from-white/40 via-transparent to-black/20">
+                        <div className="absolute inset-0 rounded-2xl p-[1.5px] bg-gradient-to-br from-white/40 via-transparent to-black/20 pointer-events-none">
                           <div className="h-full w-full rounded-2xl bg-gradient-to-br from-primary to-secondary" />
                         </div>
                         
                         {/* Hover light sweep effect */}
-                        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+                        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
                         
                         {/* Content */}
                         <span className="relative z-10 flex items-center gap-1.5 sm:gap-2">
