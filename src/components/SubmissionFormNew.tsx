@@ -560,6 +560,24 @@ const SubmissionFormNew = () => {
                 )}
               </div>
 
+              {/* Country */}
+              <div className="space-y-2">
+                <Label htmlFor="country" className="text-base font-semibold text-foreground">
+                  Country <span className="text-destructive">*</span>
+                </Label>
+                <CountrySelect value={country} onChange={(val) => {
+                  setCountry(val);
+                  const dialCode = COUNTRY_DIAL_CODES[val];
+                  if (dialCode) {
+                    // Only auto-fill if phone is empty or starts with a previous dial code
+                    const currentDialCode = Object.values(COUNTRY_DIAL_CODES).find(code => phone.startsWith(code));
+                    if (!phone || phone === currentDialCode || phone === '') {
+                      setPhone(dialCode);
+                    }
+                  }
+                }} required />
+              </div>
+
               {/* Phone */}
               <div className="space-y-2">
                 <Label htmlFor="phone" className="text-base font-semibold text-foreground">
@@ -571,20 +589,12 @@ const SubmissionFormNew = () => {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   required
-                  placeholder="+237 6xx xx xx xx"
+                  placeholder={country ? `${COUNTRY_DIAL_CODES[country] || ''} xxx xx xx xx` : "+237 6xx xx xx xx"}
                   className="text-base h-12 bg-card/60 backdrop-blur-sm border-border focus:border-primary focus:ring-primary/50 rounded-xl"
                 />
                 <p className="text-sm text-muted-foreground">
-                  Include country code (e.g., +237 for Cameroon)
+                  Country code is auto-filled — just add your number
                 </p>
-              </div>
-
-              {/* Country */}
-              <div className="space-y-2">
-                <Label htmlFor="country" className="text-base font-semibold text-foreground">
-                  Country <span className="text-destructive">*</span>
-                </Label>
-                <CountrySelect value={country} onChange={setCountry} required />
               </div>
 
               {/* Optional Fields */}
