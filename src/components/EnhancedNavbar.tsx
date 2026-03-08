@@ -16,7 +16,7 @@ const EnhancedNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
-  const [activeItem, setActiveItem] = useState("#home");
+  const [activeItem, setActiveItem] = useState("");
   const navRef = useRef<HTMLElement>(null);
   const lastScrollY = useRef(0);
   const { theme } = useTheme();
