@@ -40,11 +40,21 @@ const SubmissionFormNew = () => {
   const countdownRef = useRef<NodeJS.Timeout>();
   const scrollPositionRef = useRef<number>(0);
 
-  // Load terms acceptance from localStorage on mount
+  // Load terms acceptance and country from localStorage on mount
   useEffect(() => {
     const savedTermsAcceptance = localStorage.getItem('termsAccepted');
     if (savedTermsAcceptance === 'true') {
       setHasAcceptedTerms(true);
+    }
+    
+    const savedCountry = localStorage.getItem('selectedCountry');
+    if (savedCountry) {
+      setCountry(savedCountry);
+      // Auto-fill dial code if phone is empty
+      const dialCode = COUNTRY_DIAL_CODES[savedCountry];
+      if (dialCode) {
+        setPhone(dialCode + ' ');
+      }
     }
   }, []);
 
@@ -52,6 +62,13 @@ const SubmissionFormNew = () => {
   useEffect(() => {
     localStorage.setItem('termsAccepted', hasAcceptedTerms.toString());
   }, [hasAcceptedTerms]);
+
+  // Save country to localStorage when it changes
+  useEffect(() => {
+    if (country) {
+      localStorage.setItem('selectedCountry', country);
+    }
+  }, [country]);
 
   // Preload Lottie animation when component mounts
   useEffect(() => {
