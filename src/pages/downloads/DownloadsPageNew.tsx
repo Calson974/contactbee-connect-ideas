@@ -22,74 +22,39 @@ const DownloadsPageNew = () => {
   // Fetch today's count
   useEffect(() => {
     const fetchCount = async () => {
-      const today = new Date().toISOString().split('T')[0];
-      const { count, error } = await supabase
-        .from('submissions')
-        .select('*', { count: 'exact', head: true })
-        .gte('created_at', `${today}T00:00:00`)
-        .lt('created_at', `${today}T23:59:59`);
-
-      if (!error && count !== null) {
-        setTodayCount(count);
+      const { data, error } = await supabase.rpc('count_todays_submissions');
+      if (!error && data !== null) {
+        setTodayCount((data as number) ?? 0);
       }
     };
 
     fetchCount();
-
-    // Subscribe to real-time changes
-    const channel = supabase
-      .channel('submissions-counter')
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'submissions' }, () => {
-        fetchCount();
-      })
-      .subscribe();
+    const interval = setInterval(fetchCount, 15000);
+    window.addEventListener('submission:created', fetchCount);
 
     return () => {
-      supabase.removeChannel(channel);
+      clearInterval(interval);
+      window.removeEventListener('submission:created', fetchCount);
     };
   }, []);
 
-  // Define the type for compiled files
-  type CompiledFile = {
-    id: string;
-    compilation_date: string;
-    created_at: string;
-    contact_count: number;
-    file_url?: string;
-  };
-
-  // Fetch compiled files
+  // Fetch available daily files (aggregated counts, no personal data)
   useEffect(() => {
     const fetchCompiledFiles = async () => {
       try {
-        // First, try to fetch from the correct table
-        const { data, error } = await supabase
-          .from('submissions')
-          .select('created_at, plan_type')
-          .order('created_at', { ascending: false });
+        const { data, error } = await supabase.rpc('get_daily_submission_counts');
 
         if (error) throw error;
 
-        if (data && data.length > 0) {
-          // Group submissions by date and count contacts
-          const groupedByDate = data.reduce((acc: Record<string, number>, submission) => {
-            const date = new Date(submission.created_at).toISOString().split('T')[0];
-            acc[date] = (acc[date] || 0) + 1;
-            return acc;
-          }, {});
-
-          // Convert to array of CompiledFile
-          const compiledFiles = Object.entries(groupedByDate).map(([date, count]) => ({
-            id: `file-${date}`,
-            compilation_date: date,
-            created_at: `${date}T09:00:00.000Z`, // Set to 9 AM UTC
-            contact_count: count as number
-          }));
-
-          setCompiledFiles(compiledFiles);
-        } else {
-          setCompiledFiles([]);
-        }
+        const rows = (data as { submission_date: string; contact_count: number }[]) || [];
+        setCompiledFiles(
+          rows.map((row) => ({
+            id: `file-${row.submission_date}`,
+            compilation_date: row.submission_date,
+            created_at: `${row.submission_date}T09:00:00.000Z`,
+            contact_count: row.contact_count,
+          }))
+        );
       } catch (error) {
         console.error('Error fetching compiled files:', error);
         toast.error('Failed to load compiled files. Please try again later.');
@@ -98,6 +63,7 @@ const DownloadsPageNew = () => {
 
     fetchCompiledFiles();
   }, []);
+
 
   const handleDownload = async (downloadDate?: Date | string | React.MouseEvent<HTMLButtonElement>) => {
     // Handle event object if passed by onClick

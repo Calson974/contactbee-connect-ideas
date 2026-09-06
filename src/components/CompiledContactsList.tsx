@@ -24,24 +24,23 @@ export function CompiledContactsList() {
     const fetchArchives = async () => {
       try {
         setLoading(true);
-        
-        // Fetch all historical archives
-        const { data, error, count } = await supabase
-          .from('daily_vcards')
-          .select('*', { count: 'exact' })
-          .order('date', { ascending: false });
+
+        const { data, error } = await supabase.rpc('get_daily_submission_counts');
 
         if (error) throw error;
-        
-        if (data) {
-          // Filter out any invalid or missing dates
-          const validArchives = data.filter(archive => 
-            archive.date && archive.contact_count > 0
-          );
-          
-          console.log(`Fetched ${validArchives.length} valid archives out of ${data.length} total`);
-          setArchives(validArchives);
-        }
+
+        const rows = (data as { submission_date: string; contact_count: number }[]) || [];
+        setArchives(
+          rows
+            .filter((row) => row.submission_date && row.contact_count > 0)
+            .map((row) => ({
+              id: `archive-${row.submission_date}`,
+              date: row.submission_date,
+              contact_count: row.contact_count,
+              created_at: `${row.submission_date}T21:00:00.000Z`,
+              file_path: `${row.submission_date}/daily_contacts_${row.submission_date}.vcf`,
+            }))
+        );
       } catch (err) {
         console.error('Error fetching archives:', err);
         setError('Failed to load contact archives. Please try again later.');
@@ -53,6 +52,7 @@ export function CompiledContactsList() {
 
     fetchArchives();
   }, []);
+
 
   const handleDownload = async (filePath: string, archiveId: string) => {
     try {

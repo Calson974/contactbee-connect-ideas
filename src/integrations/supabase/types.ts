@@ -119,6 +119,13 @@ export type Database = {
     }
     Functions: {
       count_todays_submissions: { Args: never; Returns: number }
+      get_daily_submission_counts: {
+        Args: never
+        Returns: {
+          contact_count: number
+          submission_date: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
