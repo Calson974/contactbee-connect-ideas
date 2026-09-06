@@ -123,18 +123,9 @@ const SubmissionFormNew = () => {
   useEffect(() => {
     const fetchTodaysCount = async () => {
       try {
-        setIsLoadingCount(true);
-        const today = format(new Date(), 'yyyy-MM-dd');
-        
-        const { count, error } = await supabase
-          .from('submissions')
-          .select('*', { count: 'exact', head: true })
-          .gte('created_at', `${today}T00:00:00`)
-          .lt('created_at', `${today}T23:59:59`);
-
+        const { data, error } = await supabase.rpc('count_todays_submissions');
         if (error) throw error;
-        
-        setTodaysCount(count);
+        setTodaysCount((data as number) ?? 0);
       } catch (error) {
         console.error('Error fetching today\'s count:', error);
       } finally {
@@ -144,18 +135,15 @@ const SubmissionFormNew = () => {
 
     fetchTodaysCount();
 
-    // Set up realtime subscription
-    const channel = supabase
-      .channel('submissions_count')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'submissions' }, () => {
-        fetchTodaysCount();
-      })
-      .subscribe();
+    const interval = setInterval(fetchTodaysCount, 15000);
+    window.addEventListener('submission:created', fetchTodaysCount);
 
     return () => {
-      supabase.removeChannel(channel);
+      clearInterval(interval);
+      window.removeEventListener('submission:created', fetchTodaysCount);
     };
   }, []);
+
 
   // Lock body scroll when modal is open
   useEffect(() => {
