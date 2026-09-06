@@ -251,6 +251,8 @@ const HeroModern = () => {
 
       if (error) throw error;
 
+      window.dispatchEvent(new Event('submission:created'));
+
       // Show the premium success modal instead of toast
       setShowDoneCard(true);
 

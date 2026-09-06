@@ -280,6 +280,8 @@ const SubmissionFormNew = () => {
 
       if (error) throw error;
 
+      window.dispatchEvent(new Event('submission:created'));
+
       // Show the done card
       setShowDoneCard(true);
       
